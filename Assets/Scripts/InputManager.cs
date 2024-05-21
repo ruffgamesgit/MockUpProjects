@@ -1,26 +1,28 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class InputManager : MonoBehaviour
 {
-    [Header("References")] 
-    public LayerMask PickibleLayer;
+    [Header("References")] public LayerMask PickibleLayer;
 
-    [Header("Config")]
-    [SerializeField] float zDefaultPos;
-    [SerializeField] float yAxisOffset;
-    
-    [Header("Debug")]
-    [SerializeField] GameObject selectedObject;
-    [SerializeField] Pickable selectedPickablePoint;
+    [Header("Config")] [SerializeField] float yDefaultPos;
+    [SerializeField] float zAxisOffset;
+
+    [Header("Debug")] [SerializeField] GameObject selectedObject;
+
+    [FormerlySerializedAs("selectedPickablePoint")] [SerializeField]
+    Pickable selectedPickable;
+
     [SerializeField] bool blockPicking;
     [SerializeField] bool isDragging = false;
     private Camera mainCamera;
-    
+
     // Start is called before the first frame update
     void Start()
     {
         mainCamera = Camera.main;
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -35,8 +37,10 @@ public class InputManager : MonoBehaviour
                 {
                     if (blockPicking) return;
                     if (pickable.IsPicked) return;
+                    if (!pickable.CanPickable) return;
 
-                     // selectedObject =  pickable;
+                    selectedObject = pickable.gameObject;
+                    selectedPickable = pickable;
                     pickable.GetPicked();
 
                     blockPicking = true;
@@ -46,11 +50,32 @@ public class InputManager : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            if (selectedObject != null)
+            if (selectedObject is not null)
             {
+                selectedPickable.GetReleased();
                 selectedObject = null;
                 isDragging = false;
+                blockPicking = false;
             }
         }
+
+        if (isDragging && selectedObject is not null)
+        {
+            DragSelectedObject();
+        }
+    }
+
+
+    private void DragSelectedObject()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        Vector3 objectScreenPos = mainCamera.WorldToScreenPoint(selectedObject.transform.position);
+        mousePos.z = objectScreenPos.z;
+
+        Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePos);
+        worldPos.y = yDefaultPos;
+
+        // Apply the initial offset to the new world position
+        selectedObject.transform.position = worldPos;
     }
 }
