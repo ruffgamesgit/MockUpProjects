@@ -7,10 +7,10 @@ public static class DataExtensions
     {
         var values = System.Enum.GetValues(typeof(PizzaType));
         PizzaType randomType = (PizzaType)values.GetValue(Random.Range(0, values.Length));
-        
+
         PizzaData randomData = new PizzaData
         {
-            level = Random.Range(1, maxLevel + 1),
+            level = Random.Range(0, maxLevel + 1),
             pizzaType = randomType
         };
         return randomData;
@@ -27,5 +27,25 @@ public static class DataExtensions
         }
 
         return null;
+    }
+
+    public static int GetOccupiedPointsCount(List<PlacementPoint> points)
+    {
+        int count = 0;
+
+        for (int i = 0; i < points.Count; i++)
+        {
+            if (points[i].CheckIfOccupied())
+                count++;
+        }
+
+        return count;
+    }
+    
+    public static bool CheckIfDataMatches(PizzaData data1, PizzaData data2)
+    {
+        bool isMatched = data1.pizzaType == data2.pizzaType && data1.level == data2.level;
+
+        return isMatched;
     }
 }

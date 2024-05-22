@@ -1,8 +1,14 @@
+using System;
+using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 
-public class InputManager : MonoBehaviour
+public class InputManager : MonoSingleton<InputManager>
 {
+    public event System.Action OnPickablePlacedEvent;
+
     [Header("References")] public LayerMask PickibleLayer;
 
     [Header("Config")] [SerializeField] float yDefaultPos;
@@ -10,26 +16,23 @@ public class InputManager : MonoBehaviour
 
     [Header("Debug")] [SerializeField] GameObject selectedObject;
 
-    [FormerlySerializedAs("selectedPickablePoint")] [SerializeField]
-    Pickable selectedPickable;
+    [SerializeField] Pickable selectedPickable;
 
     [SerializeField] bool blockPicking;
-    [SerializeField] bool isDragging = false;
-    private Camera mainCamera;
+    [SerializeField] private bool isDragging;
+    private Camera _mainCamera;
 
-    // Start is called before the first frame update
     void Start()
     {
-        mainCamera = Camera.main;
+        _mainCamera = Camera.main;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit, 300, PickibleLayer))
             {
@@ -52,7 +55,7 @@ public class InputManager : MonoBehaviour
         {
             if (selectedObject is not null)
             {
-                selectedPickable.GetReleased();
+                selectedPickable.GetReleased(selectedPickable.GetPoint());
                 selectedObject = null;
                 isDragging = false;
                 blockPicking = false;
@@ -65,17 +68,21 @@ public class InputManager : MonoBehaviour
         }
     }
 
-
     private void DragSelectedObject()
     {
         Vector3 mousePos = Input.mousePosition;
-        Vector3 objectScreenPos = mainCamera.WorldToScreenPoint(selectedObject.transform.position);
+        Vector3 objectScreenPos = _mainCamera.WorldToScreenPoint(selectedObject.transform.position);
         mousePos.z = objectScreenPos.z;
 
-        Vector3 worldPos = mainCamera.ScreenToWorldPoint(mousePos);
+        Vector3 worldPos = _mainCamera.ScreenToWorldPoint(mousePos);
         worldPos.y = yDefaultPos;
 
         // Apply the initial offset to the new world position
         selectedObject.transform.position = worldPos;
+    }
+
+    public void TriggerOnPickablePlacedEvent()
+    {
+        OnPickablePlacedEvent?.Invoke();
     }
 }

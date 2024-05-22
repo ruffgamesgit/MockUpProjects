@@ -1,25 +1,46 @@
 ﻿using System;
-using Unity.VisualScripting.Dependencies.Sqlite;
+using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Pickable : MonoBehaviour
 {
     public event Action OnPicked;
-    public event Action OnReleased;
-    public event Action<PlacementPoint> OnPlaced;
+    public event Action<PlacementPoint> OnReleased;
+    public event Action<PlacementPoint,TweenCallback> OnPlaced;
 
     [SerializeField] LayerMask columnLayer;
     [Header("Debug")] public bool IsPicked;
     public bool CanPickable;
+    private PlacementPoint _point;
+    private PizzaController _pizzaController;
 
-    public void SetPickableStatus(PlacementPoint point)
+    private void Awake()
     {
-        ColumnController column = point.GetColumn();
+        _pizzaController = transform.GetComponent<PizzaController>();
+    }
+
+    private void Start()
+    {
+        SetPickableStatus();
+        InputManager.instance.OnPickablePlacedEvent += SetPickableStatus;
+    }
+
+    public void SetPoint(PlacementPoint p)
+    {
+        _point = p;
+    }
+
+    private void SetPickableStatus()
+    {
+        ColumnController column = _point.GetColumn();
         PlacementPoint lastOccupiedPoint = column.GetLastOccupiedPoint();
         PlacementPoint firstPoint = column.GetPoints()[0];
-
-        CanPickable = point == lastOccupiedPoint || point == firstPoint;
+        
+        if (_point == firstPoint || _point == lastOccupiedPoint)
+        {
+            CanPickable = true;
+        }
     }
 
     public void GetPicked()
@@ -28,42 +49,47 @@ public class Pickable : MonoBehaviour
         OnPicked?.Invoke();
     }
 
-    public void GetReleased()
+    public void GetReleased(PlacementPoint point)
     {
         IsPicked = false;
-        OnReleased?.Invoke();
+        OnReleased?.Invoke(point);
     }
 
-    private void GoToPoint(PlacementPoint point)
+    // ReSharper disable Unity.PerformanceAnalysis
+    private void GetPlaced(PlacementPoint point)
     {
-        // Invoke an event named like "OnPlacedNewPoint" and subscribe this event from PizzaController
         IsPicked = false;
-        OnPlaced?.Invoke(point);
-        SetPickableStatus(point);
+        if (_point is not null) _point.SetFree();
+        
+        SetPoint(point);
+        OnPlaced?.Invoke(point , () =>  point.GetColumn().CheckInnerSort());
+        InputManager.instance.TriggerOnPickablePlacedEvent();
     }
 
-    void Update()
+    void OnMouseUp()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (!IsPicked) return;
+        IsPicked = false;
+
+        ColumnController column = GetColumnBelow();
+        PlacementPoint point = column.GetAvailablePoint();
+
+        if (_point.GetColumn() != column && column != null && point is not null)
         {
-            if (!IsPicked) return;
-            IsPicked = false;
-
-            ColumnController column = GetCellFront();
-
-            if (column != null && column.GetAvailablePoint() is not null)
-            {
-                GoToPoint(column.GetAvailablePoint());
-            }
-            else
-            {
-                GetReleased();
-            }
+            GetPlaced(point);
+        }
+        else
+        {
+            GetReleased(_point);
         }
     }
 
+    public PlacementPoint GetPoint()
+    {
+        return _point;
+    }
 
-    ColumnController GetCellFront()
+    ColumnController GetColumnBelow()
     {
         RaycastHit hit;
         Ray ray = new Ray(transform.position + (Vector3.up), Vector3.down);
