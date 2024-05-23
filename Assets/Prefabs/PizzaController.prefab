@@ -45,7 +45,6 @@ GameObject:
   m_Component:
   - component: {fileID: 902601951747147236}
   - component: {fileID: 902601951747147238}
-  - component: {fileID: 902601951747147239}
   - component: {fileID: 7176623674577062780}
   m_Layer: 6
   m_Name: PizzaController
@@ -83,23 +82,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.45
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &902601951747147239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 902601951747147242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96f1465130584ee299a806a5c4c23f0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  columnLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  IsPicked: 0
-  CanPickable: 0
 --- !u!114 &7176623674577062780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,11 +94,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cbc6e7fd55bc0045bf9e77529e2d229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  placementPoint: {fileID: 0}
   selectedMesh: {fileID: 0}
   pizzaData:
     pizzaType: 0
     level: 0
+  columnLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  isPicked: 0
+  canPickable: 0
 --- !u!1 &2253640354741792140
 GameObject:
   m_ObjectHideFlags: 0

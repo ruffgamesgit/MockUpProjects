@@ -10,8 +10,8 @@ public static class DataExtensions
 
         PizzaData randomData = new PizzaData
         {
-           // level = Random.Range(0, maxLevel + 1),
-             level = maxLevel,
+            level = Random.Range(0, maxLevel + 1),
+            //  level = maxLevel,
             pizzaType = randomType
         };
         return randomData;
@@ -49,6 +49,7 @@ public static class DataExtensions
 
         return isMatched;
     }
+
     public static List<PizzaController> GetAllPizzasOnColumn(ColumnController column)
     {
         List<PizzaController> pizzas = new();
@@ -61,5 +62,4 @@ public static class DataExtensions
 
         return pizzas;
     }
-    
 }

@@ -8,7 +8,6 @@ using UnityEngine.Serialization;
 
 public class InputManager : MonoSingleton<InputManager>
 {
-    public event System.Action OnPickablePlacedEvent;
 
     [Header("References")] public LayerMask PickibleLayer;
 
@@ -17,7 +16,7 @@ public class InputManager : MonoSingleton<InputManager>
 
     [Header("Debug")] [SerializeField] GameObject selectedObject;
 
-    [SerializeField] Pickable selectedPickable;
+    [SerializeField] PizzaController selectedPizza;
 
     [SerializeField] bool blockPicking;
     [SerializeField] private bool isDragging;
@@ -38,20 +37,20 @@ public class InputManager : MonoSingleton<InputManager>
 
             if (Physics.Raycast(ray, out hit, 300, PickibleLayer))
             {
-                if (hit.collider.TryGetComponent(out Pickable pickable))
+                if (hit.collider.TryGetComponent(out PizzaController pizza))
                 {
                     if (blockPicking) return;
-                    if (pickable.isPicked) return;
-                    if (!pickable.canPickable) return;
+                    if (pizza.isPicked) return;
+                    if (!pizza.canPickable) return;
 
-                    selectedObject = pickable.gameObject;
-                    selectedPickable = pickable;
+                    selectedObject = pizza.gameObject;
+                    selectedPizza = pizza;
 
-                    if (selectedPickable.CanBeLeaderPizza())
+                    if (selectedPizza.CanBeLeaderPizza())
                         _allPizzasOnColumn.AddRange(
-                            DataExtensions.GetAllPizzasOnColumn(selectedPickable.GetPoint().GetColumn()));
+                            DataExtensions.GetAllPizzasOnColumn(selectedPizza.GetPoint().GetColumn()));
 
-                    pickable.GetPicked();
+                    pizza.GetPicked();
 
                     blockPicking = true;
                     isDragging = true;
@@ -62,7 +61,7 @@ public class InputManager : MonoSingleton<InputManager>
         {
             if (selectedObject is not null)
             {
-                selectedPickable.GetReleased(selectedPickable.GetPoint());
+                selectedPizza.GetReleased(selectedPizza.GetPoint());
                 selectedObject = null;
                 isDragging = false;
                 blockPicking = false;
@@ -98,12 +97,7 @@ public class InputManager : MonoSingleton<InputManager>
             var zOffset = i * .75f;
 
             var pos = new Vector3(worldPos.x, worldPos.y, worldPos.z - zOffset);
-            followerPizza.GetPickable().FollowTheLeaderPizza(pos, i);
+            followerPizza.FollowTheLeaderPizza(pos, i);
         }
-    }
-
-    public void TriggerOnPickablePlacedEvent()
-    {
-        OnPickablePlacedEvent?.Invoke();
     }
 }

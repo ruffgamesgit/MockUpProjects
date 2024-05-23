@@ -111,7 +111,7 @@ public class ColumnController : MonoBehaviour
     {
         bool matched = false;
         PlacementPoint lastOccupiedPoint =
-            lastPlacedPizza == null ? GetLastOccupiedPoint() : lastPlacedPizza.GetPickable().GetPoint();
+            lastPlacedPizza == null ? GetLastOccupiedPoint() : lastPlacedPizza.GetPoint();
         int lastOccupiedIndex = lastOccupiedPoint.GetIndex();
 
         PizzaController previousElementPizza = placementPoints[lastOccupiedIndex - 1].GetPizza();
