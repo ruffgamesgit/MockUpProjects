@@ -13,4 +13,9 @@ public class PlacementPoint : BasePointClass
     {
         return _parentColumn;
     }
+
+    public int GetIndex()
+    {
+        return GetColumn().GetPoints().IndexOf(this);
+    }
 }

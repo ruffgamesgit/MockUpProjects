@@ -14,32 +14,44 @@ public enum PizzaType
 
 public class PizzaController : MonoBehaviour
 {
+    private const int MAX_PIZZA_LEVEL = 3;
+
     [Header("Debug")] [SerializeField] private Transform selectedMesh;
     [SerializeField] private PizzaData pizzaData;
     private Pickable _pickable;
     private Coroutine _routine;
     private Lot _lot;
-    private PlacementPoint _point;
-    
+    private PlacementPoint _currentPoint;
+    private bool blockMovingNext;
+
 
     public void Initialize(PlacementPoint point, PizzaData data)
     {
         SetPizzaData(data);
         SetMesh(data);
-        _point = point;
-        
+        _currentPoint = point;
+
         _pickable = GetComponent<Pickable>();
 
-        _pickable.SetPoint(_point);
+        _pickable.SetPoint(_currentPoint);
         _pickable.OnPicked += OnPicked;
         _pickable.OnReleased += OnReleased;
         _pickable.OnPlaced += OnPlaced;
-         
+    }
+
+    public Pickable GetPickable()
+    {
+        return _pickable;
     }
 
     public void MoveToNextPoint(ColumnController parentColumn)
     {
-        Debug.LogWarning("ASD");
+        if (blockMovingNext)
+        {
+            Debug.LogWarning("Pizza: " + gameObject.name + ", Point: " + _currentPoint);
+            return;
+        }
+
         int nextPointIndex = parentColumn.GetPoints().IndexOf(_pickable.GetPoint()) + 1;
         if (nextPointIndex == parentColumn.GetPoints().Count)
         {
@@ -47,9 +59,16 @@ public class PizzaController : MonoBehaviour
         }
         else
         {
-            _point.SetFree();
+            _currentPoint.SetFree();
             PlacementPoint nextPoint = parentColumn.GetPoints()[nextPointIndex];
-            GoToPoint(nextPoint.GetPos(), (() => nextPoint.SetOccupied(this)));
+
+            void Callback()
+            {
+                nextPoint.SetOccupied(this);
+                _pickable.SetPoint(nextPoint, true);
+            }
+
+            GoToPoint(nextPoint.GetPos(), Callback);
         }
     }
 
@@ -85,26 +104,6 @@ public class PizzaController : MonoBehaviour
         selectedMesh.GetChild(data.level).gameObject.SetActive(true);
     }
 
-    #region Event Subscribers
-
-    void OnReleased(PlacementPoint point)
-    {
-        GoToPoint(point.GetPos());
-    }
-
-    private void OnPicked()
-    {
-        // Add some outline etc.
-    }
-
-    private void OnPlaced(PlacementPoint newPoint, TweenCallback callback = null)
-    {
-        newPoint.SetOccupied(this);
-        GoToPoint(newPoint.GetPos(), callback);
-    }
-
-    #endregion
-
     void SetPizzaData(PizzaData data)
     {
         pizzaData = data;
@@ -137,7 +136,7 @@ public class PizzaController : MonoBehaviour
 
         selectedMesh.GetChild(pizzaData.level).gameObject.SetActive(true);
 
-        if (pizzaData.level == 3 && _routine == null)
+        if (pizzaData.level == MAX_PIZZA_LEVEL && _routine == null)
         {
             _routine = StartCoroutine(Routine());
 
@@ -149,25 +148,37 @@ public class PizzaController : MonoBehaviour
         }
     }
 
-
     private void GoForUpperLots()
     {
-        _point.SetFree();
+        _pickable.SetPrevPickableStatus(_currentPoint);
+
+        ResetParams();
+        blockMovingNext = true;
+
         _lot = LotHolder.instance.GetAvailableLot();
         _lot.SetOccupied(this);
         GoToPoint(_lot.GetPos(), () => LotHolder.instance.CheckForPossibleMatches());
         _routine = null;
     }
 
+    public void ResetParams()
+    {
+        _pickable.SetPoint(null, true);
+        _currentPoint.SetFree();
+        _currentPoint = null;
+    }
 
     public void Disappear()
     {
-        _pickable.GetPoint().SetFree();
+        blockMovingNext = true;
+
+        ResetParams();
+
         _placementTween?.Kill();
         transform.DOScale(Vector3.zero, .5f).OnComplete(() => { Destroy(gameObject); });
     }
 
-    public void DisapperaFromLot()
+    public void DisapearFromLot()
     {
         transform.DOScale(Vector3.zero, .5f).OnComplete(() =>
         {
@@ -175,6 +186,26 @@ public class PizzaController : MonoBehaviour
             Destroy(gameObject);
         });
     }
+
+    #region Event Subscribers
+
+    void OnReleased(PlacementPoint point)
+    {
+        GoToPoint(point.GetPos());
+    }
+
+    private void OnPicked()
+    {
+        // Add some outline etc.
+    }
+
+    private void OnPlaced(PlacementPoint newPoint, TweenCallback callback = null)
+    {
+        _currentPoint.SetOccupied(this);
+        GoToPoint(newPoint.GetPos(), callback);
+    }
+
+    #endregion
 }
 
 [System.Serializable]

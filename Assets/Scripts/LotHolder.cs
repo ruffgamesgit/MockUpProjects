@@ -53,7 +53,7 @@ public class LotHolder : MonoSingleton<LotHolder>
             {
                 if (iterate == 0) break;
                 
-                matchablePizzas[i].DisapperaFromLot();
+                matchablePizzas[i].DisapearFromLot();
                 iterate--;
             }
         }

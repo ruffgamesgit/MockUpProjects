@@ -1,18 +1,22 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Pickable : MonoBehaviour
 {
     public event Action OnPicked;
     public event Action<PlacementPoint> OnReleased;
-    public event Action<PlacementPoint,TweenCallback> OnPlaced;
+    public event Action<PlacementPoint, TweenCallback> OnPlaced;
 
-    [SerializeField] LayerMask columnLayer;
-    [Header("Debug")] public bool IsPicked;
-    public bool CanPickable;
-    private PlacementPoint _point;
+    [Header("Config")] [SerializeField] LayerMask columnLayer;
+
+    [Header("Debug")] public bool isPicked;
+    public bool canPickable;
+    [SerializeField] private PlacementPoint currentPoint;
     private PizzaController _pizzaController;
 
     private void Awake()
@@ -23,78 +27,115 @@ public class Pickable : MonoBehaviour
     private void Start()
     {
         SetPickableStatus();
-        InputManager.instance.OnPickablePlacedEvent += SetPickableStatus;
     }
 
-    public void SetPoint(PlacementPoint p)
+    public void SetPoint(PlacementPoint newPoint, bool checkForThePickableStatus = false)
     {
-        _point = p;
+        currentPoint = newPoint;
+        if (checkForThePickableStatus)
+            SetPickableStatus();
     }
 
     private void SetPickableStatus()
     {
-        ColumnController column = _point.GetColumn();
-        PlacementPoint lastOccupiedPoint = column.GetLastOccupiedPoint();
-        PlacementPoint firstPoint = column.GetPoints()[0];
-        
-        if (_point == firstPoint || _point == lastOccupiedPoint)
+        IEnumerator CheckingRoutine()
         {
-            CanPickable = true;
+            yield return null;
+
+            ColumnController column = currentPoint.GetColumn();
+            PlacementPoint lastOccupiedPoint = column.GetLastOccupiedPoint();
+            PlacementPoint firstPoint = column.GetPoints()[0];
+
+            if (currentPoint == firstPoint || currentPoint == lastOccupiedPoint)
+            {
+                canPickable = true;
+            }
+            else
+            {
+                canPickable = false;
+            }
         }
+
+        if (currentPoint is not null)
+            StartCoroutine(CheckingRoutine());
+        else
+            canPickable = false;
     }
+
 
     public void GetPicked()
     {
-        IsPicked = true;
+        isPicked = true;
         OnPicked?.Invoke();
     }
 
-    public void GetReleased(PlacementPoint point)
+    public void GetReleased(PlacementPoint _point)
     {
-        IsPicked = false;
-        OnReleased?.Invoke(point);
+        isPicked = false;
+        OnReleased?.Invoke(_point);
+    }
+
+    public bool CanBeLeaderPizza()
+    {
+        return currentPoint.GetIndex() == 0 && currentPoint.GetColumn().GetPoints().Count > 1;
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    private void GetPlaced(PlacementPoint point)
+    private void GetPlaced(PlacementPoint newPoint)
     {
-        IsPicked = false;
-        if (_point is not null) _point.SetFree();
-        
-        SetPoint(point);
-        OnPlaced?.Invoke(point , () =>  point.GetColumn().CheckInnerSort());
+        isPicked = false;
+
+        SetPrevPickableStatus(newPoint);
+
+        if (currentPoint is not null) currentPoint.SetFree();
+
+        SetPoint(newPoint);
+
+        OnPlaced?.Invoke(newPoint, () => newPoint.GetColumn().CheckInnerSort(lastPlacedPizza: _pizzaController));
         InputManager.instance.TriggerOnPickablePlacedEvent();
     }
 
-    void OnMouseUp()
+    public void SetPrevPickableStatus(PlacementPoint newPoint = null)
     {
-        if (!IsPicked) return;
-        IsPicked = false;
-
-        ColumnController column = GetColumnBelow();
-        PlacementPoint point = column.GetAvailablePoint();
-
-        if (_point.GetColumn() != column && column != null && point is not null)
+        // newPoint = null means the pizza is disappearing the previous one should be pickable
+        if (newPoint != currentPoint)
         {
-            GetPlaced(point);
-        }
-        else
-        {
-            GetReleased(_point);
+            int prevIndex = currentPoint.GetColumn().GetPoints().IndexOf(currentPoint) - 1;
+            if (prevIndex < 0) return;
+            Pickable prevPickable = currentPoint.GetColumn().GetPoints()[prevIndex].GetPizza().GetPickable();
+            prevPickable.canPickable = true;
         }
     }
 
     public PlacementPoint GetPoint()
     {
-        return _point;
+        return currentPoint;
+    }
+
+    void OnMouseUp()
+    {
+        if (!isPicked) return;
+        isPicked = false;
+
+        ColumnController column = GetColumnBelow();
+        if (column == null) return;
+
+        PlacementPoint _point = column.GetAvailablePoint();
+
+        if (currentPoint.GetColumn() != column && column != null && _point is not null)
+        {
+            GetPlaced(_point);
+        }
+        else
+        {
+            GetReleased(currentPoint);
+        }
     }
 
     ColumnController GetColumnBelow()
     {
         RaycastHit hit;
         Ray ray = new Ray(transform.position + (Vector3.up), Vector3.down);
-
-        Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red);
 
         if (Physics.Raycast(ray, out hit, 100, columnLayer))
         {
@@ -105,5 +146,12 @@ public class Pickable : MonoBehaviour
         }
 
         return null;
+    }
+
+    public async void FollowTheLeaderPizza(Vector3 newPos, int index)
+    {
+        await UniTask.Delay(index * 50);
+
+        transform.position = newPos;
     }
 }

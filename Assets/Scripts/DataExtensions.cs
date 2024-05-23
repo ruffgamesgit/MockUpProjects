@@ -10,7 +10,8 @@ public static class DataExtensions
 
         PizzaData randomData = new PizzaData
         {
-            level = Random.Range(0, maxLevel + 1),
+           // level = Random.Range(0, maxLevel + 1),
+             level = maxLevel,
             pizzaType = randomType
         };
         return randomData;
@@ -41,11 +42,24 @@ public static class DataExtensions
 
         return count;
     }
-    
+
     public static bool CheckIfDataMatches(PizzaData data1, PizzaData data2)
     {
         bool isMatched = data1.pizzaType == data2.pizzaType && data1.level == data2.level;
 
         return isMatched;
     }
+    public static List<PizzaController> GetAllPizzasOnColumn(ColumnController column)
+    {
+        List<PizzaController> pizzas = new();
+
+        for (int i = 0; i < column.GetPoints().Count; i++)
+        {
+            if (column.GetPoints()[i].GetPizza() is not null)
+                pizzas.Add(column.GetPoints()[i].GetPizza());
+        }
+
+        return pizzas;
+    }
+    
 }

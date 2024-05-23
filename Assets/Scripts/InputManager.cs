@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -21,6 +22,7 @@ public class InputManager : MonoSingleton<InputManager>
     [SerializeField] bool blockPicking;
     [SerializeField] private bool isDragging;
     private Camera _mainCamera;
+    private List<PizzaController> _allPizzasOnColumn = new();
 
     void Start()
     {
@@ -39,11 +41,16 @@ public class InputManager : MonoSingleton<InputManager>
                 if (hit.collider.TryGetComponent(out Pickable pickable))
                 {
                     if (blockPicking) return;
-                    if (pickable.IsPicked) return;
-                    if (!pickable.CanPickable) return;
+                    if (pickable.isPicked) return;
+                    if (!pickable.canPickable) return;
 
                     selectedObject = pickable.gameObject;
                     selectedPickable = pickable;
+
+                    if (selectedPickable.CanBeLeaderPizza())
+                        _allPizzasOnColumn.AddRange(
+                            DataExtensions.GetAllPizzasOnColumn(selectedPickable.GetPoint().GetColumn()));
+
                     pickable.GetPicked();
 
                     blockPicking = true;
@@ -60,6 +67,8 @@ public class InputManager : MonoSingleton<InputManager>
                 isDragging = false;
                 blockPicking = false;
             }
+
+            _allPizzasOnColumn.Clear();
         }
 
         if (isDragging && selectedObject is not null)
@@ -67,6 +76,7 @@ public class InputManager : MonoSingleton<InputManager>
             DragSelectedObject();
         }
     }
+
 
     private void DragSelectedObject()
     {
@@ -77,8 +87,19 @@ public class InputManager : MonoSingleton<InputManager>
         Vector3 worldPos = _mainCamera.ScreenToWorldPoint(mousePos);
         worldPos.y = yDefaultPos;
 
-        // Apply the initial offset to the new world position
         selectedObject.transform.position = worldPos;
+
+        if (_allPizzasOnColumn.Count <= 0) return;
+
+        for (var i = 1; i < _allPizzasOnColumn.Count; i++)
+        {
+            PizzaController followerPizza = _allPizzasOnColumn[i];
+            if (followerPizza is null) continue;
+            var zOffset = i * .75f;
+
+            var pos = new Vector3(worldPos.x, worldPos.y, worldPos.z - zOffset);
+            followerPizza.GetPickable().FollowTheLeaderPizza(pos, i);
+        }
     }
 
     public void TriggerOnPickablePlacedEvent()
