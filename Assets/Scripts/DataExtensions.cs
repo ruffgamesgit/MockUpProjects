@@ -11,7 +11,7 @@ public static class DataExtensions
         PizzaData randomData = new PizzaData
         {
             level = Random.Range(0, maxLevel + 1),
-            //  level = maxLevel,
+            // level = maxLevel,
             pizzaType = randomType
         };
         return randomData;

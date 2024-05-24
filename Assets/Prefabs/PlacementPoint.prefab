@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d3ef92b9278c64a9d5c3b368190ecb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isOccupied: 0
+  currentPizza: {fileID: 0}
 --- !u!1 &5977873633202992028
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,7 +59,7 @@ GameObject:
   - component: {fileID: 6130563623872924175}
   - component: {fileID: 2650099242611053304}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

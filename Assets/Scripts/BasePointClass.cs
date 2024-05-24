@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class BasePointClass : MonoBehaviour
 {
-    [SerializeField] protected bool isOccupied;
     [SerializeField] protected PizzaController currentPizza;
+    [SerializeField] protected bool isOccupied;
 
     public Vector3 GetPos()
     {

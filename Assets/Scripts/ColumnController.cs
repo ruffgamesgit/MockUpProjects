@@ -1,10 +1,8 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
-
 
 public class ColumnController : MonoBehaviour
 {
@@ -34,7 +32,7 @@ public class ColumnController : MonoBehaviour
         {
             PlacementPoint point = placementPoints[i];
             PizzaController clonePizza =
-                Instantiate(pizzaPrefab, point.GetPos(), Quaternion.identity);
+                Instantiate(pizzaPrefab, point.GetPos(), pizzaPrefab.transform.rotation);
 
             point.SetOccupied(clonePizza);
             PizzaData randomData = DataExtensions.GetRandomPizzaData(2);
@@ -75,6 +73,7 @@ public class ColumnController : MonoBehaviour
         return null;
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void AddOnePizza()
     {
         PlacementPoint firstPoint = placementPoints[0];
@@ -91,14 +90,14 @@ public class ColumnController : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("Counter: " + counter);
+        Debug.LogWarning("Total pizza count: " + counter);
         while (randomData.pizzaType == firstData.pizzaType)
         {
             randomData = DataExtensions.GetRandomPizzaData(2);
         }
 
         PizzaController clonePizza =
-            Instantiate(pizzaPrefab, firstPoint.GetPos(), Quaternion.identity);
+            Instantiate(pizzaPrefab, firstPoint.GetPos(), pizzaPrefab.transform.rotation);
 
         firstPoint.SetOccupied(clonePizza);
         clonePizza.Initialize(firstPoint, randomData);
@@ -106,34 +105,72 @@ public class ColumnController : MonoBehaviour
         clonePizza.transform.DOScale(Vector3.one, .5f).From(Vector3.zero).SetEase(Ease.InBounce);
     }
 
+    [HideInInspector] public int iterateCount;
+
     // ReSharper disable Unity.PerformanceAnalysis
-    public void CheckInnerSort(PizzaController lastPlacedPizza = null)
+    public void CheckInnerSort(PizzaController lastPlacedPizza = null, bool isLeaderPizzaInvokesAgain = false)
     {
         bool matched = false;
         PlacementPoint lastOccupiedPoint =
             lastPlacedPizza == null ? GetLastOccupiedPoint() : lastPlacedPizza.GetPoint();
         int lastOccupiedIndex = lastOccupiedPoint.GetIndex();
 
-        PizzaController previousElementPizza = placementPoints[lastOccupiedIndex - 1].GetPizza();
-        PizzaController lastElementPizza = lastPlacedPizza == null ? lastOccupiedPoint.GetPizza() : lastPlacedPizza;
-        Debug.Log("last: " + lastPlacedPizza.name + ", Prev: " + previousElementPizza.name + ", lastIndex: " + lastOccupiedIndex);
+        PizzaController previousElementPizza = null;
+        if (lastOccupiedIndex - 1 >= 0 && placementPoints[lastOccupiedIndex - 1].GetPizza() is not null)
+            previousElementPizza = placementPoints[lastOccupiedIndex - 1].GetPizza();
 
-        if (DataExtensions.CheckIfDataMatches(lastElementPizza.GetPizzaData(), previousElementPizza.GetPizzaData()))
+        PizzaController lastElementPizza = lastPlacedPizza == null ? lastOccupiedPoint.GetPizza() : lastPlacedPizza;
+
+        if (previousElementPizza is not null &&
+            DataExtensions.CheckIfDataMatches(lastElementPizza.GetPizzaData(), previousElementPizza.GetPizzaData())
+           )
         {
             matched = true;
             previousElementPizza.IncrementLevelAndSetMesh();
             lastElementPizza.Disappear();
         }
 
-        if (matched) CheckInnerSort();
+        if (matched)
+        {
+            iterateCount++;
+            CheckInnerSort();
+        }
         else
         {
-            if (previousElementPizza.GetPizzaData().level == 3)
-                Debug.Log("Fully completed pizza, stopping the new pizza adding imp. ");
-            else
+            if (iterateCount != 0) // matching happened along the method 
             {
+                if(!lastElementPizza.isLeaderPizza) return;
+                
+                if (lastElementPizza.GetPizzaData().level == 3)
+                {
+                    int targetPointIndex = lastElementPizza.GetPoint().GetIndex() - 1 <= -1
+                        ? -1
+                        : lastElementPizza.GetPoint().GetIndex() - 1;
+                    InputManager.instance.TriggerFollowePizzasPlacement(targetPointIndex,
+                        lastElementPizza.GetPoint().GetColumn());
+                }
+                else
+                {
+                    InputManager.instance.TriggerFollowePizzasPlacement(lastElementPizza.GetPoint().GetIndex(),
+                        lastElementPizza.GetPoint().GetColumn());
+                }
+            }
+        }
+
+        if (iterateCount == 0) // means no matching happened, adding directly one pizza
+        {
+            IEnumerator Routine()
+            {
+                if (lastElementPizza.isLeaderPizza)
+                {
+                    InputManager.instance.TriggerFollowePizzasPlacement(lastElementPizza.GetPoint().GetIndex(),
+                        lastElementPizza.GetPoint().GetColumn());
+                }
+                yield return null;
                 AddOnePizza();
             }
+
+            StartCoroutine(Routine());
         }
     }
 }
