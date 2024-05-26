@@ -52,9 +52,18 @@ public class LotHolder : MonoSingleton<LotHolder>
             for (int i = 0; i < matchablePizzas.Count; i++)
             {
                 if (iterate == 0) break;
-                
+
                 matchablePizzas[i].DisapearFromLot();
+                pizzas.Remove(matchablePizzas[i]);
                 iterate--;
+            }
+        }
+        else
+        {
+            if (pizzas.Count == Lots.Count)
+            {
+                GameManager.instance.EndGame(false);
+                Debug.LogError("No more available lot, LOT is FULL");
             }
         }
     }

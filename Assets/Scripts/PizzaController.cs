@@ -101,17 +101,24 @@ public class PizzaController : MonoBehaviour
     }
 
 // ReSharper disable Unity.PerformanceAnalysis
-    public void GetPlaced(PlacementPoint newPoint, bool isFollowerPizza = false)
+    public void GetPlaced(PlacementPoint newPoint, bool isFollowerPizza = false, bool isLastFollower = false,
+        PizzaController leaderPizza = null)
     {
         isPicked = false;
         if (currentPoint is not null)
         {
             currentPoint.SetFree();
         }
-        // When placed on a new column
 
+        // When placed on a new column
         if (!isLeaderPizza || isFollowerPizza)
+        {
             SetPrevPickableStatus();
+
+            if (isLastFollower)
+                if (leaderPizza != null)
+                    leaderPizza.SetLeader(assignLeader: false);
+        }
 
         currentPoint = newPoint;
         currentPoint.SetOccupied(this);
@@ -167,30 +174,35 @@ public class PizzaController : MonoBehaviour
         pizzaData = data;
     }
 
+    public void SetPickableStatus(bool assignAsPickable)
+    {
+        canPickable = assignAsPickable;
+    }
+
     private void SetPickableStatus()
     {
-        IEnumerator CheckingRoutine()
-        {
-            yield return null;
-
-            ColumnController column = currentPoint.GetColumn();
-            PlacementPoint lastOccupiedPoint = column.GetLastOccupiedPoint();
-            PlacementPoint firstPoint = column.GetPoints()[0];
-
-            if (currentPoint == firstPoint || currentPoint == lastOccupiedPoint)
-            {
-                canPickable = true;
-            }
-            else
-            {
-                canPickable = false;
-            }
-        }
-
-        if (currentPoint is not null)
-            StartCoroutine(CheckingRoutine());
-        else
-            canPickable = false;
+        // IEnumerator CheckingRoutine()
+        // {
+        //     yield return null;
+        //
+        //     ColumnController column = currentPoint.GetColumn();
+        //     PlacementPoint lastOccupiedPoint = column.GetLastOccupiedPoint();
+        //     PlacementPoint firstPoint = column.GetPoints()[0];
+        //
+        //     if (currentPoint == firstPoint || currentPoint == lastOccupiedPoint)
+        //     {
+        //         canPickable = true;
+        //     }
+        //     else
+        //     {
+        //         canPickable = false;
+        //     }
+        // }
+        //
+        // if (currentPoint is not null)
+        //     StartCoroutine(CheckingRoutine());
+        // else
+        //     canPickable = false;
     }
 
     public void SetPrevPickableStatus()
@@ -202,9 +214,9 @@ public class PizzaController : MonoBehaviour
             prevPizza.canPickable = true;
     }
 
-    public void SetLeader()
+    public void SetLeader(bool assignLeader = true)
     {
-        isLeaderPizza = true;
+        isLeaderPizza = assignLeader;
     }
 
     public void SetPoint(PlacementPoint newPoint, bool checkForThePickableStatus = false, bool setFreePrevPoint = true)
@@ -212,9 +224,14 @@ public class PizzaController : MonoBehaviour
         if (setFreePrevPoint)
             currentPoint.SetFree();
 
+        currentPoint.GetColumn().UpdatePizzasPickableStatus();
         currentPoint = newPoint;
+
         if (checkForThePickableStatus)
+        {
             SetPickableStatus();
+            if (currentPoint != null) currentPoint.GetColumn().UpdatePizzasPickableStatus();
+        }
     }
 
     #endregion
@@ -232,6 +249,7 @@ public class PizzaController : MonoBehaviour
         int nextPointIndex = currentPoint.GetIndex() + 1;
         if (nextPointIndex == parentColumn.GetPoints().Count)
         {
+            GameManager.instance.EndGame(false, 1f);
             Debug.LogError("No more available point, column is FULL");
         }
         else
@@ -255,7 +273,7 @@ public class PizzaController : MonoBehaviour
         _placementTween = transform.DOMove(pointPos, .25f).OnComplete(() =>
         {
             _placementTween = null;
-            //isLeaderPizza = false;
+            //   isLeaderPizza = false;
             callback?.Invoke();
         });
         _placementTween.Play();
@@ -263,6 +281,8 @@ public class PizzaController : MonoBehaviour
 
     public void IncrementLevelAndSetMesh()
     {
+        if (!GameManager.instance.isLevelActive) return;
+
         pizzaData.level++;
         for (int i = 0; i < selectedMesh.childCount; i++)
         {
@@ -277,6 +297,7 @@ public class PizzaController : MonoBehaviour
                 GoForUpperLots();
             else
             {
+                GameManager.instance.EndGame(false);
                 Debug.LogWarning("No more available placement point, FAILED");
                 transform.DOScale(Vector3.zero, .5f).OnComplete(() => { gameObject.SetActive(false); });
             }
@@ -300,7 +321,13 @@ public class PizzaController : MonoBehaviour
     public void Disappear()
     {
         if (isLeaderPizza)
-            InputManager.instance.TriggerFollowePizzasPlacement(currentPoint.GetIndex() - 1, currentPoint.GetColumn());
+        {
+            int indexInterval = pizzaData.level == 2 ? 2 : 1;
+            int targetPointIndex = currentPoint.GetIndex() - indexInterval;
+            InputManager.instance.TriggerFollowePizzasPlacement(targetPointIndex, currentPoint.GetColumn());
+            if(pizzaData.level == 2) currentPoint.GetColumn().CheckInnerSort(this);
+            Debug.LogWarning("WORKED");
+        }
 
         _blockMovingNext = true;
 
@@ -370,7 +397,7 @@ public class PizzaController : MonoBehaviour
     #endregion
 }
 
-[System.Serializable]
+[Serializable]
 public class PizzaData
 {
     public PizzaType pizzaType;

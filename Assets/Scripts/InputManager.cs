@@ -25,6 +25,7 @@ public class InputManager : MonoSingleton<InputManager>
 
     void Update()
     {
+        if (!GameManager.instance.isLevelActive) return;
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
@@ -103,6 +104,9 @@ public class InputManager : MonoSingleton<InputManager>
     {
         int offsetCounter = 0;
         Vector3 lastFailPos = Vector3.zero;
+        PizzaController leaderPizza = null;
+        if (leaderPointIndex >= 0 && newParentColumn.GetPoints()[leaderPointIndex].GetPizza() is not null)
+            leaderPizza = newParentColumn.GetPoints()[leaderPointIndex].GetPizza();
 
         for (var i = 1; i < _allPizzasOnColumn.Count; i++)
         {
@@ -113,7 +117,7 @@ public class InputManager : MonoSingleton<InputManager>
             {
                 int newPointIndex = leaderPointIndex + i;
                 PlacementPoint newPointToPlace = newParentColumn.GetPoints()[newPointIndex];
-                followerPizza.GetPlaced(newPointToPlace, true);
+                followerPizza.GetPlaced(newPointToPlace, true, i == _allPizzasOnColumn.Count - 1, leaderPizza);
             }
             else
             {
@@ -124,6 +128,7 @@ public class InputManager : MonoSingleton<InputManager>
 
                 followerPizza.OnFail(lastFailPos);
                 Debug.LogWarning("No more available placement point, FAILED");
+                GameManager.instance.EndGame(false);
             }
         }
 

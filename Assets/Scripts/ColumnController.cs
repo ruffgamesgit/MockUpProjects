@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -21,6 +22,7 @@ public class ColumnController : MonoBehaviour
         }
 
         InitialColumnFill();
+        UpdatePizzasPickableStatus();
     }
 
     private void InitialColumnFill()
@@ -90,7 +92,6 @@ public class ColumnController : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("Total pizza count: " + counter);
         while (randomData.pizzaType == firstData.pizzaType)
         {
             randomData = DataExtensions.GetRandomPizzaData(2);
@@ -113,6 +114,7 @@ public class ColumnController : MonoBehaviour
         bool matched = false;
         PlacementPoint lastOccupiedPoint =
             lastPlacedPizza == null ? GetLastOccupiedPoint() : lastPlacedPizza.GetPoint();
+        //if (lastOccupiedPoint is null && !isLeaderPizzaInvokesAgain) return; // the column is empty
         int lastOccupiedIndex = lastOccupiedPoint.GetIndex();
 
         PizzaController previousElementPizza = null;
@@ -139,8 +141,8 @@ public class ColumnController : MonoBehaviour
         {
             if (iterateCount != 0) // matching happened along the method 
             {
-                if(!lastElementPizza.isLeaderPizza) return;
-                
+                if (!lastElementPizza.isLeaderPizza) return;
+
                 if (lastElementPizza.GetPizzaData().level == 3)
                 {
                     int targetPointIndex = lastElementPizza.GetPoint().GetIndex() - 1 <= -1
@@ -148,11 +150,14 @@ public class ColumnController : MonoBehaviour
                         : lastElementPizza.GetPoint().GetIndex() - 1;
                     InputManager.instance.TriggerFollowePizzasPlacement(targetPointIndex,
                         lastElementPizza.GetPoint().GetColumn());
+
+                    Debug.LogWarning("First: " + targetPointIndex);
                 }
                 else
                 {
                     InputManager.instance.TriggerFollowePizzasPlacement(lastElementPizza.GetPoint().GetIndex(),
                         lastElementPizza.GetPoint().GetColumn());
+                    Debug.LogWarning("NOS");
                 }
             }
         }
@@ -165,12 +170,34 @@ public class ColumnController : MonoBehaviour
                 {
                     InputManager.instance.TriggerFollowePizzasPlacement(lastElementPizza.GetPoint().GetIndex(),
                         lastElementPizza.GetPoint().GetColumn());
+                    Debug.LogWarning("LEADER INDEX: " + lastElementPizza.GetPoint().GetIndex());
+                    yield return null;
                 }
-                yield return null;
+
                 AddOnePizza();
             }
 
             StartCoroutine(Routine());
         }
+    }
+
+    public async void UpdatePizzasPickableStatus()
+    {
+        await UniTask.Delay(250);
+        if (GetPoints().Count == 0) return;
+        for (int i = 0; i < placementPoints.Count; i++)
+        {
+            if (placementPoints[i].GetPizza() != null)
+                placementPoints[i].GetPizza().SetPickableStatus(assignAsPickable: false);
+        }
+
+        PlacementPoint firstPoint = GetPoints()[0];
+        PlacementPoint lastOccupiedPoint = GetLastOccupiedPoint();
+
+        if (firstPoint.GetPizza() != null) firstPoint.GetPizza().SetPickableStatus(assignAsPickable: true);
+        if (lastOccupiedPoint != null && lastOccupiedPoint.GetPizza() != null)
+            lastOccupiedPoint.GetPizza().SetPickableStatus(assignAsPickable: true);
+
+        Debug.LogWarning("UPDATED PICKABLE STATUS");
     }
 }
