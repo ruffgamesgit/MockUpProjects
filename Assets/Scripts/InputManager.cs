@@ -42,6 +42,7 @@ public class InputManager : MonoSingleton<InputManager>
                     selectedObject = pizza.gameObject;
                     selectedPizza = pizza;
 
+
                     if (selectedPizza.CanBeLeaderPizza())
                     {
                         _allPizzasOnColumn.AddRange(
@@ -50,6 +51,7 @@ public class InputManager : MonoSingleton<InputManager>
                     }
 
                     pizza.GetPicked();
+                    _highlightedColumn = pizza.GetPoint().GetColumn();
 
                     blockPicking = true;
                     isDragging = true;
@@ -69,6 +71,7 @@ public class InputManager : MonoSingleton<InputManager>
         }
     }
 
+    private ColumnController _highlightedColumn;
 
     private void DragSelectedObject()
     {
@@ -81,12 +84,28 @@ public class InputManager : MonoSingleton<InputManager>
 
         selectedObject.transform.position = worldPos;
 
+        ColumnController newColumn = selectedPizza.GetColumnBelow();
+        if (_highlightedColumn != newColumn)
+        {
+            if (newColumn)
+            {
+                _highlightedColumn.SetHighlightStatus(false);
+                _highlightedColumn = newColumn;
+                _highlightedColumn.SetHighlightStatus(true);
+            }
+            else
+            {
+                _highlightedColumn.SetHighlightStatus(false);
+            }
+        }
+
+
         if (_allPizzasOnColumn.Count <= 0) return;
 
-        MoveOtherPizzas(worldPos);
+        MoveFollowerPizzas(worldPos);
     }
 
-    private void MoveOtherPizzas(Vector3 worldPos)
+    private void MoveFollowerPizzas(Vector3 worldPos)
     {
         for (var i = 1; i < _allPizzasOnColumn.Count; i++)
         {
@@ -98,10 +117,12 @@ public class InputManager : MonoSingleton<InputManager>
             followerPizza.FollowTheLeaderPizza(pos, i);
         }
     }
-
-
+    
+    // ReSharper disable Unity.PerformanceAnalysis
     public void TriggerFollowePizzasPlacement(int leaderPointIndex, ColumnController newParentColumn)
     {
+        if (_allPizzasOnColumn.Count == 0) return;
+
         int offsetCounter = 0;
         Vector3 lastFailPos = Vector3.zero;
         PizzaController leaderPizza = null;
@@ -132,6 +153,7 @@ public class InputManager : MonoSingleton<InputManager>
             }
         }
 
+        _allPizzasOnColumn[^1].GetPoint().GetColumn().OnEveryMovementEnd();
         _allPizzasOnColumn.Clear();
     }
 

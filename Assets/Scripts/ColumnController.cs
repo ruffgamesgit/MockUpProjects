@@ -12,17 +12,24 @@ public class ColumnController : MonoBehaviour
     [Header("References")] [SerializeField]
     PizzaController pizzaPrefab;
 
-    [Header("Debug")] [SerializeField] private List<PlacementPoint> placementPoints;
+    [Header("Debug")] [SerializeField] private GameObject highlighterObj;
+    [SerializeField] private List<PlacementPoint> placementPoints;
 
     private void Awake()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.childCount - 1; i++)
         {
             placementPoints.Add(transform.GetChild(i).GetComponent<PlacementPoint>());
         }
 
         InitialColumnFill();
         UpdatePizzasPickableStatus();
+    }
+
+
+    public void SetHighlightStatus(bool activate)
+    {
+        highlighterObj.SetActive(activate);
     }
 
     private void InitialColumnFill()
@@ -50,7 +57,6 @@ public class ColumnController : MonoBehaviour
 
 
             clonePizza.Initialize(point, randomData);
-            clonePizza.name = "Pizza_" + randomData.pizzaType + "-Level: " + randomData.level;
             clonePizza.transform.DOScale(Vector3.one, .5f).From(Vector3.zero).SetEase(Ease.InBounce);
             instantiatedData.Add(clonePizza.GetPizzaData());
         }
@@ -104,12 +110,14 @@ public class ColumnController : MonoBehaviour
         clonePizza.Initialize(firstPoint, randomData);
         clonePizza.name = "Pizza_" + randomData.pizzaType + "-Level: " + randomData.level;
         clonePizza.transform.DOScale(Vector3.one, .5f).From(Vector3.zero).SetEase(Ease.InBounce);
+
+        OnEveryMovementEnd();
     }
 
     [HideInInspector] public int iterateCount;
 
     // ReSharper disable Unity.PerformanceAnalysis
-    public void CheckInnerSort(PizzaController lastPlacedPizza = null, bool isLeaderPizzaInvokesAgain = false)
+    public void CheckInnerSort(PizzaController lastPlacedPizza = null, bool blockAddingPizza = false)
     {
         bool matched = false;
         PlacementPoint lastOccupiedPoint =
@@ -170,17 +178,18 @@ public class ColumnController : MonoBehaviour
                 {
                     InputManager.instance.TriggerFollowePizzasPlacement(lastElementPizza.GetPoint().GetIndex(),
                         lastElementPizza.GetPoint().GetColumn());
-                    Debug.LogWarning("LEADER INDEX: " + lastElementPizza.GetPoint().GetIndex());
                     yield return null;
                 }
 
-                AddOnePizza();
+                if (!blockAddingPizza)
+                    AddOnePizza();
             }
 
             StartCoroutine(Routine());
         }
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public async void UpdatePizzasPickableStatus()
     {
         await UniTask.Delay(250);
@@ -199,5 +208,11 @@ public class ColumnController : MonoBehaviour
             lastOccupiedPoint.GetPizza().SetPickableStatus(assignAsPickable: true);
 
         Debug.LogWarning("UPDATED PICKABLE STATUS");
+    }
+
+    // ReSharper disable Unity.PerformanceAnalysis
+    public void OnEveryMovementEnd()
+    {
+        UpdatePizzasPickableStatus();
     }
 }

@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d3ef92b9278c64a9d5c3b368190ecb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOccupied: 0
   currentPizza: {fileID: 0}
+  isOccupied: 0
 --- !u!1 &5977873633202992028
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,7 +64,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8294173766657582236
 Transform:
   m_ObjectHideFlags: 0
