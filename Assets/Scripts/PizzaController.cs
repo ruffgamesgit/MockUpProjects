@@ -35,6 +35,7 @@ public class PizzaController : MonoBehaviour
     private Lot _lot;
     private const int MaxPizzaLevel = 3;
     private Tween _placementTween;
+    private ParticleHandler _particleHandler;
 
     public void Initialize(PlacementPoint point, PizzaData data)
     {
@@ -128,8 +129,7 @@ public class PizzaController : MonoBehaviour
             newPoint.GetColumn().iterateCount = 0;
             if (!isFollowerPizza)
                 newPoint.GetColumn().CheckInnerSort(lastPlacedPizza: this);
-
-            currentPoint.GetColumn().OnEveryMovementEnd();
+            newPoint.GetColumn().OnEveryMovementEnd();
         }
 
         GoPointToPlace(newPoint.GetPos(), Callback);
@@ -143,10 +143,12 @@ public class PizzaController : MonoBehaviour
     {
         gameObject.name = "Pizza_" + pizzaData.pizzaType + "-Level: " + pizzaData.level;
     }
+
     public void SetLeader(bool assignLeader = true)
     {
         isLeaderPizza = assignLeader;
     }
+
     public void SetMesh(PizzaData data)
     {
         Transform meshParent = transform.GetChild(0);
@@ -177,16 +179,20 @@ public class PizzaController : MonoBehaviour
 
         selectedMesh.gameObject.SetActive(true);
         selectedMesh.GetChild(data.level).gameObject.SetActive(true);
+        _particleHandler = selectedMesh?.GetComponent<ParticleHandler>();
     }
+
     void SetPizzaData(PizzaData data)
     {
         pizzaData = data;
         SetName();
     }
+
     public void SetPickableStatus(bool assignAsPickable)
     {
         canPickable = assignAsPickable;
     }
+
     public void SetPreviousPickableStatus()
     {
         int prevIndex = currentPoint.GetIndex() - 1;
@@ -195,13 +201,13 @@ public class PizzaController : MonoBehaviour
         if (prevPizza is not null)
             prevPizza.canPickable = true;
     }
-    
+
     public void SetPoint(PlacementPoint newPoint, bool checkForThePickableStatus = false, bool setFreePrevPoint = true)
     {
         if (setFreePrevPoint)
-            currentPoint.SetFree();
+            currentPoint?.SetFree();
 
-        currentPoint.GetColumn().UpdatePizzasPickableStatus();
+        currentPoint?.GetColumn().UpdatePizzasPickableStatus();
         currentPoint = newPoint;
 
         if (checkForThePickableStatus)
@@ -257,6 +263,7 @@ public class PizzaController : MonoBehaviour
     public void IncrementLevelAndSetMesh()
     {
         if (!GameManager.instance.isLevelActive) return;
+        _particleHandler.PlayExplosion();
 
         pizzaData.level++;
         for (int i = 0; i < selectedMesh.childCount; i++)
@@ -270,7 +277,15 @@ public class PizzaController : MonoBehaviour
         if (pizzaData.level == MaxPizzaLevel)
         {
             if (LotHolder.instance.HasAvailableLot())
+            {
+                int targetIndex = currentPoint.GetIndex() - 1 < -1 ? -1 : currentPoint.GetIndex() - 1;
+                InputManager.instance.TriggerFollowePizzasPlacement(targetIndex,
+                    currentPoint.GetColumn());
+                PizzaController previousPizza = currentPoint.GetColumn().GetPoints()[targetIndex + 1].GetPizza();
+                currentPoint.GetColumn().CheckInnerSort(previousPizza, true);
+                
                 GoForUpperLots();
+            }
             else
             {
                 GameManager.instance.EndGame(false);
@@ -280,8 +295,8 @@ public class PizzaController : MonoBehaviour
         }
         else
         {
-            currentPoint.GetColumn().CheckInnerSort(this, true);
             InputManager.instance.TriggerFollowePizzasPlacement(currentPoint.GetIndex(), currentPoint.GetColumn());
+            currentPoint.GetColumn().CheckInnerSort(this, true);
         }
     }
 
@@ -306,13 +321,13 @@ public class PizzaController : MonoBehaviour
             int indexInterval = pizzaData.level == 2 ? 2 : 1;
             int targetPointIndex = currentPoint.GetIndex() - indexInterval;
             InputManager.instance.TriggerFollowePizzasPlacement(targetPointIndex, currentPoint.GetColumn());
+            PizzaController nextPizza = currentPoint.GetColumn().GetPoints()[currentPoint.GetIndex() + 1].GetPizza();
+            currentPoint.GetColumn().CheckInnerSort(nextPizza, true);
         }
 
-        currentPoint.GetColumn().CheckInnerSort(this, true);
         _blockMovingNext = true;
 
         ResetParams();
-
         _placementTween?.Kill();
         transform.DOScale(Vector3.zero, .5f).OnComplete(() => { Destroy(gameObject); });
     }

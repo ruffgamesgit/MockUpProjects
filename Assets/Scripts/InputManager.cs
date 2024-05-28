@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class InputManager : MonoSingleton<InputManager>
@@ -117,7 +118,7 @@ public class InputManager : MonoSingleton<InputManager>
             followerPizza.FollowTheLeaderPizza(pos, i);
         }
     }
-    
+
     // ReSharper disable Unity.PerformanceAnalysis
     public void TriggerFollowePizzasPlacement(int leaderPointIndex, ColumnController newParentColumn)
     {
@@ -129,7 +130,7 @@ public class InputManager : MonoSingleton<InputManager>
         if (leaderPointIndex >= 0 && newParentColumn.GetPoints()[leaderPointIndex].GetPizza() is not null)
             leaderPizza = newParentColumn.GetPoints()[leaderPointIndex].GetPizza();
 
-        for (var i = 1; i < _allPizzasOnColumn.Count; i++)
+        for (int i = 1; i < _allPizzasOnColumn.Count; i++)
         {
             PizzaController followerPizza = _allPizzasOnColumn[i];
             if (followerPizza is null) continue;
@@ -155,6 +156,8 @@ public class InputManager : MonoSingleton<InputManager>
 
         _allPizzasOnColumn[^1].GetPoint().GetColumn().OnEveryMovementEnd();
         _allPizzasOnColumn.Clear();
+
+       
     }
 
     public void OnPlaceFollowersTheSameColumn()
