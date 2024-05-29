@@ -114,6 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   desiredPizzaCount: 5
+  PizzaTypeVarietyCount: 3
   pizzaPrefab: {fileID: 7176623674577062780, guid: edae0e9806609d841bba29e36b3c5aed,
     type: 3}
   highlighterObj: {fileID: 2688412717800692744}

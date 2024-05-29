@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class ColumnController : MonoBehaviour
 {
     [Header("Config")] [SerializeField] private int desiredPizzaCount;
-
+    public int PizzaTypeVarietyCount;
     [Header("References")] [SerializeField]
     PizzaController pizzaPrefab;
 
@@ -44,14 +44,14 @@ public class ColumnController : MonoBehaviour
                 Instantiate(pizzaPrefab, point.GetPos(), pizzaPrefab.transform.rotation);
 
             point.SetOccupied(clonePizza);
-            PizzaData randomData = DataExtensions.GetRandomPizzaData(2);
+            PizzaData randomData = DataExtensions.GetRandomPizzaData(2, PizzaTypeVarietyCount);
 
             if (instantiatedData.Count >= 1)
             {
                 PizzaData lastData = instantiatedData[^1];
                 while (randomData.pizzaType == lastData.pizzaType)
                 {
-                    randomData = DataExtensions.GetRandomPizzaData(2);
+                    randomData = DataExtensions.GetRandomPizzaData(2, PizzaTypeVarietyCount);
                 }
             }
 
@@ -86,7 +86,7 @@ public class ColumnController : MonoBehaviour
     {
         PlacementPoint firstPoint = placementPoints[0];
         PizzaData firstData = placementPoints[0].GetPizza().GetPizzaData();
-        PizzaData randomData = DataExtensions.GetRandomPizzaData(2);
+        PizzaData randomData = DataExtensions.GetRandomPizzaData(2, PizzaTypeVarietyCount);
 
 
         for (int i = 0; i < placementPoints.Count; i++)
@@ -99,7 +99,7 @@ public class ColumnController : MonoBehaviour
 
         while (randomData.pizzaType == firstData.pizzaType)
         {
-            randomData = DataExtensions.GetRandomPizzaData(2);
+            randomData = DataExtensions.GetRandomPizzaData(2, PizzaTypeVarietyCount);
         }
 
         PizzaController clonePizza =

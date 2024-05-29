@@ -1,23 +1,24 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CanvasManager : MonoSingleton<CanvasManager>
 {
-    [Header("References")] public Button RestartButton;
-    public Button NextButton;
+    [Header("References")] 
     [SerializeField] CanvasGroup failPanel;
-    [SerializeField] CanvasGroup winPanel;
+    [FormerlySerializedAs("winPanel")] [SerializeField] CanvasGroup defaultPanel;
 
     void Start()
     {
+        defaultPanel.DOFade(1, .5f);
         GameManager.instance.LevelFailedEvent += OnLevelFailed;
         GameManager.instance.LevelSucceededEvent += OnLevelSucceededEvent;
     }
 
     private void OnLevelSucceededEvent()
     {
-        winPanel.DOFade(1, .5f);
+        defaultPanel.DOFade(1, .5f);
     }
 
     private void OnLevelFailed()
@@ -29,11 +30,13 @@ public class CanvasManager : MonoSingleton<CanvasManager>
 
     public void OnRestart()
     {
+        Debug.Log("restart");
         GameManager.instance.OnTapRestart();
     }
 
     public void OnNext()
     {
+        Debug.Log("Next");
         GameManager.instance.OnTapNext();
     }
 

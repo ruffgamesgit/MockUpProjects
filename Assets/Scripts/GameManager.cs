@@ -10,6 +10,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     [Header("Debug")] public bool isLevelActive;
 
+
     protected override void Awake()
     {
         base.Awake();
@@ -32,16 +33,13 @@ public class GameManager : MonoSingleton<GameManager>
 
         #region Cumulative Next Level
 
-        /*
-                int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-                int nextScene = currentSceneIndex + 1;
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextScene = currentSceneIndex + 1;
 
-                if (nextScene >= totalSceneCount) nextScene = 0;
-                SceneManager.LoadScene(nextScene);*/
+        if (nextScene > SceneManager.sceneCount) nextScene = 0;
+        SceneManager.LoadScene(nextScene);
 
         #endregion
-
-        OnTapRestart();
     }
 
     public void EndGame(bool success, float delayAsSeconds = 0)

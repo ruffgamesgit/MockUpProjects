@@ -3,10 +3,10 @@ using UnityEngine;
 
 public static class DataExtensions
 {
-    public static PizzaData GetRandomPizzaData(int maxLevel)
+    public static PizzaData GetRandomPizzaData(int maxLevel, int typeVariety)
     {
         var values = System.Enum.GetValues(typeof(PizzaType));
-        PizzaType randomType = (PizzaType)values.GetValue(Random.Range(0, values.Length));
+        PizzaType randomType = (PizzaType)values.GetValue(Random.Range(0, typeVariety));
 
         PizzaData randomData = new PizzaData
         {
