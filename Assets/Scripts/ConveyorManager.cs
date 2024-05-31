@@ -7,6 +7,8 @@ using ColorUtility = DefaultNamespace.ColorUtility;
 
 public class ConveyorManager : MonoSingleton<ConveyorManager>
 {
+    public event System.Action<ConveyorBoxController> NewConveyorBoxCameEvent;
+
     [Header("References")] [SerializeField]
     private ConveyorBoxController conveyorBoxPrefab;
 
@@ -47,7 +49,6 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
         ConveyorBoxController cloneBoardBox = Instantiate(conveyorBoxPrefab, pos, Quaternion.identity, transform);
         spawnedBoxes.Add(cloneBoardBox);
         cloneBoardBox.Initialize(randomColor);
-
         MoveBoxes();
     }
 
@@ -57,7 +58,14 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
         {
             Transform box = spawnedBoxes[i].transform;
             Vector3 pos = new(transform.position.x + (i * -4), transform.position.y, transform.position.z);
-            box.DOMove(pos, .5f).SetEase(Ease.OutQuad);
+            int localIndex = i;
+            box.DOMove(pos, .25f).SetEase(Ease.OutQuad).OnComplete(() =>
+            {
+                if (localIndex == spawnedBoxes.Count - 1)
+                {
+                    NewConveyorBoxCameEvent?.Invoke(GetCurrentBox());
+                }
+            });
         }
     }
 }

@@ -1,40 +1,42 @@
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using ColorUtility = DefaultNamespace.ColorUtility;
 
 public class BoardBoxController : MonoBehaviour
 {
+    [Header("Config")] public Vector2 coordinates;
+
     [Header("References")] [SerializeField]
     private BottleController bottlePrefab;
 
     [SerializeField] private List<PlacementPoint> placementPoints = new List<PlacementPoint>();
 
-    [Header("Debug")] [SerializeField] private SingleLayerController _parentLayer;
-    [SerializeField] private GameObject _selectedMesh;
+    [Header("Debug")] [SerializeField] private GameObject _selectedMesh;
+    [SerializeField] private List<BoardBoxController> upperBoxes;
+    public bool isDisappearing;
     private const string hiddenLayer = "Hidden";
     private const string pickableLayer = "Default";
 
-    private void Start()
-    {
-        _parentLayer = transform.parent.GetComponent<SingleLayerController>();
+    IEnumerator Start()
+    { 
         for (int i = 0; i < placementPoints.Count; i++)
         {
             ColorEnum randomColor = ColorUtility.GetRandomColorEnum();
             PlacementPoint point = GetAvailablePoint();
             BottleController cloneBottle = Instantiate(bottlePrefab, point.transform.position, Quaternion.identity);
             cloneBottle.Initialize(randomColor, point, this);
-            point.SetOccupied();
+            point.SetOccupied(cloneBottle);
         }
 
-        #region Init Layer Assign
+        yield return null;
 
+        upperBoxes = transform.GetComponentInChildren<BoxCollisionHandler>().GetUpperBoxes();
         SetLayerMask();
-        LayerManager.instance.LayerDisappearedEvent += SetLayerMask;
-
-        #endregion
+        LayerManager.instance.LayerDisappearedEvent += UpdateLayerMask;
     }
-
 
     public PlacementPoint GetAvailablePoint()
     {
@@ -47,28 +49,43 @@ public class BoardBoxController : MonoBehaviour
         return null;
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public bool IsPickable()
     {
-        return _parentLayer.IsLayerPickable();
+        int validUpperBoxCount = 0;
+        for (int i = 0; i < upperBoxes.Count; i++)
+        {
+            if (upperBoxes[i] is null) continue;
+            if (!upperBoxes[i].isDisappearing)
+                validUpperBoxCount++;
+        }
+        return validUpperBoxCount == 0;
     }
 
-    public void SetLayerMask()
+    private void UpdateLayerMask()
     {
-        string _layerString = hiddenLayer;
+        SetLayerMask();
+    }
 
-        if (_parentLayer.IsLayerPickable())
-            _layerString = pickableLayer;
+    private void SetLayerMask()
+    {
+        string layerString = hiddenLayer;
 
+        if (IsPickable())
+            layerString = pickableLayer;
 
-        _selectedMesh.layer = LayerMask.NameToLayer(_layerString);
+        _selectedMesh.layer = LayerMask.NameToLayer(layerString);
 
         for (int i = 0; i < placementPoints.Count; i++)
         {
             BottleController bottle = placementPoints[i].transform.GetComponentInChildren<BottleController>();
             if (bottle)
-                bottle.SetMeshLayer(_layerString);
+            {
+                bottle.SetMeshLayer(layerString);
+            }
         }
     }
+
     public void OnBottleLeft()
     {
         bool isEmpty = true;
@@ -82,10 +99,13 @@ public class BoardBoxController : MonoBehaviour
             Disappear();
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     void Disappear()
     {
-        _parentLayer.OnBoxDisappear();
-        LayerManager.instance.LayerDisappearedEvent -= SetLayerMask;
-        transform.DOScale(Vector3.zero, .5f).OnComplete((() => Destroy(gameObject)));
+        isDisappearing = true;
+        GetComponent<Collider>().enabled = false;
+        LayerManager.instance.TriggerLayerDisappearEvent();
+        LayerManager.instance.LayerDisappearedEvent -= UpdateLayerMask;
+        transform.DOScale(Vector3.zero, .5f).SetEase(Ease.OutBounce).OnComplete((() => Destroy(gameObject)));
     }
 }

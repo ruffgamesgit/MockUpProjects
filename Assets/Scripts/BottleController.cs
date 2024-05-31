@@ -10,9 +10,9 @@ public class BottleController : MonoBehaviour
 
     [Header("Debug")] [SerializeField] private ColorEnum colorEnum;
     public bool isPicked;
+    [SerializeField] private PlacementPoint _currentPoint;
+    [SerializeField] private GameObject _selectedMesh;
     private BoardBoxController _initialBoardBoardBox;
-    private PlacementPoint _initPoint;
-    private GameObject _selectedMesh;
 
     public void Initialize(ColorEnum _colorEnum, PlacementPoint placementPoint, BoardBoxController initialBoardBox)
     {
@@ -20,7 +20,8 @@ public class BottleController : MonoBehaviour
         colorEnum = _colorEnum;
         gameObject.name = "Bottle_" + colorEnum;
         _initialBoardBoardBox = initialBoardBox;
-        _initPoint = placementPoint;
+        _currentPoint = placementPoint;
+        _currentPoint.SetOccupied(this);
         SetMesh();
     }
 
@@ -55,6 +56,7 @@ public class BottleController : MonoBehaviour
         }
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public void GetPicked()
     {
         // go for the conveyor's current box
@@ -64,19 +66,29 @@ public class BottleController : MonoBehaviour
         {
             if (currentConveyorBox.GetAvailablePoint())
             {
-                _initPoint.SetFree();
                 PlacementPoint point = currentConveyorBox.GetAvailablePoint();
-                transform.SetParent(point.transform);
-                point.SetOccupied();
-                currentConveyorBox.OnBottleArrived();
-                bottleLeftTheBox = true;
 
-                GoOtherBox(point.transform.position);
+                void TweenCallback()
+                {
+                    currentConveyorBox.OnBottleArrived();
+                }
+
+                PerformMoving(point, TweenCallback);
+                bottleLeftTheBox = true;
             }
         }
         else
         {
-            bottleLeftTheBox = true;
+            if (NeutralBox.instance.GetAvailablePoint() is not null)
+            {
+                PlacementPoint point = NeutralBox.instance.GetAvailablePoint();
+                PerformMoving(point);
+                bottleLeftTheBox = true;
+            }
+            else
+            {
+                Debug.LogWarning("No Placeable point left, FAIL");
+            }
         }
 
 
@@ -84,14 +96,27 @@ public class BottleController : MonoBehaviour
             _initialBoardBoardBox.OnBottleLeft();
     }
 
+    public void PerformMoving(PlacementPoint _point, TweenCallback callBack = null)
+    {
+        _currentPoint.SetFree();
+        transform.SetParent(_point.transform);
+        _point.SetOccupied(this);
+        _currentPoint = _point;
+
+        GoOtherBox(_point.transform.position, callBack);
+    }
+
     public ColorEnum GetColorEnum()
     {
         return colorEnum;
     }
 
-    void GoOtherBox(Vector3 targePos)
+    private void GoOtherBox(Vector3 targePos, TweenCallback callBack = null)
     {
-        transform.DOMove(targePos, .5f);
+        Sequence sq = DOTween.Sequence();
+        sq.Append(transform.DOJump(targePos, 10, 1, .5f).OnComplete(() => { callBack?.Invoke(); }));
+        sq.Join(transform.DOScale(transform.lossyScale * 2, .3f).SetLoops(2, LoopType.Yoyo));
+        sq.Play();
     }
 
     public void SetMeshLayer(string layerIndex)
@@ -99,8 +124,13 @@ public class BottleController : MonoBehaviour
         _selectedMesh.layer = LayerMask.NameToLayer(layerIndex);
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public bool IsPickable()
     {
-        return transform.parent.parent.GetComponent<BoardBoxController>().IsPickable();
+        bool pickable = false;
+        if (transform.parent.parent.GetComponent<BoardBoxController>() != null)
+            pickable = transform.parent.parent.GetComponent<BoardBoxController>().IsPickable();
+
+        return pickable;
     }
 }

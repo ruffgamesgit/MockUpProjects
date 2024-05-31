@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine; 
+using DG.Tweening;
+using UnityEngine;
+
 public class ConveyorBoxController : MonoBehaviour
 {
     [SerializeField] private ColorEnum colorEnum = ColorEnum.NONE;
@@ -11,6 +13,7 @@ public class ConveyorBoxController : MonoBehaviour
     public void Initialize(ColorEnum assignedColor = ColorEnum.NONE)
     {
         colorEnum = assignedColor;
+        SetMesh();
     }
 
     void SetMesh()
@@ -72,7 +75,9 @@ public class ConveyorBoxController : MonoBehaviour
         if (isFull)
         {
             ConveyorManager.instance.BringNewBox();
-            gameObject.SetActive(false);
+            Sequence sq = DOTween.Sequence();
+            sq.Append(transform.DOMoveX(transform.position.x + 7, .25f));
+            sq.Append(transform.DOScale(Vector3.zero, .25f).OnComplete(() => Destroy(gameObject, .1f)));
         }
     }
 }
