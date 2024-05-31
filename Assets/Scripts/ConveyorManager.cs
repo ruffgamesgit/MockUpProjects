@@ -12,21 +12,21 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
     [Header("References")] [SerializeField]
     private ConveyorBoxController conveyorBoxPrefab;
 
-    [FormerlySerializedAs("currentBox")] [Header("Debug")] [SerializeField]
+    [Header("Debug")] [SerializeField]
     private ConveyorBoxController currentBox;
 
     [SerializeField] private List<ConveyorBoxController> spawnedBoxes = new List<ConveyorBoxController>();
 
-    public ConveyorBoxController GetCurrentBox()
-    {
-        return spawnedBoxes[0];
-    }
 
     protected override void Awake()
     {
         base.Awake();
 
         SpawnBox();
+    }
+    public ConveyorBoxController GetCurrentBox()
+    {
+        return currentBox;
     }
 
     private void SpawnBox()
@@ -39,16 +39,22 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
             cloneBoardBox.Initialize(randomColor);
             spawnedBoxes.Add(cloneBoardBox);
         }
+
+        currentBox = spawnedBoxes[0];
     }
 
-    public void BringNewBox()
+    public void RemoveOldBringNew(ConveyorBoxController oldBox)
     {
+        if (spawnedBoxes.Count > 3) return;
+        // spawnedBoxes.Remove(oldBox);
         spawnedBoxes.RemoveAt(0);
         ColorEnum randomColor = ColorUtility.GetRandomColorEnum();
         Vector3 pos = new(transform.position.x + (-8), transform.position.y, transform.position.z);
         ConveyorBoxController cloneBoardBox = Instantiate(conveyorBoxPrefab, pos, Quaternion.identity, transform);
         spawnedBoxes.Add(cloneBoardBox);
         cloneBoardBox.Initialize(randomColor);
+
+        currentBox = spawnedBoxes[0];
         MoveBoxes();
     }
 

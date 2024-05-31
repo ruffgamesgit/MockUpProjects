@@ -66,14 +66,8 @@ public class BottleController : MonoBehaviour
         {
             if (currentConveyorBox.GetAvailablePoint())
             {
-                PlacementPoint point = currentConveyorBox.GetAvailablePoint();
-
-                void TweenCallback()
-                {
-                    currentConveyorBox.OnBottleArrived();
-                }
-
-                PerformMoving(point, TweenCallback);
+                PlacementPoint newPoint = currentConveyorBox.GetAvailablePoint();
+                PerformMoving(newPoint, currentConveyorBox);
                 bottleLeftTheBox = true;
             }
         }
@@ -81,8 +75,8 @@ public class BottleController : MonoBehaviour
         {
             if (NeutralBox.instance.GetAvailablePoint() is not null)
             {
-                PlacementPoint point = NeutralBox.instance.GetAvailablePoint();
-                PerformMoving(point);
+                PlacementPoint newPoint = NeutralBox.instance.GetAvailablePoint();
+                PerformMoving(newPoint);
                 bottleLeftTheBox = true;
             }
             else
@@ -96,14 +90,26 @@ public class BottleController : MonoBehaviour
             _initialBoardBoardBox.OnBottleLeft();
     }
 
-    public void PerformMoving(PlacementPoint _point, TweenCallback callBack = null)
+    public void PerformMoving(PlacementPoint newPoint, ConveyorBoxController conveyorBox = null)
     {
         _currentPoint.SetFree();
-        transform.SetParent(_point.transform);
-        _point.SetOccupied(this);
-        _currentPoint = _point;
+        _currentPoint = newPoint;
+        _currentPoint.SetOccupied(this);
+        transform.SetParent(_currentPoint.transform);
 
-        GoOtherBox(_point.transform.position, callBack);
+        Sequence sq = DOTween.Sequence();
+        sq.Append(transform.DOJump(newPoint.transform.position, 10, 1,
+            .5f)).OnComplete(() =>
+        {
+            if (conveyorBox)
+            {
+                if (conveyorBox.GetOccupiedPointCount() == 3)
+                    conveyorBox.OnBottleArrived();
+            }
+        });
+        sq.Join(transform.DOScale(transform.lossyScale * 2, .3f).SetLoops(2, LoopType.Yoyo));
+        sq.Play();
+        // GoOtherBox(newPoint.transform.position);
     }
 
     public ColorEnum GetColorEnum()
@@ -111,10 +117,10 @@ public class BottleController : MonoBehaviour
         return colorEnum;
     }
 
-    private void GoOtherBox(Vector3 targePos, TweenCallback callBack = null)
+    private void GoOtherBox(Vector3 targePos)
     {
         Sequence sq = DOTween.Sequence();
-        sq.Append(transform.DOJump(targePos, 10, 1, .5f).OnComplete(() => { callBack?.Invoke(); }));
+        sq.Append(transform.DOJump(targePos, 10, 1, .5f)); /*.OnComplete(() => { callBack?.Invoke(); }));*/
         sq.Join(transform.DOScale(transform.lossyScale * 2, .3f).SetLoops(2, LoopType.Yoyo));
         sq.Play();
     }

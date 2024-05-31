@@ -8,7 +8,7 @@ public class ConveyorBoxController : MonoBehaviour
 {
     [SerializeField] private ColorEnum colorEnum = ColorEnum.NONE;
     [SerializeField] private GameObject selectedMesh;
-    [SerializeField] private List<PlacementPoint> placementPoints = new List<PlacementPoint>();
+    [SerializeField] private List<PlacementPoint> placementPoints = new();
 
     public void Initialize(ColorEnum assignedColor = ColorEnum.NONE)
     {
@@ -74,10 +74,22 @@ public class ConveyorBoxController : MonoBehaviour
 
         if (isFull)
         {
-            ConveyorManager.instance.BringNewBox();
+            ConveyorManager.instance.RemoveOldBringNew(this);
             Sequence sq = DOTween.Sequence();
             sq.Append(transform.DOMoveX(transform.position.x + 7, .25f));
-            sq.Append(transform.DOScale(Vector3.zero, .25f).OnComplete(() => Destroy(gameObject, .1f)));
+            sq.Append(transform.DOScale(Vector3.zero, .25f).OnComplete(() => Destroy(gameObject, .5f)));
         }
+    }
+
+    public int GetOccupiedPointCount()
+    {
+        int counter = 0;
+        for (int i = 0; i < placementPoints.Count; i++)
+        {
+            if (placementPoints[i].isOccupied)
+                counter++;
+        }
+
+        return counter;
     }
 }

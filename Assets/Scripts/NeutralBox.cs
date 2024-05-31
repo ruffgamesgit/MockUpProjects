@@ -24,13 +24,7 @@ public class NeutralBox : MonoSingleton<NeutralBox>
                 if (conveyorBox.GetAvailablePoint() != null)
                 {
                     PlacementPoint conveyorBoxPoint = conveyorBox.GetAvailablePoint();
-
-                    void TweenCallback()
-                    {
-                        conveyorBox.OnBottleArrived();
-                    }
-
-                    bottle.PerformMoving(conveyorBoxPoint, TweenCallback);
+                    bottle.PerformMoving(conveyorBoxPoint, conveyorBox);
                 }
             }
         }
