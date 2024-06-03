@@ -16,7 +16,7 @@ public class InputManager : MonoSingleton<InputManager>
 
     void Update()
     {
-        //  if (!GameManager.instance.isLevelActive) return;
+        if (!GameManager.instance.isLevelActive) return;
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;

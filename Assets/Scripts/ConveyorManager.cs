@@ -67,7 +67,7 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
             Transform box = spawnedBoxes[i].transform;
             Vector3 pos = new(transform.position.x + (i * -4), transform.position.y, transform.position.z);
             int localIndex = i;
-            box.DOMove(pos, .25f).SetEase(Ease.OutQuad).OnComplete(() =>
+            box.DOMove(pos, .15f).SetEase(Ease.OutQuad).OnComplete(() =>
             {
                 if (localIndex == spawnedBoxes.Count - 1)
                 {

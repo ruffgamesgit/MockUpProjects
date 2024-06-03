@@ -17,12 +17,6 @@ public class BoxCollisionHandler : MonoBehaviour
 
     public List<BoardBoxController> GetUpperBoxes()
     {
-        // List<BoardBoxController> updatedList = new();
-        // for (int i = 0; i < upperBoxList.Count; i++)
-        // {
-        //     if(ReferenceEquals(upperBoxList[i], null))
-        //         updatedList.Add(upperBoxList[i]);
-        // }
         return upperBoxList;
     }
 }

@@ -32,6 +32,7 @@ public class NeutralBox : MonoSingleton<NeutralBox>
         if (hasMatch) return;
         
         Debug.LogWarning("No Placeable point left, FAIL");
+        GameManager.instance.EndGame(false);
     }
 
     private void OnNewConveyorBoxCameEvent(ConveyorBoxController conveyorBox)

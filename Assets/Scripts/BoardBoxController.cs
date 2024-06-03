@@ -21,7 +21,7 @@ public class BoardBoxController : MonoBehaviour
     private const string pickableLayer = "Default";
 
     IEnumerator Start()
-    { 
+    {
         for (int i = 0; i < placementPoints.Count; i++)
         {
             ColorEnum randomColor = ColorUtility.GetRandomColorEnum();
@@ -31,11 +31,11 @@ public class BoardBoxController : MonoBehaviour
             point.SetOccupied(cloneBottle);
         }
 
-        yield return null;
+        yield return new WaitForSeconds(0.125f);
 
         upperBoxes = transform.GetComponentInChildren<BoxCollisionHandler>().GetUpperBoxes();
         SetLayerMask();
-        LayerManager.instance.LayerDisappearedEvent += UpdateLayerMask;
+        LayerManager.instance.LayerDisappearedEvent += SetLayerMask;
     }
 
     public PlacementPoint GetAvailablePoint()
@@ -59,12 +59,8 @@ public class BoardBoxController : MonoBehaviour
             if (!upperBoxes[i].isDisappearing)
                 validUpperBoxCount++;
         }
-        return validUpperBoxCount == 0;
-    }
 
-    private void UpdateLayerMask()
-    {
-        SetLayerMask();
+        return validUpperBoxCount == 0;
     }
 
     private void SetLayerMask()
@@ -105,7 +101,7 @@ public class BoardBoxController : MonoBehaviour
         isDisappearing = true;
         GetComponent<Collider>().enabled = false;
         LayerManager.instance.TriggerLayerDisappearEvent();
-        LayerManager.instance.LayerDisappearedEvent -= UpdateLayerMask;
+        LayerManager.instance.LayerDisappearedEvent -= SetLayerMask;
         transform.DOScale(Vector3.zero, .5f).SetEase(Ease.OutBounce).OnComplete((() => Destroy(gameObject)));
     }
 }
