@@ -31,6 +31,7 @@ public class InputManager : MonoSingleton<InputManager>
                     if (!bottle.IsPickable()) return;
                     if (bottle.isPicked) return;
 
+                    Taptic.Medium();
                     selectedObject = bottle.gameObject;
                     bottle.GetPicked();
                     blockPicking = true;
