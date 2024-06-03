@@ -65,16 +65,10 @@ public class ConveyorBoxController : MonoBehaviour
 
     public void OnBottleArrived()
     {
-        bool isFull = true;
-        for (int i = 0; i < placementPoints.Count; i++)
+        if (GetOccupiedPointCount() == placementPoints.Count)
         {
-            if (!placementPoints[i].isOccupied)
-                isFull = false;
-        }
-
-        if (isFull)
-        {
-            ConveyorManager.instance.RemoveOldBringNew(this);
+            Debug.LogWarning("Conveyor box is full");
+            ConveyorManager.instance.RemoveOldBringNew();
             Sequence sq = DOTween.Sequence();
             sq.Append(transform.DOMoveX(transform.position.x + 7, .25f));
             sq.Append(transform.DOScale(Vector3.zero, .25f).OnComplete(() => Destroy(gameObject, .5f)));

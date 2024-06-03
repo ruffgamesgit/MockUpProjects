@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 using ColorUtility = DefaultNamespace.ColorUtility;
 
 public class ConveyorManager : MonoSingleton<ConveyorManager>
@@ -12,10 +10,9 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
     [Header("References")] [SerializeField]
     private ConveyorBoxController conveyorBoxPrefab;
 
-    [Header("Debug")] [SerializeField]
-    private ConveyorBoxController currentBox;
+    [Header("Debug")] [SerializeField] private ConveyorBoxController currentBox;
 
-    [SerializeField] private List<ConveyorBoxController> spawnedBoxes = new List<ConveyorBoxController>();
+    [SerializeField] private List<ConveyorBoxController> spawnedBoxes = new();
 
 
     protected override void Awake()
@@ -24,6 +21,7 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
 
         SpawnBox();
     }
+
     public ConveyorBoxController GetCurrentBox()
     {
         return currentBox;
@@ -43,10 +41,14 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
         currentBox = spawnedBoxes[0];
     }
 
-    public void RemoveOldBringNew(ConveyorBoxController oldBox)
+    private bool _sequencePerforming;
+
+    public void RemoveOldBringNew()
     {
+        if (_sequencePerforming) return;
+        _sequencePerforming = true;
+        Debug.LogWarning("Bringing new box");
         if (spawnedBoxes.Count > 3) return;
-        // spawnedBoxes.Remove(oldBox);
         spawnedBoxes.RemoveAt(0);
         ColorEnum randomColor = ColorUtility.GetRandomColorEnum();
         Vector3 pos = new(transform.position.x + (-8), transform.position.y, transform.position.z);
@@ -70,6 +72,7 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
                 if (localIndex == spawnedBoxes.Count - 1)
                 {
                     NewConveyorBoxCameEvent?.Invoke(GetCurrentBox());
+                    _sequencePerforming = false;
                 }
             });
         }

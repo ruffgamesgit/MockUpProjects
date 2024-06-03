@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 
 public class NeutralBox : MonoSingleton<NeutralBox>
 {
@@ -12,19 +10,55 @@ public class NeutralBox : MonoSingleton<NeutralBox>
         ConveyorManager.instance.NewConveyorBoxCameEvent += OnNewConveyorBoxCameEvent;
     }
 
+    public void OnBottleArrived()
+    {
+        List<BottleController> bottles = new();
+        for (int i = 0; i < placementPoints.Count; i++)
+        {
+            if (placementPoints[i].GetBottle())
+                bottles.Add(placementPoints[i].GetBottle());
+        }
+
+        if (bottles.Count != placementPoints.Count) return;
+
+        bool hasMatch = false;
+        ColorEnum conveyorBoxColor = ConveyorManager.instance.GetCurrentBox().GetColorEnum();
+        for (int i = 0; i < bottles.Count; i++)
+        {
+            if (bottles[i].GetColorEnum() == conveyorBoxColor)
+                hasMatch = true;
+        }
+
+        if (hasMatch) return;
+        
+        Debug.LogWarning("No Placeable point left, FAIL");
+    }
+
     private void OnNewConveyorBoxCameEvent(ConveyorBoxController conveyorBox)
     {
         ColorEnum boxColor = conveyorBox.GetColorEnum();
+        List<BottleController> matchedBottles = new();
 
         for (int i = 0; i < placementPoints.Count; i++)
         {
             BottleController bottle = placementPoints[i].GetBottle();
             if (bottle && bottle.GetColorEnum() == boxColor)
             {
-                if (conveyorBox.GetAvailablePoint() != null)
+                matchedBottles.Add(bottle);
+            }
+        }
+
+        int lastIndex = matchedBottles.Count >= 3 ? 3 : matchedBottles.Count;
+        for (int i = 0; i < matchedBottles.Count; i++)
+        {
+            if (conveyorBox.GetAvailablePoint() != null)
+            {
+                PlacementPoint conveyorBoxPoint = conveyorBox.GetAvailablePoint();
+                if (i == lastIndex - 1)
+                    matchedBottles[i].PerformMoving(conveyorBoxPoint, conveyorBox);
+                else
                 {
-                    PlacementPoint conveyorBoxPoint = conveyorBox.GetAvailablePoint();
-                    bottle.PerformMoving(conveyorBoxPoint, conveyorBox);
+                    matchedBottles[i].PerformMoving(conveyorBoxPoint);
                 }
             }
         }

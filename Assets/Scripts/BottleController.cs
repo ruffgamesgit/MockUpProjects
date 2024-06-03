@@ -76,12 +76,8 @@ public class BottleController : MonoBehaviour
             if (NeutralBox.instance.GetAvailablePoint() is not null)
             {
                 PlacementPoint newPoint = NeutralBox.instance.GetAvailablePoint();
-                PerformMoving(newPoint);
+                PerformMoving(newPoint, null, true);
                 bottleLeftTheBox = true;
-            }
-            else
-            {
-                Debug.LogWarning("No Placeable point left, FAIL");
             }
         }
 
@@ -90,39 +86,32 @@ public class BottleController : MonoBehaviour
             _initialBoardBoardBox.OnBottleLeft();
     }
 
-    public void PerformMoving(PlacementPoint newPoint, ConveyorBoxController conveyorBox = null)
+    public void PerformMoving(PlacementPoint newPoint, ConveyorBoxController conveyorBox = null,
+        bool isTargetNeutralBox = false)
     {
         _currentPoint.SetFree();
         _currentPoint = newPoint;
-        _currentPoint.SetOccupied(this);
+        newPoint.SetOccupied(this);
         transform.SetParent(_currentPoint.transform);
+        bool triggerOnComplete = conveyorBox && conveyorBox.GetOccupiedPointCount() == 3;
+        if (isTargetNeutralBox) NeutralBox.instance.OnBottleArrived();
 
         Sequence sq = DOTween.Sequence();
         sq.Append(transform.DOJump(newPoint.transform.position, 10, 1,
             .5f)).OnComplete(() =>
         {
-            if (conveyorBox)
+            if (triggerOnComplete)
             {
-                if (conveyorBox.GetOccupiedPointCount() == 3)
-                    conveyorBox.OnBottleArrived();
+                conveyorBox?.OnBottleArrived();
             }
         });
         sq.Join(transform.DOScale(transform.lossyScale * 2, .3f).SetLoops(2, LoopType.Yoyo));
         sq.Play();
-        // GoOtherBox(newPoint.transform.position);
     }
 
     public ColorEnum GetColorEnum()
     {
         return colorEnum;
-    }
-
-    private void GoOtherBox(Vector3 targePos)
-    {
-        Sequence sq = DOTween.Sequence();
-        sq.Append(transform.DOJump(targePos, 10, 1, .5f)); /*.OnComplete(() => { callBack?.Invoke(); }));*/
-        sq.Join(transform.DOScale(transform.lossyScale * 2, .3f).SetLoops(2, LoopType.Yoyo));
-        sq.Play();
     }
 
     public void SetMeshLayer(string layerIndex)
