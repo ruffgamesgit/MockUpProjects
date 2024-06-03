@@ -21,15 +21,19 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: RedBull_MetalCan
-  m_Shader: {fileID: 4800000, guid: 8339bf4b67f35304bae9e96343416a8a, type: 3}
-  m_ValidKeywords: []
+  m_Shader: {fileID: -6465566751694194690, guid: ef3afcf964a41b246becf8464757aab0,
+    type: 3}
+  m_ValidKeywords:
+  - _RECEIVE_SHADOWS_OFF
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -41,11 +45,19 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Base_Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Cube:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Dark_Tex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -73,8 +85,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Matcap:
         m_Texture: {fileID: 2800000, guid: c10f609bed72fa248b3abab0863dd59f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Matcap_Texture:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -97,7 +117,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_f6c5687e06ab4d678035349299e067cc_Texture_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Triplanar_Texture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -119,6 +147,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - TRIPLANAR_SETTINGS: 0
     - _AO_Int: 0
     - _AlphaClip: 0
     - _AlphaCutoff: 0.5
@@ -132,20 +161,25 @@ Material:
     - _BumpFace: 0
     - _BumpOutline: 0
     - _BumpScale: 1
+    - _COLOR_INNER: 0
+    - _CastShadows: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ColorMask: 15
     - _Cull: 2
     - _CullMode: 0
     - _Cutoff: 0.5
+    - _Dark_Amout: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _Diffuse: 0.5
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _FRESNEL_EFFECT_SETTINGS: 0
     - _FaceDilate: 0
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
+    - _FalloffThreshold: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -154,11 +188,15 @@ Material:
     - _GlowOuter: 0.05
     - _GlowPower: 0.75
     - _GradientScale: 5
+    - _Hue: 0
     - _LightAngle: 3.1416
+    - _MATCAP_SETTINGS: 0
     - _MC_Rotator: 0
     - _MaskSoftnessX: 0
     - _MaskSoftnessY: 0
+    - _Mask_Amount: 1
     - _MatCap_SS_Int: 0
+    - _Matcap_Strengh: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _OutlineSoftness: 0
@@ -167,16 +205,20 @@ Material:
     - _OutlineWidth: 0
     - _Parallax: 0.005
     - _PerspectiveFilter: 0.875
-    - _QueueControl: -1
+    - _Power_In: 1
+    - _Power_Out: 1
+    - _QueueControl: 0
     - _QueueOffset: 0
-    - _ReceiveShadows: 1
+    - _ReceiveShadows: 0
     - _Reflectivity: 10
+    - _Saturation: 0
     - _ScaleRatioA: 1
     - _ScaleRatioB: 1
     - _ScaleRatioC: 1
     - _ScaleX: 1
     - _ScaleY: 1
     - _ShaderFlags: 0
+    - _ShadingMultiplier: 0.721
     - _Sharpness: 0
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
@@ -191,23 +233,34 @@ Material:
     - _Surface: 0
     - _TextureHeight: 512
     - _TextureWidth: 512
+    - _Threshold: 1
+    - _Triplanar_Tiling: 0
     - _UnderlayDilate: 0
     - _UnderlayOffsetX: 0
     - _UnderlayOffsetY: 0
     - _UnderlaySoftness: 0
+    - _VERTEXCOLOR_SETTINGS: 0
+    - _Value: 0
     - _VertexAnim: 0
+    - _VertexColorPower: 0.5
     - _VertexOffsetX: 0
     - _VertexOffsetY: 0
     - _WeightBold: 0.5
     - _WeightNormal: 0
+    - _White_Balance: 0
     - _WorkflowMode: 1
+    - _ZTest: 4
     - _ZWrite: 1
+    - _ZWriteControl: 0
     - _useRedChannel: 0
     m_Colors:
-    - _BaseColor: {r: 0.6320754, g: 0.6320754, b: 0.6320754, a: 1}
+    - _BaseColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
     - _BiasScalePower: {r: 0, g: 1, b: 5, a: 0}
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _Color: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+    - _Color_In: {r: 1, g: 0.003921569, b: 0.003921569, a: 1}
+    - _Color_Out: {r: 0.3843137, g: 1, b: 0.2117647, a: 1}
+    - _Dark_Color: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
@@ -215,11 +268,13 @@ Material:
     - _GlowColor: {r: 0, g: 1, b: 0, a: 0.5}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
     - _MatCap_SS: {r: 0, g: 1, b: 0, a: 0}
+    - _Matcap_Color: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+    - _Vertex_Color: {r: 1, g: 1, b: 1, a: 1}
     - _matcapColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

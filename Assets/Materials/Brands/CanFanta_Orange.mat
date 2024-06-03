@@ -8,24 +8,68 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CanFanta_Orange
-  m_Shader: {fileID: 4800000, guid: 6eba6f3dcfd20fd4a83385c9ba2d7b8d, type: 3}
-  m_ValidKeywords: []
+  m_Shader: {fileID: -6465566751694194690, guid: ef3afcf964a41b246becf8464757aab0,
+    type: 3}
+  m_ValidKeywords:
+  - _RECEIVE_SHADOWS_OFF
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - B_Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - G_Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - R_Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Base_Texture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Dark_Tex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 6d5883c507397394dbf53235fa9d3557, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1.8, y: 2}
         m_Offset: {x: -0.38, y: -0.5}
+    - _Mask:
+        m_Texture: {fileID: 2800000, guid: 6d5883c507397394dbf53235fa9d3557, type: 3}
+        m_Scale: {x: 1.8, y: 2}
+        m_Offset: {x: -0.38, y: -0.38}
+    - _MaskTex:
+        m_Texture: {fileID: 2800000, guid: 6d5883c507397394dbf53235fa9d3557, type: 3}
+        m_Scale: {x: 1.65, y: 1.65}
+        m_Offset: {x: -0.3, y: -0.26}
     - _Matcap:
         m_Texture: {fileID: 2800000, guid: 18fabf0c21195cd4581f13e570f59fa9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Matcap_Texture:
+        m_Texture: {fileID: 2800000, guid: a814fd27b523f734eb59ae2adb93a8c7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_f6c5687e06ab4d678035349299e067cc_Texture_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Triplanar_Texture:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -46,18 +90,78 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - B_Tiling: 1
+    - G_Tiling: 1
+    - R_Tiling: 1
+    - TRIPLANAR_SETTINGS: 0
+    - _AlphaClip: 0
     - _AlphaCutoff: 0.5
+    - _BLENDING_TEXTURE_SETTINGS: 0
     - _Back: 1
+    - _Blend: 0
+    - _COLOR_INNER: 0
+    - _CastShadows: 0
+    - _Cull: 2
+    - _Dark_Amout: 0
+    - _DstBlend: 0
+    - _FRESNEL_EFFECT_SETTINGS: 0
+    - _FalloffThreshold: 1
+    - _Hue: 0
+    - _MATCAP_SETTINGS: 0
     - _MC_Rotator: 0.53
+    - _Mask_Amount: 1
+    - _Mask_Amout: 1
     - _MatCap_SS_Int: 1
+    - _Matcap_Strengh: -0.9
+    - _Metallic: 0
+    - _Power_In: 1
+    - _Power_Out: 1
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _ReceiveShadows: 0
+    - _Saturation: 0
+    - _ShadingMultiplier: 0.75
+    - _Smoothness: 0
+    - _SrcBlend: 1
+    - _Surface: 0
+    - _Threshold: 1
+    - _Triplanar_Tiling: 0
+    - _VERTEXCOLOR_SETTINGS: 0
+    - _Value: 0
+    - _VertexColorPower: 0.5
+    - _White_Balance: 0.06
+    - _WorkflowMode: 1
+    - _ZTest: 4
+    - _ZWrite: 1
+    - _ZWriteControl: 0
     - _useRedChannel: 0
     m_Colors:
-    - _BaseColor: {r: 0.99607843, g: 0.39005533, b: 0.16078429, a: 0}
+    - B_Color: {r: 1, g: 1, b: 1, a: 1}
+    - G_Color: {r: 1, g: 1, b: 1, a: 1}
+    - R_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 1, g: 0.44110265, b: 0.033018887, a: 1}
+    - _Color: {r: 0.99607843, g: 0.3882353, b: 0.16078432, a: 1}
+    - _Color_In: {r: 1, g: 0.003921569, b: 0.003921569, a: 1}
+    - _Color_Out: {r: 0.3843137, g: 1, b: 0.2117647, a: 1}
+    - _Dark_Color: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _FresnelColor: {r: 0, g: 0, b: 0, a: 0}
     - _MainColor: {r: 1, g: 0.52983034, b: 0.07232696, a: 0}
     - _MatCap_SS: {r: 0.08, g: 1.05, b: 0, a: 0}
+    - _Matcap_Color: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
+    - _Vertex_Color: {r: 1, g: 1, b: 1, a: 1}
     - _matcapColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
+--- !u!114 &2201592563757022264
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 5
