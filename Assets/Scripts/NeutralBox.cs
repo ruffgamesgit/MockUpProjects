@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NeutralBox : MonoSingleton<NeutralBox>
 {
-    [SerializeField] private List<PlacementPoint> placementPoints = new();
+    public List<PlacementPoint> placementPoints = new();
 
     private void Start()
     {
@@ -65,6 +65,17 @@ public class NeutralBox : MonoSingleton<NeutralBox>
         }
     }
 
+    public List<ColorEnum> GetColorsInPoints()
+    {
+        List<ColorEnum> colorEnums = new();
+        for (int i = 0; i < placementPoints.Count; i++)
+        {
+            if (!placementPoints[i].isOccupied) continue;
+            colorEnums.Add(placementPoints[i].GetBottle().GetColorEnum());
+        }
+
+        return colorEnums;
+    }
     public PlacementPoint GetAvailablePoint()
     {
         for (int i = 0; i < placementPoints.Count; i++)

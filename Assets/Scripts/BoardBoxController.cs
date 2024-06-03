@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,7 +13,7 @@ public class BoardBoxController : MonoBehaviour
     [Header("References")] [SerializeField]
     private BottleController bottlePrefab;
 
-    [SerializeField] private List<PlacementPoint> placementPoints = new List<PlacementPoint>();
+    public List<PlacementPoint> placementPoints = new List<PlacementPoint>();
 
     [Header("Debug")] [SerializeField] private GameObject _selectedMesh;
     [SerializeField] private List<BoardBoxController> upperBoxes;
@@ -22,20 +23,31 @@ public class BoardBoxController : MonoBehaviour
 
     IEnumerator Start()
     {
-        for (int i = 0; i < placementPoints.Count; i++)
-        {
-            ColorEnum randomColor = ColorUtility.GetRandomColorEnum();
-            PlacementPoint point = GetAvailablePoint();
-            BottleController cloneBottle = Instantiate(bottlePrefab, point.transform.position, Quaternion.identity);
-            cloneBottle.Initialize(randomColor, point, this);
-            point.SetOccupied(cloneBottle);
-        }
-
         yield return new WaitForSeconds(0.125f);
 
         upperBoxes = transform.GetComponentInChildren<BoxCollisionHandler>().GetUpperBoxes();
         SetLayerMask();
         LayerManager.instance.LayerDisappearedEvent += SetLayerMask;
+    }
+
+    public void SpawnBox(ColorEnum _colorEnum)
+    {
+        PlacementPoint point = GetAvailablePoint();
+        BottleController cloneBottle = Instantiate(bottlePrefab, point.transform.position, Quaternion.identity);
+        cloneBottle.Initialize(_colorEnum, point, this);
+        point.SetOccupied(cloneBottle);
+    }
+
+    public List<ColorEnum> GetColorInPoints()
+    {
+        List<ColorEnum> colorEnums = new();
+        for (int i = 0; i < placementPoints.Count; i++)
+        {
+            if (!placementPoints[i].isOccupied) continue;
+            colorEnums.Add(placementPoints[i].GetBottle().GetColorEnum());
+        }
+
+        return colorEnums;
     }
 
     public PlacementPoint GetAvailablePoint()
@@ -98,6 +110,7 @@ public class BoardBoxController : MonoBehaviour
     // ReSharper disable Unity.PerformanceAnalysis
     void Disappear()
     {
+        LayerManager.instance.RemoveBoxAndCheck(this);
         isDisappearing = true;
         GetComponent<Collider>().enabled = false;
         LayerManager.instance.TriggerLayerDisappearEvent();

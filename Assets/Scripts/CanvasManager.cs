@@ -1,13 +1,13 @@
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class CanvasManager : MonoSingleton<CanvasManager>
 {
-    [Header("References")] 
-    [SerializeField] CanvasGroup failPanel;
-    [FormerlySerializedAs("winPanel")] [SerializeField] CanvasGroup defaultPanel;
+    [Header("References")] [SerializeField]
+    CanvasGroup failPanel;
+
+    [SerializeField] CanvasGroup defaultPanel;
+    [SerializeField] CanvasGroup winPanel;
 
     void Start()
     {
@@ -18,11 +18,16 @@ public class CanvasManager : MonoSingleton<CanvasManager>
 
     private void OnLevelSucceededEvent()
     {
-        defaultPanel.DOFade(1, .5f);
+        defaultPanel.gameObject.SetActive(false);
+        failPanel.gameObject.SetActive(false);
+        winPanel.DOFade(1, .5f);
     }
 
     private void OnLevelFailed()
     {
+        defaultPanel.gameObject.SetActive(false);
+        winPanel.gameObject.SetActive(false);
+
         failPanel.DOFade(1, .5f);
     }
 

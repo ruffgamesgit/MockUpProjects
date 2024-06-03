@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DefaultNamespace
 {
@@ -6,11 +7,16 @@ namespace DefaultNamespace
     {
         private static readonly Random _random = new Random();
 
-        public static ColorEnum GetRandomColorEnum()
+        public static ColorEnum GetRandomColorEnum( )
         {
-            Array values = Enum.GetValues(typeof(ColorEnum));
-            int randomIndex = _random.Next(1, values.Length);
-            return (ColorEnum)values.GetValue(randomIndex);
+            List<ColorEnum> uniqueColors = LayerManager.instance.GetUniqueColorInBoxes();
+            if (uniqueColors.Count != 0)
+            {
+                int randomIndex = _random.Next(0, uniqueColors.Count);
+                return uniqueColors[randomIndex];
+            }
+
+            return ColorEnum.NONE;
         }
     }
 }
@@ -22,4 +28,12 @@ public enum ColorEnum
     GREEN,
     ORANGE,
     PINK
+}
+
+
+[System.Serializable]
+public class ColorData
+{
+    public ColorEnum ColorEnum;
+    public int count;
 }

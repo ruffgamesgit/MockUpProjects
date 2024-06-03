@@ -218,6 +218,8 @@ MonoBehaviour:
   meshes: []
   colorEnum: 0
   isPicked: 0
+  _currentPoint: {fileID: 0}
+  _selectedMesh: {fileID: 0}
 --- !u!136 &6346154202160928985
 CapsuleCollider:
   m_ObjectHideFlags: 0

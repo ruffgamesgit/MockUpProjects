@@ -11,14 +11,12 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
     private ConveyorBoxController conveyorBoxPrefab;
 
     [Header("Debug")] [SerializeField] private ConveyorBoxController currentBox;
-
+    private bool _sequencePerforming;
     [SerializeField] private List<ConveyorBoxController> spawnedBoxes = new();
 
 
-    protected override void Awake()
+    void Start()
     {
-        base.Awake();
-
         SpawnBox();
     }
 
@@ -29,7 +27,7 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
 
     private void SpawnBox()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 2; i++)
         {
             ColorEnum randomColor = ColorUtility.GetRandomColorEnum();
             Vector3 pos = new(transform.position.x + (i * -4), transform.position.y, transform.position.z);
@@ -41,18 +39,29 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
         currentBox = spawnedBoxes[0];
     }
 
-    private bool _sequencePerforming;
 
     public void RemoveOldBringNew()
     {
+        if (!GameManager.instance.isLevelActive) return;
+
         if (_sequencePerforming) return;
         _sequencePerforming = true;
-        Debug.LogWarning("Bringing new box");
-        if (spawnedBoxes.Count > 3) return;
+        if (spawnedBoxes.Count > 2) return;
         spawnedBoxes.RemoveAt(0);
+
+        // Adding New Box
         ColorEnum randomColor = ColorUtility.GetRandomColorEnum();
-        Vector3 pos = new(transform.position.x + (-8), transform.position.y, transform.position.z);
+        if (LayerManager.instance.GetUniqueColorInBoxes().Count > 1)
+        {
+            while (spawnedBoxes[0].GetColorEnum() == randomColor)
+            {
+                randomColor = ColorUtility.GetRandomColorEnum();
+            }
+        }
+
+        Vector3 pos = new(transform.position.x + (-4), transform.position.y, transform.position.z);
         ConveyorBoxController cloneBoardBox = Instantiate(conveyorBoxPrefab, pos, Quaternion.identity, transform);
+        cloneBoardBox.transform.DOScale(Vector3.one, .5f).From(Vector3.zero);
         spawnedBoxes.Add(cloneBoardBox);
         cloneBoardBox.Initialize(randomColor);
 
