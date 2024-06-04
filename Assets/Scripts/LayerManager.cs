@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Timeline;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class LayerManager : MonoSingleton<LayerManager>
@@ -20,13 +18,20 @@ public class LayerManager : MonoSingleton<LayerManager>
     {
         base.Awake();
 
-        // Ensure the loop runs until all boxes are spawned or there are no available points.
+        int defaultCount = (activeBoxes.Count * 3) / colorWeights.Count;
+        int leftOut = (activeBoxes.Count * 3) - (defaultCount * colorWeights.Count);
+        colorWeights[0].bottleCount += leftOut;
+        for (int i = 0; i < colorWeights.Count; i++)
+        {
+            colorWeights[i].bottleCount += defaultCount;
+        }
+
+        int successfullIterate = 0;
         for (int i = 0; i < 4; i++)
         {
             int attempts = 0;
-            for (int cc = 0; cc < colorWeights[i].count; cc++)
+            for (int cc = 0; cc < colorWeights[i].bottleCount; cc++)
             {
-                // Limit the number of attempts to find an available point to avoid infinite loops.
                 while (attempts < 100)
                 {
                     if (activeBoxes.Count == 0)
@@ -39,20 +44,26 @@ public class LayerManager : MonoSingleton<LayerManager>
                     if (randomBox.GetAvailablePoint())
                     {
                         randomBox.SpawnBox(colorWeights[i].ColorEnum);
+                        successfullIterate++;
                         break;
                     }
-                    else
-                    {
-                        attempts++;
-                    }
+                    attempts++;
                 }
 
-                if (attempts >= 100)
+                if (attempts >= 200)
                 {
-                    Debug.LogError("Failed to find an available point after 100 attempts.");
+                    Debug.LogError("Failed to find an available point after 200 attempts. Loading the scene again");
+                    GameManager.instance.OnTapRestart();
                     return;
                 }
             }
+        }
+
+        if (successfullIterate != activeBoxes.Count * 3)
+        {
+            Debug.LogWarning("Sucessfull iterate count is not equal total bottle count, " +
+                             "restarting the level");
+            GameManager.instance.OnTapRestart();
         }
     }
 
@@ -67,7 +78,7 @@ public class LayerManager : MonoSingleton<LayerManager>
             {
                 if (!colors.Contains(box.GetColorInPoints()[i]))
                     colors.Add(box.GetColorInPoints()[i]);
-            }
+            } 
         }
 
         for (int j = 0; j < NeutralBox.instance.GetColorsInPoints().Count; j++)
@@ -87,4 +98,13 @@ public class LayerManager : MonoSingleton<LayerManager>
         if (activeBoxes.Count == 0)
             GameManager.instance.EndGame(true);
     }
+}
+
+[System.Serializable]
+public class ColorData
+{
+    public ColorEnum ColorEnum;
+
+    [FormerlySerializedAs("colorCount")] [FormerlySerializedAs("count")] [HideInInspector]
+    public int bottleCount;
 }

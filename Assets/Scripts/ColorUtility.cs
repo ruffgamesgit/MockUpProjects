@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Random = System.Random;
 
 namespace DefaultNamespace
 {
     public static class ColorUtility
     {
-        private static readonly Random _random = new Random();
+        private static readonly Random _random = new();
 
-        public static ColorEnum GetRandomColorEnum( )
+        public static ColorEnum GetRandomColorEnum()
         {
             List<ColorEnum> uniqueColors = LayerManager.instance.GetUniqueColorInBoxes();
             if (uniqueColors.Count != 0)
@@ -19,21 +19,4 @@ namespace DefaultNamespace
             return ColorEnum.NONE;
         }
     }
-}
-
-public enum ColorEnum
-{
-    NONE,
-    BLUE,
-    GREEN,
-    ORANGE,
-    PINK
-}
-
-
-[System.Serializable]
-public class ColorData
-{
-    public ColorEnum ColorEnum;
-    public int count;
 }
