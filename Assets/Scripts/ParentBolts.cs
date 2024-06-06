@@ -46,9 +46,15 @@ public class ParentBolts : BaseBoltClass
         return !isPicked;
     }
 
+
     public void RemoveChildBolt(ChildBolt childBolt)
     {
         if (childrenBolts.Contains(childBolt))
             childrenBolts.Remove(childBolt);
+    }
+
+    protected override void UnsubscribeFromEvents()
+    {
+        // unsubscribe from future subscribed events   
     }
 }

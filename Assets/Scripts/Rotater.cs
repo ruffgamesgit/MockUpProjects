@@ -17,6 +17,9 @@ public class Rotater : MonoBehaviour
         {
             Vector3 currentMousePosition = Input.mousePosition;
             Vector3 deltaMousePosition = currentMousePosition - _lastMousePosition;
+            
+            if(deltaMousePosition.sqrMagnitude < 0.1f) return;
+            
             if (Mathf.Abs(deltaMousePosition.x) > Mathf.Abs(deltaMousePosition.y))
             {
                 float rotationAmount = deltaMousePosition.x * rotationSpeed * Time.deltaTime;

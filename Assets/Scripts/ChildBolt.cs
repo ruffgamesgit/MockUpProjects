@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -21,10 +22,16 @@ public class ChildBolt : BaseBoltClass
         RealMoveStartedEvent += OnRealMoveStarted;
         _parentBolt.PickedEvent += OnParentBoltPicked;
         _parentBolt.AnyMoveSequenceEndedEvent += OnParentAnyMoveSequenceEnded;
+        _parentBolt.ReleasedEvent += OnParentBoltReleasedEvent;
     }
 
 
     #region EVENT SUBSCRIBERS
+
+    private void OnParentBoltReleasedEvent()
+    {
+        OnReleased();
+    }
 
     private void OnParentBoltPicked()
     {
@@ -35,6 +42,7 @@ public class ChildBolt : BaseBoltClass
     {
         _isParentPicked = false;
     }
+
     void OnRealMoveStarted()
     {
         _parentBolt.RemoveChildBolt(this);
@@ -50,9 +58,15 @@ public class ChildBolt : BaseBoltClass
             if (bolt == _parentBolt) return;
 
             if (isPicked)
-                StopFakeMove();
+            {
+                if (obstacleBolts.Contains(bolt))
+                    StopFakeMove();
+            }
             else
-                _parentBolt.StopFakeMove();
+            {
+                if (possibleCollidableBoltsWhileParentMoving.Contains(bolt))
+                    _parentBolt.StopFakeMove();
+            }
         }
     }
 
@@ -72,6 +86,14 @@ public class ChildBolt : BaseBoltClass
     protected override bool IsPickable()
     {
         return !isPicked && !_isParentPicked;
+    }
+
+    protected override void UnsubscribeFromEvents()
+    {
+        RealMoveStartedEvent -= OnRealMoveStarted;
+        _parentBolt.PickedEvent -= OnParentBoltPicked;
+        _parentBolt.AnyMoveSequenceEndedEvent -= OnParentAnyMoveSequenceEnded;
+        _parentBolt.ReleasedEvent -= OnParentBoltReleasedEvent;
     }
 
     public bool CanPerformWhileParentMoving()

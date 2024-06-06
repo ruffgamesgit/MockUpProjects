@@ -9,8 +9,8 @@
 }
 public static class ColourUtility
 {
-    public static bool CheckIfColorsMatch(ColourEnum boltColor, ColourEnum placementPointColor)
+    public static bool CheckIfColorsMatch(ColourEnum boltColor, ColourEnum holeColor)
     {
-        return boltColor == placementPointColor;
+        return boltColor == holeColor;
     }
 }
