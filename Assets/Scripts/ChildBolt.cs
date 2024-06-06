@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ChildBolt : BaseBoltClass
 {
     [Header("References")] [SerializeField]
     List<BaseBoltClass> possibleCollidableBoltsWhileParentMoving;
+
     private ParentBolts _parentBolt;
+
+    private bool _isParentPicked;
 
     protected override void Awake()
     {
@@ -13,18 +17,31 @@ public class ChildBolt : BaseBoltClass
 
         _parentBolt = transform.GetComponentInParent<ParentBolts>();
         gameObject.name = "Child_Bolt_" + colourEnum;
+
+        RealMoveStartedEvent += OnRealMoveStarted;
+        _parentBolt.PickedEvent += OnParentBoltPicked;
+        _parentBolt.AnyMoveSequenceEndedEvent += OnParentAnyMoveSequenceEnded;
     }
 
-    protected override void OnRealMoveStarted()
+
+    #region EVENT SUBSCRIBERS
+
+    private void OnParentBoltPicked()
+    {
+        _isParentPicked = true;
+    }
+
+    private void OnParentAnyMoveSequenceEnded()
+    {
+        _isParentPicked = false;
+    }
+    void OnRealMoveStarted()
     {
         _parentBolt.RemoveChildBolt(this);
         transform.SetParent(null);
     }
 
-    protected override void OnRealMoveEnded()
-    {
-         
-    }
+    #endregion
 
     private void OnTriggerEnter(Collider other)
     {
@@ -39,7 +56,8 @@ public class ChildBolt : BaseBoltClass
         }
     }
 
-    public override bool CanPerformMoving()
+
+    protected override bool CanPerformMoving()
     {
         bool canPerform = true;
         for (int i = 0; i < obstacleBolts.Count; i++)
@@ -49,6 +67,11 @@ public class ChildBolt : BaseBoltClass
         }
 
         return canPerform;
+    }
+
+    protected override bool IsPickable()
+    {
+        return !isPicked && !_isParentPicked;
     }
 
     public bool CanPerformWhileParentMoving()

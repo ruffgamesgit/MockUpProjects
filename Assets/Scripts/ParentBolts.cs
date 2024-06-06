@@ -23,7 +23,7 @@ public class ParentBolts : BaseBoltClass
         }
     }
 
-    public override bool CanPerformMoving()
+    protected override bool CanPerformMoving()
     {
         bool canPerform = true;
         for (int i = 0; i < obstacleBolts.Count; i++)
@@ -41,19 +41,14 @@ public class ParentBolts : BaseBoltClass
         return canPerform;
     }
 
+    protected override bool IsPickable()
+    {
+        return !isPicked;
+    }
+
     public void RemoveChildBolt(ChildBolt childBolt)
     {
         if (childrenBolts.Contains(childBolt))
             childrenBolts.Remove(childBolt);
-    }
-
-    protected override void OnRealMoveStarted()
-    {
-        // for the further implementations
-    }
-
-    protected override void OnRealMoveEnded()
-    {
-        // if(ColourUtility.CheckIfColorsMatch(colourEnum, colourEnum))
     }
 }

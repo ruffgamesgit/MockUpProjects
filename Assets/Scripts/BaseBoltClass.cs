@@ -1,17 +1,22 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
 public abstract class BaseBoltClass : MonoBehaviour
 {
-    [Header("Base Config")]
-    public ColourEnum colourEnum;
-    
-    [Header("Base References")] 
-    [SerializeField] protected List<BaseBoltClass> obstacleBolts;
-    
-    [Header("Base Debug")] 
-    [SerializeField] protected bool isActive;
+    public event Action RealMoveStartedEvent;
+    public event Action AnyMoveSequenceEndedEvent;
+    public event Action ReleasedEvent;
+    public event Action PickedEvent;
+    [Header("Base Config")] public ColourEnum colourEnum;
+
+    [Header("Base References")] [SerializeField]
+    protected List<BaseBoltClass> obstacleBolts;
+
+    [Header("Base Debug")] [SerializeField]
+    protected bool isActive;
+
     [SerializeField] protected bool isPicked;
     [SerializeField] protected bool shouldRotate;
     protected bool PerformFakeMove;
@@ -27,8 +32,8 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     protected void OnMouseDown()
     {
-        if (isPicked) return;
-
+        if (!IsPickable()) return;
+        PickedEvent?.Invoke();
         isPicked = true;
         shouldRotate = true;
 
@@ -45,10 +50,8 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     private void RealMove()
     {
-        OnRealMoveStarted();
+        RealMoveStartedEvent?.Invoke();
         isActive = false;
-
-        // Sequence sq = DOTween.Sequence();
         Vector3 movementDirection = transform.up * 5f;
         Vector3 targetPosition = transform.position + movementDirection;
 
@@ -57,12 +60,9 @@ public abstract class BaseBoltClass : MonoBehaviour
             gameObject.SetActive(false);
             shouldRotate = false;
             isPicked = false;
-            OnRealMoveEnded();
+            AnyMoveSequenceEndedEvent?.Invoke();
         });
     }
-
-    protected abstract void OnRealMoveStarted();
-    protected abstract void OnRealMoveEnded();
 
     private void FakeMove()
     {
@@ -81,7 +81,11 @@ public abstract class BaseBoltClass : MonoBehaviour
         PerformFakeMove = false;
         _fakeMoveTween.Kill();
         transform.DOMove(_startPos, .5f);
-        transform.DORotate(_startRot, .5f).OnComplete(() => { isPicked = false; });
+        transform.DORotate(_startRot, .5f).OnComplete(() =>
+        {  
+            AnyMoveSequenceEndedEvent?.Invoke();
+            isPicked = false;
+        });
     }
 
     protected virtual void Update()
@@ -92,7 +96,8 @@ public abstract class BaseBoltClass : MonoBehaviour
         }
     }
 
-    public abstract bool CanPerformMoving();
+    protected abstract bool CanPerformMoving();
+    protected abstract bool IsPickable();
 
     public bool IsBoltActive()
     {
