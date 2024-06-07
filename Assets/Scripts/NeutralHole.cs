@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 
 public class NeutralHole : BaseHoleClass
 {
@@ -70,6 +67,6 @@ public class NeutralHole : BaseHoleClass
         if (hasMatch) return;
  
         Debug.LogWarning("No Placeable point left on NEUTRAL HOLE, FAIL");
-      //  GameManager.instance.EndGame(false);
+        GameManager.instance.EndGame(false);
     }
 }

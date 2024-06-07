@@ -88,6 +88,7 @@ public abstract class BaseBoltClass : MonoBehaviour
             else
             {
                 Debug.LogWarning("No Placeable point left on NEUTRAL HOLE, FAIL");
+                GameManager.instance.EndGame(false);
             }
         }
     }

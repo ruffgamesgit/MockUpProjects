@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -25,12 +24,15 @@ public class HoleManager : MonoBehaviour
 
     public void RemoveOldBringNew()
     {
-        //   if (!GameManager.instance.isLevelActive) return;
+        if (!GameManager.instance.isLevelActive) return;
         // if (_sequencePerforming) return;
         // _sequencePerforming = true;
 
-        // Adding New Box
+        // Adding New Hole
         coloredHoles.RemoveAt(0);
+        if (coloredHoles.Count == 0)
+            GameManager.instance.EndGame(true);
+
         currentColoredHole = coloredHoles[0];
         MoveHoles();
     }
