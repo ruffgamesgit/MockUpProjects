@@ -4,23 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="93927f8a-a67a-41d6-ad3e-9b259523e37d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/ChildBolt.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/ChildBolt.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main_Scene_0 1.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main_Scene_0 1.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main_Scene_0 2.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main_Scene_0 2.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Main_Scene_0.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Main_Scene_0.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/BaseBoltClass.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BaseBoltClass.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/BaseHoleClass.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BaseHoleClass.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ColoredHole.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ColoredHole.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/HoleManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/HoleManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NeutralHole.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NeutralHole.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
-    </list>
+    <list default="true" id="93927f8a-a67a-41d6-ad3e-9b259523e37d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -120,7 +104,7 @@
       <workItem from="1717741387769" duration="3473000" />
       <workItem from="1717768396093" duration="270000" />
       <workItem from="1717796905782" duration="121000" />
-      <workItem from="1718002755780" duration="17073000" />
+      <workItem from="1718002755780" duration="17897000" />
     </task>
     <servers />
   </component>
