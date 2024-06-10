@@ -30,4 +30,9 @@ public abstract class BaseHoleClass : MonoBehaviour
     }
 
     public abstract void OnBoltArrived();
+
+    public int GetPointCount()
+    {
+        return placementPoints.Count;
+    }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,6 +46,7 @@ public class NeutralHole : BaseHoleClass
         }
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public override void OnBoltArrived()
     {
         List<BaseBoltClass> bolts = new();
@@ -57,7 +59,14 @@ public class NeutralHole : BaseHoleClass
         if (bolts.Count != placementPoints.Count) return;
 
         bool hasMatch = false;
-        ColourEnum coloredHoleColor = HoleManager.instance.GetCurrentHole().GetColorEnum();
+        
+        ColoredHole currentHole = HoleManager.instance.GetCurrentHole();
+        currentHole = currentHole.willBeDisappeared
+            ? HoleManager.instance.GetNextCurrentHole()
+            : HoleManager.instance.GetCurrentHole();
+        
+        ColourEnum coloredHoleColor = currentHole.GetColorEnum();
+        Debug.Log("hole color:: " + coloredHoleColor);
         for (int i = 0; i < bolts.Count; i++)
         {
             if (bolts[i].GetColor() == coloredHoleColor)
@@ -65,7 +74,7 @@ public class NeutralHole : BaseHoleClass
         }
 
         if (hasMatch) return;
- 
+
         Debug.LogWarning("No Placeable point left on NEUTRAL HOLE, FAIL");
         GameManager.instance.EndGame(false);
     }

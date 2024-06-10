@@ -80,13 +80,13 @@ public abstract class BaseBoltClass : MonoBehaviour
         Destroy(transform.GetComponent<Rigidbody>());
         transform.SetParent(null);
         ReleasedEvent?.Invoke();
-        ColoredHole currentHole = HoleManager.instance.GetCurrentHole();
+        ColoredHole coloredHole = HoleManager.instance.GetCurrentHole();
 
-        if (ColourUtility.CheckIfColorsMatch(colourEnum, currentHole.GetColorEnum()))
+        if (ColourUtility.CheckIfColorsMatch(colourEnum, coloredHole.GetColorEnum()))
         {
-            if (currentHole.GetAvailablePoint() != null)
+            if (coloredHole.GetAvailablePoint() != null)
             {
-                GoToPoint(currentHole.GetAvailablePoint(), currentHole);
+                GoToPoint(coloredHole.GetAvailablePoint(), coloredHole);
             }
         }
         else
@@ -109,6 +109,12 @@ public abstract class BaseBoltClass : MonoBehaviour
         _currentPoint = targetPoint;
         targetPoint.SetOccupied(this);
 
+        if (newHole && newHole != NeutralHole.instance)
+        {
+            ColoredHole hole = newHole as ColoredHole;
+            hole.CheckDisappearingSequence();
+        }
+        
         transform.SetParent(targetPoint.transform);
         transform.forward = targetPoint.transform.forward;
         Vector3 virtualPos = new(targetPoint.transform.position.x, targetPoint.transform.position.y + 1f,
@@ -117,7 +123,18 @@ public abstract class BaseBoltClass : MonoBehaviour
         sq.Append(
             transform.DOMove(virtualPos, .35f).OnComplete(() => { shouldRotate = true; }));
         sq.Append(transform.DOMove(targetPoint.transform.position, .25f).OnStart(() => { shouldRotate = false; }));
-        sq.OnComplete(() => { newHole?.OnBoltArrived(); });
+        sq.OnComplete(() =>
+        {
+            if (newHole == null) return;
+
+            if (newHole == NeutralHole.instance)
+                newHole.OnBoltArrived();
+            else
+            {
+                if (newHole.GetOccupiedPointCount() == newHole.GetPointCount())
+                    newHole.OnBoltArrived();
+            }
+        });
     }
 
     private void FakeMove()
@@ -140,8 +157,12 @@ public abstract class BaseBoltClass : MonoBehaviour
         collidedBolt?.OnCollided();
 
         transform.DOMove(_startPos, .5f);
-        
-        DOTween.To(() => 0f, x => { transform.rotation = Quaternion.Lerp(transform.rotation, _initRot, x); }, 1f, 1f)
+
+        DOTween.To(() => 0f, x =>
+            {
+                transform.rotation =
+                    Quaternion.Lerp(transform.rotation, _initRot, x);
+            }, 1f, .5f)
             .OnComplete(() =>
             {
                 AnyMoveSequenceEndedEvent?.Invoke();
@@ -176,4 +197,9 @@ public abstract class BaseBoltClass : MonoBehaviour
     }
 
     protected abstract void UnsubscribeFromEvents();
+
+    private void OnDestroy()
+    {
+        transform.DOKill();
+    }
 }

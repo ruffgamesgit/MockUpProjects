@@ -25,8 +25,8 @@ public class HoleManager : MonoBehaviour
     public void RemoveOldBringNew()
     {
         if (!GameManager.instance.isLevelActive) return;
-        // if (_sequencePerforming) return;
-        // _sequencePerforming = true;
+        if (sequencePerforming) return;
+        sequencePerforming = true;
 
         // Adding New Hole
         coloredHoles.RemoveAt(0);
@@ -49,9 +49,14 @@ public class HoleManager : MonoBehaviour
                 if (localIndex == coloredHoles.Count - 1)
                 {
                     NewColoredHoleCameEvent?.Invoke(GetCurrentHole());
-                    //   _sequencePerforming = false;
+                    sequencePerforming = false;
                 }
             });
         }
+    }
+
+    public ColoredHole GetNextCurrentHole()
+    {
+        return coloredHoles[1];
     }
 }
