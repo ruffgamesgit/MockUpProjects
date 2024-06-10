@@ -1,6 +1,8 @@
 using System;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CanvasManager :  MonoBehaviour
 {
@@ -11,7 +13,8 @@ public class CanvasManager :  MonoBehaviour
 
     [SerializeField] CanvasGroup defaultPanel;
     [SerializeField] CanvasGroup winPanel;
-
+    public TextMeshProUGUI levelName;
+    
     private void Awake()
     {
         instance = this;
@@ -22,6 +25,7 @@ public class CanvasManager :  MonoBehaviour
         defaultPanel.DOFade(1, .5f);
         GameManager.instance.LevelFailedEvent += OnLevelFailed;
         GameManager.instance.LevelSucceededEvent += OnLevelSucceededEvent;
+        levelName.text = SceneManager.GetActiveScene().name;
     }
 
     private void OnLevelSucceededEvent()

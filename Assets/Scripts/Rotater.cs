@@ -8,6 +8,7 @@ public class Rotater : MonoBehaviour
 
     void Update()
     {
+        if (!GameManager.instance.isLevelActive) return;
         if (Input.GetMouseButtonDown(0))
         {
             _lastMousePosition = Input.mousePosition;

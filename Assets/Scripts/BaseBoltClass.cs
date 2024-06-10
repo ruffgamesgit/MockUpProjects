@@ -33,6 +33,7 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     protected void OnMouseDown()
     {
+        if (!GameManager.instance.isLevelActive) return;
         if (!IsPickable()) return;
         PickedEvent?.Invoke();
         isPicked = true;
@@ -53,7 +54,7 @@ public abstract class BaseBoltClass : MonoBehaviour
     {
         RealMoveStartedEvent?.Invoke();
         isActive = false;
-        Vector3 movementDirection = transform.up * 2.5f;
+        Vector3 movementDirection = transform.up * 1.5f;
         Vector3 targetPosition = transform.position + movementDirection;
 
         transform.DOMove(targetPosition, .5f).SetDelay(0.15f).OnComplete(() =>
@@ -83,7 +84,7 @@ public abstract class BaseBoltClass : MonoBehaviour
         {
             if (NeutralHole.instance.GetAvailablePoint())
             {
-                GoToPoint(NeutralHole.instance.GetAvailablePoint());
+                GoToPoint(NeutralHole.instance.GetAvailablePoint(), NeutralHole.instance);
             }
             else
             {
@@ -107,7 +108,7 @@ public abstract class BaseBoltClass : MonoBehaviour
     private void FakeMove()
     {
         PerformFakeMove = true;
-        Vector3 movementDirection = transform.up * 2.5f;
+        Vector3 movementDirection = transform.up * 1.5f;
         Vector3 targetPosition = transform.position + movementDirection;
         _startPos = transform.position;
         _startRot = transform.rotation.eulerAngles;
