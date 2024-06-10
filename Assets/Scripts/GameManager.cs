@@ -48,7 +48,11 @@ public class GameManager : MonoBehaviour
         if (!isLevelActive) return;
         isLevelActive = false;
 
-        if (!success) LevelFailedEvent?.Invoke();
+        if (!success)
+        {
+            Taptic.Medium();
+            LevelFailedEvent?.Invoke();
+        }
         else LevelSucceededEvent?.Invoke();
     }
 }

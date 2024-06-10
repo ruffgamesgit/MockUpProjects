@@ -19,7 +19,7 @@ public class ParentBolts : BaseBoltClass
             if (!PerformFakeMove) return;
             if (childrenBolts.Contains(bolt as ChildBolt)) return;
 
-            StopFakeMove();
+            StopFakeMove(bolt);
         }
     }
 

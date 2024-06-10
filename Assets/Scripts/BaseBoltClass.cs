@@ -23,7 +23,7 @@ public abstract class BaseBoltClass : MonoBehaviour
     private const float RotationSpeed = 700f;
     private Tween _fakeMoveTween;
     private Vector3 _startPos;
-    private Vector3 _startRot;
+    private Quaternion _initRot;
     private PlacementPoint _currentPoint;
 
     protected virtual void Awake()
@@ -34,7 +34,9 @@ public abstract class BaseBoltClass : MonoBehaviour
     protected void OnMouseDown()
     {
         if (!GameManager.instance.isLevelActive) return;
+        if (Rotater.instance.isRotating) return;
         if (!IsPickable()) return;
+
         PickedEvent?.Invoke();
         isPicked = true;
         shouldRotate = true;
@@ -52,6 +54,13 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     private void RealMove()
     {
+        int iterator = 0;
+        while (iterator < 3)
+        {
+            Taptic.Light();
+            iterator++;
+        }
+
         RealMoveStartedEvent?.Invoke();
         isActive = false;
         Vector3 movementDirection = transform.up * 1.5f;
@@ -102,7 +111,13 @@ public abstract class BaseBoltClass : MonoBehaviour
 
         transform.SetParent(targetPoint.transform);
         transform.forward = targetPoint.transform.forward;
-        transform.DOMove(targetPoint.transform.position, .25f).OnComplete(() => { newHole?.OnBoltArrived(); });
+        Vector3 virtualPos = new(targetPoint.transform.position.x, targetPoint.transform.position.y + 1f,
+            targetPoint.transform.position.z);
+        Sequence sq = DOTween.Sequence();
+        sq.Append(
+            transform.DOMove(virtualPos, .35f).OnComplete(() => { shouldRotate = true; }));
+        sq.Append(transform.DOMove(targetPoint.transform.position, .25f).OnStart(() => { shouldRotate = false; }));
+        sq.OnComplete(() => { newHole?.OnBoltArrived(); });
     }
 
     private void FakeMove()
@@ -111,22 +126,32 @@ public abstract class BaseBoltClass : MonoBehaviour
         Vector3 movementDirection = transform.up * 1.5f;
         Vector3 targetPosition = transform.position + movementDirection;
         _startPos = transform.position;
-        _startRot = transform.rotation.eulerAngles;
+        _initRot = transform.rotation;
         _fakeMoveTween = transform.DOMove(targetPosition, .5f).SetDelay(0.15f);
         _fakeMoveTween.Play();
     }
 
-    public void StopFakeMove()
+    public void StopFakeMove(BaseBoltClass collidedBolt)
     {
+        Taptic.Medium();
         shouldRotate = false;
         PerformFakeMove = false;
         _fakeMoveTween.Kill();
+        collidedBolt?.OnCollided();
+
         transform.DOMove(_startPos, .5f);
-        transform.DORotate(_startRot, .5f).OnComplete(() =>
-        {
-            AnyMoveSequenceEndedEvent?.Invoke();
-            isPicked = false;
-        });
+        
+        DOTween.To(() => 0f, x => { transform.rotation = Quaternion.Lerp(transform.rotation, _initRot, x); }, 1f, 1f)
+            .OnComplete(() =>
+            {
+                AnyMoveSequenceEndedEvent?.Invoke();
+                isPicked = false;
+            });
+    }
+
+    private void OnCollided()
+    {
+        transform.DOMove(transform.position + transform.up * 0.125f, .125f).SetLoops(2, LoopType.Yoyo);
     }
 
     protected virtual void Update()

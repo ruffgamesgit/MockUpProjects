@@ -60,12 +60,12 @@ public class ChildBolt : BaseBoltClass
             if (isPicked)
             {
                 if (obstacleBolts.Contains(bolt))
-                    StopFakeMove();
+                    StopFakeMove(bolt);
             }
             else
             {
                 if (possibleCollidableBoltsWhileParentMoving.Contains(bolt))
-                    _parentBolt.StopFakeMove();
+                    _parentBolt.StopFakeMove(bolt);
             }
         }
     }
