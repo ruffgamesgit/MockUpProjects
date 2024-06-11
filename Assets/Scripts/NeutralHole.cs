@@ -51,7 +51,7 @@ public class NeutralHole : BaseHoleClass
     {
         List<BaseBoltClass> bolts = new();
         for (int i = 0; i < placementPoints.Count; i++)
-        {
+        { 
             if (placementPoints[i].GetBolt())
                 bolts.Add(placementPoints[i].GetBolt());
         }

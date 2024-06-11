@@ -112,7 +112,7 @@ public abstract class BaseBoltClass : MonoBehaviour
         if (newHole && newHole != NeutralHole.instance)
         {
             ColoredHole hole = newHole as ColoredHole;
-            hole.CheckDisappearingSequence();
+             hole?.CheckDisappearingSequence();
         }
         
         transform.SetParent(targetPoint.transform);
@@ -122,7 +122,8 @@ public abstract class BaseBoltClass : MonoBehaviour
         Sequence sq = DOTween.Sequence();
         sq.Append(
             transform.DOMove(virtualPos, .35f).OnComplete(() => { shouldRotate = true; }));
-        sq.Append(transform.DOMove(targetPoint.transform.position, .25f).OnStart(() => { shouldRotate = false; }));
+        sq.Append(transform.DOMove(targetPoint.transform.position
+            , .25f).OnStart(() => { shouldRotate = false; }));
         sq.OnComplete(() =>
         {
             if (newHole == null) return;
