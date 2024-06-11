@@ -11,6 +11,7 @@ public class ChildBolt : BaseBoltClass
     private ParentBolts _parentBolt;
 
     private bool _isParentPicked;
+    [SerializeField] private bool blockCollision;
 
     protected override void Awake()
     {
@@ -20,6 +21,9 @@ public class ChildBolt : BaseBoltClass
         gameObject.name = "Child_Bolt_" + colourEnum;
 
         RealMoveStartedEvent += OnRealMoveStarted;
+        PickedEvent += () => _parentBolt.SetPickable(true);
+        AnyMoveSequenceEndedEvent += OnAnyMoveSequenceEnded;
+
         _parentBolt.PickedEvent += OnParentBoltPicked;
         _parentBolt.AnyMoveSequenceEndedEvent += OnParentAnyMoveSequenceEnded;
         _parentBolt.ReleasedEvent += OnParentBoltReleasedEvent;
@@ -28,8 +32,15 @@ public class ChildBolt : BaseBoltClass
 
     #region EVENT SUBSCRIBERS
 
+    private void OnAnyMoveSequenceEnded()
+    {
+        _parentBolt.SetPickable(false);
+        blockCollision = false;
+    }
+
     private void OnParentBoltReleasedEvent()
     {
+        isActive = false;
         OnReleased();
     }
 
@@ -41,6 +52,7 @@ public class ChildBolt : BaseBoltClass
     private void OnParentAnyMoveSequenceEnded()
     {
         _isParentPicked = false;
+        blockCollision = false;
     }
 
     void OnRealMoveStarted()
@@ -50,24 +62,37 @@ public class ChildBolt : BaseBoltClass
     }
 
     #endregion
+    protected override void OnCollidedWithBolt(BaseBoltClass collidedBolt)
+    {
+        if (isPicked)
+        {
+            if (obstacleBolts.Contains(collidedBolt))
+            {
+                blockCollision = true;
+                sparkParticle?.Play();
+                StopFakeMove(collidedBolt, true);
+            }
+        }
+        else
+        {
+            if (possibleCollidableBoltsWhileParentMoving.Contains(collidedBolt))
+            {
+                blockCollision = true;
+                sparkParticle?.Play();
+                _parentBolt.StopFakeMove(collidedBolt, false);
+            }
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out BaseBoltClass bolt))
         {
+            if (!isPicked && !_parentBolt.isPicked) return;
             if (bolt == _parentBolt) return;
-            
-            sparkParticle?.Play();
-            if (isPicked)
-            {
-                if (obstacleBolts.Contains(bolt))
-                    StopFakeMove(bolt);
-            }
-            else
-            {
-                if (possibleCollidableBoltsWhileParentMoving.Contains(bolt))
-                    _parentBolt.StopFakeMove(bolt);
-            }
+            if (blockCollision) return;
+
+            OnCollidedWithBolt(bolt);
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,15 +12,17 @@ public abstract class BaseBoltClass : MonoBehaviour
     public event Action ReleasedEvent;
     public event Action PickedEvent;
     [Header("Base Config")] public ColourEnum colourEnum;
+    [SerializeField] private float frontOffset;
 
     [Header("Base References")] [SerializeField]
     protected ParticleSystem sparkParticle;
+
     [SerializeField] protected List<BaseBoltClass> obstacleBolts;
 
     [Header("Base Debug")] [SerializeField]
     protected bool isActive;
 
-    [SerializeField] protected bool isPicked;
+    [SerializeField] public bool isPicked;
     [SerializeField] protected bool shouldRotate;
     protected bool PerformFakeMove;
     private const float RotationSpeed = 700f;
@@ -27,13 +30,24 @@ public abstract class BaseBoltClass : MonoBehaviour
     private Vector3 _startPos;
     private Quaternion _initRot;
     private PlacementPoint _currentPoint;
+    protected BoltHeadCollision HeadCollision;
 
     protected virtual void Awake()
     {
         isActive = true;
+        HeadCollision = GetComponentInChildren<BoltHeadCollision>();
+        HeadCollision.SetParent(this);
+        HeadCollision.CollidedWithBoltEvent+= OnCollidedWithBolt;
     }
 
+    protected abstract void OnCollidedWithBolt(BaseBoltClass collidedBolt);
+
     protected void OnMouseDown()
+    {
+        OnPicked();
+    }
+
+    public void OnPicked()
     {
         if (!GameManager.instance.isLevelActive) return;
         if (Rotater.instance.isRotating) return;
@@ -65,12 +79,13 @@ public abstract class BaseBoltClass : MonoBehaviour
 
         RealMoveStartedEvent?.Invoke();
         isActive = false;
-        Vector3 movementDirection = transform.up * 1.5f;
+        Vector3 movementDirection = transform.up * frontOffset;
         Vector3 targetPosition = transform.position + movementDirection;
 
         transform.DOMove(targetPosition, .5f).SetDelay(0.15f).OnComplete(() =>
         {
             shouldRotate = false;
+            AnyMoveSequenceEndedEvent?.Invoke();
             OnReleased();
         });
     }
@@ -84,7 +99,8 @@ public abstract class BaseBoltClass : MonoBehaviour
         ReleasedEvent?.Invoke();
         ColoredHole coloredHole = HoleManager.instance.GetCurrentHole();
 
-        if (ColourUtility.CheckIfColorsMatch(colourEnum, coloredHole.GetColorEnum()))
+        if (ColourUtility.CheckIfColorsMatch(colourEnum, coloredHole.GetColorEnum())
+            && !coloredHole.willBeDisappeared)
         {
             if (coloredHole.GetAvailablePoint() != null)
             {
@@ -143,7 +159,7 @@ public abstract class BaseBoltClass : MonoBehaviour
     private void FakeMove()
     {
         PerformFakeMove = true;
-        Vector3 movementDirection = transform.up * 1.5f;
+        Vector3 movementDirection = transform.up * frontOffset;
         Vector3 targetPosition = transform.position + movementDirection;
         _startPos = transform.position;
         _initRot = transform.rotation;
@@ -151,7 +167,7 @@ public abstract class BaseBoltClass : MonoBehaviour
         _fakeMoveTween.Play();
     }
 
-    public void StopFakeMove(BaseBoltClass collidedBolt)
+    public void StopFakeMove(BaseBoltClass collidedBolt, bool isChildBolt)
     {
         Taptic.Medium();
         shouldRotate = false;
@@ -165,7 +181,7 @@ public abstract class BaseBoltClass : MonoBehaviour
             {
                 transform.rotation =
                     Quaternion.Lerp(transform.rotation, _initRot, x);
-            }, 1f, .5f)
+            }, 0.99f, .5f)
             .OnComplete(() =>
             {
                 AnyMoveSequenceEndedEvent?.Invoke();

@@ -79,14 +79,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colourEnum: 0
+  frontOffset: 1
   sparkParticle: {fileID: 515533784786531198}
-  obstacleBolts:
-  - {fileID: 0}
+  obstacleBolts: []
   isActive: 0
   isPicked: 0
   shouldRotate: 0
-  possibleCollidableBoltsWhileParentMoving:
-  - {fileID: 0}
+  possibleCollidableBoltsWhileParentMoving: []
+  blockCollision: 0
 --- !u!1001 &515533784767456734
 PrefabInstance:
   m_ObjectHideFlags: 0

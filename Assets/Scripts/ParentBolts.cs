@@ -12,15 +12,20 @@ public class ParentBolts : BaseBoltClass
         gameObject.name = "Parent_Bolt_" + colourEnum;
     }
 
+    protected override void OnCollidedWithBolt(BaseBoltClass collidedBolt)
+    {
+        StopFakeMove(collidedBolt, false);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out BaseBoltClass bolt))
         {
             if (!PerformFakeMove) return;
             if (childrenBolts.Contains(bolt as ChildBolt)) return;
-            
+
             sparkParticle?.Play();
-            StopFakeMove(bolt);
+            OnCollidedWithBolt(bolt);
         }
     }
 
@@ -38,6 +43,7 @@ public class ParentBolts : BaseBoltClass
             if (!childrenBolts[i].CanPerformWhileParentMoving())
                 canPerform = false;
         }
+
 
         return canPerform;
     }
@@ -57,5 +63,10 @@ public class ParentBolts : BaseBoltClass
     protected override void UnsubscribeFromEvents()
     {
         // unsubscribe from future subscribed events   
+    }
+
+    public void SetPickable(bool blockPicking)
+    {
+        isPicked = blockPicking;
     }
 }
