@@ -56,7 +56,8 @@ public class ChildBolt : BaseBoltClass
         if (other.TryGetComponent(out BaseBoltClass bolt))
         {
             if (bolt == _parentBolt) return;
-
+            
+            sparkParticle?.Play();
             if (isPicked)
             {
                 if (obstacleBolts.Contains(bolt))

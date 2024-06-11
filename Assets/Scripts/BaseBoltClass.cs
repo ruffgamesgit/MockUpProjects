@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public abstract class BaseBoltClass : MonoBehaviour
 {
@@ -12,7 +13,8 @@ public abstract class BaseBoltClass : MonoBehaviour
     [Header("Base Config")] public ColourEnum colourEnum;
 
     [Header("Base References")] [SerializeField]
-    protected List<BaseBoltClass> obstacleBolts;
+    protected ParticleSystem sparkParticle;
+    [SerializeField] protected List<BaseBoltClass> obstacleBolts;
 
     [Header("Base Debug")] [SerializeField]
     protected bool isActive;
@@ -112,9 +114,9 @@ public abstract class BaseBoltClass : MonoBehaviour
         if (newHole && newHole != NeutralHole.instance)
         {
             ColoredHole hole = newHole as ColoredHole;
-             hole?.CheckDisappearingSequence();
+            hole?.CheckDisappearingSequence();
         }
-        
+
         transform.SetParent(targetPoint.transform);
         transform.forward = targetPoint.transform.forward;
         Vector3 virtualPos = new(targetPoint.transform.position.x, targetPoint.transform.position.y + 1f,
