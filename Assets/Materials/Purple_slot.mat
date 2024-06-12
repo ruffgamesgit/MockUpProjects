@@ -7,11 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Red
+  m_Name: Purple_slot
   m_Shader: {fileID: -6465566751694194690, guid: ef3afcf964a41b246becf8464757aab0,
     type: 3}
   m_ValidKeywords:
-  - _RECEIVE_SHADOWS_OFF
   - _VERTEXCOLOR_SETTINGS
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -20,8 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap:
     RenderType: Opaque
-  disabledShaderPasses:
-  - SHADOWCASTER
+  disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -95,7 +93,7 @@ Material:
     - _Blend: 0
     - _BumpScale: 1
     - _COLOR_INNER: 0
-    - _CastShadows: 0
+    - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -119,11 +117,10 @@ Material:
     - _Power_Out: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ReceiveShadows: 0
+    - _ReceiveShadows: 1
     - _Saturation: 0
     - _ShadingMultiplier: 1
-    - _Shadow_Amount: 1
-    - _Smoothness: 0
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -138,8 +135,8 @@ Material:
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _BaseColor: {r: 0.8679245, g: 0.16147433, b: 0, a: 1}
-    - _Color: {r: 1, g: 0.1835306, b: 0, a: 1}
+    - _BaseColor: {r: 0.79834914, g: 0.6745283, b: 1, a: 1}
+    - _Color: {r: 0.5534491, g: 0.27830186, b: 1, a: 1}
     - _Color_In: {r: 1, g: 0.003921569, b: 0.003921569, a: 1}
     - _Color_Out: {r: 0.3843137, g: 1, b: 0.2117647, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

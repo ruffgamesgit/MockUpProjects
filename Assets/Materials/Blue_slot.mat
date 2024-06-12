@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ground
+  m_Name: Blue_slot
   m_Shader: {fileID: -6465566751694194690, guid: ef3afcf964a41b246becf8464757aab0,
     type: 3}
   m_ValidKeywords:
@@ -121,25 +121,25 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 0
     - _Saturation: 0
-    - _ShadingMultiplier: 0.75
+    - _ShadingMultiplier: 1
     - _Shadow_Amount: 1
-    - _Smoothness: 0.471
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
     - _Threshold: 1
     - _VERTEXCOLOR_SETTINGS: 1
-    - _Value: 0
-    - _VertexColorPower: -0.24
+    - _Value: 0.561
+    - _VertexColorPower: 0
     - _White_Balance: 0
     - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _BaseColor: {r: 0.8490566, g: 0.7128308, b: 0.4285333, a: 1}
-    - _Color: {r: 0.909804, g: 0.70980394, b: 0.49803925, a: 1}
+    - _BaseColor: {r: 0.3820755, g: 0.5929546, b: 1, a: 1}
+    - _Color: {r: 0, g: 0.34432456, b: 1, a: 1}
     - _Color_In: {r: 1, g: 0.003921569, b: 0.003921569, a: 1}
     - _Color_Out: {r: 0.3843137, g: 1, b: 0.2117647, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
