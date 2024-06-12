@@ -10,6 +10,9 @@ public class ParentBolts : BaseBoltClass
     {
         base.Awake();
         gameObject.name = "Parent_Bolt_" + colourEnum;
+        PickedEvent += () => SetSlotParent(null);
+        AnyMoveSequenceEndedEvent += () => SetSlotParent(transform);
+        ReleasedEvent+= () => SetSlotParent(null);
     }
 
     protected override void OnCollidedWithBolt(BaseBoltClass collidedBolt)
@@ -50,7 +53,7 @@ public class ParentBolts : BaseBoltClass
 
     protected override bool IsPickable()
     {
-        return !isPicked;
+        return !isPicked && !BlockPickingAnotherSequenceIsOn;
     }
 
 

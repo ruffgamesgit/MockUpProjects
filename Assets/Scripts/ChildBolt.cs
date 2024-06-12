@@ -24,6 +24,7 @@ public class ChildBolt : BaseBoltClass
         _parentBolt.PickedEvent += OnParentBoltPicked;
         _parentBolt.AnyMoveSequenceEndedEvent += OnParentAnyMoveSequenceEnded;
         _parentBolt.ReleasedEvent += OnParentBoltReleasedEvent;
+        SetSlotParent(_parentBolt.transform);
     }
 
 

@@ -16,11 +16,15 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     [Header("Base References")] [SerializeField]
     protected ParticleSystem sparkParticle;
+    [SerializeField] protected Transform slotObject;
     [SerializeField] protected BoltHeadCollision headCollision;
     [SerializeField] protected List<BaseBoltClass> obstacleBolts;
 
     [Header("Base Debug")] [SerializeField]
     protected bool isActive;
+
+    protected bool BlockPickingAnotherSequenceIsOn;
+
 
     [SerializeField] public bool isPicked;
     [SerializeField] protected bool shouldRotate;
@@ -51,6 +55,8 @@ public abstract class BaseBoltClass : MonoBehaviour
         if (!GameManager.instance.isLevelActive) return;
         if (Rotater.instance.isRotating) return;
         if (!IsPickable()) return;
+
+        Rotater.instance.blockPlatformRotation = true;
 
         PickedEvent?.Invoke();
         isPicked = true;
@@ -85,6 +91,7 @@ public abstract class BaseBoltClass : MonoBehaviour
         {
             shouldRotate = false;
             AnyMoveSequenceEndedEvent?.Invoke();
+            Rotater.instance.blockPlatformRotation = false;
             OnReleased();
         });
     }
@@ -184,13 +191,18 @@ public abstract class BaseBoltClass : MonoBehaviour
             .OnComplete(() =>
             {
                 AnyMoveSequenceEndedEvent?.Invoke();
+                Rotater.instance.blockPlatformRotation = false;
+
                 isPicked = false;
             });
     }
 
     private void OnCollided()
     {
-        transform.DOMove(transform.position + transform.up * 0.125f, .125f).SetLoops(2, LoopType.Yoyo);
+        BlockPickingAnotherSequenceIsOn = true;
+        transform.DOMove(transform.position + transform.up * 0.125f, .125f)
+            .SetLoops(2, LoopType.Yoyo)
+            .OnComplete(() => BlockPickingAnotherSequenceIsOn = false);
     }
 
     protected virtual void Update()
@@ -215,6 +227,11 @@ public abstract class BaseBoltClass : MonoBehaviour
     }
 
     protected abstract void UnsubscribeFromEvents();
+
+    protected void SetSlotParent(Transform newParent)
+    {
+        slotObject.SetParent(newParent);
+    }
 
     private void OnDestroy()
     {

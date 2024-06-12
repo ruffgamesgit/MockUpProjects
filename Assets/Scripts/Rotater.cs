@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Rotater : MonoBehaviour
@@ -7,6 +8,7 @@ public class Rotater : MonoBehaviour
     public float rotationSpeed;
     private Vector3 _lastMousePosition;
     public bool isRotating = false;
+    public bool blockPlatformRotation;
 
     private void Awake()
     {
@@ -16,6 +18,8 @@ public class Rotater : MonoBehaviour
     void Update()
     {
         if (!GameManager.instance.isLevelActive) return;
+        if (blockPlatformRotation) return;
+        
         if (Input.GetMouseButtonDown(0))
         {
             _lastMousePosition = Input.mousePosition;
@@ -41,6 +45,7 @@ public class Rotater : MonoBehaviour
             isRotating = false;
         }
     }
+
 
     void RotatePlatform(float rotationAmount)
     {
