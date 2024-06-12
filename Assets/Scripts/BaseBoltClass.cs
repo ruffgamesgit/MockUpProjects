@@ -16,7 +16,7 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     [Header("Base References")] [SerializeField]
     protected ParticleSystem sparkParticle;
-
+    [SerializeField] protected BoltHeadCollision headCollision;
     [SerializeField] protected List<BaseBoltClass> obstacleBolts;
 
     [Header("Base Debug")] [SerializeField]
@@ -30,14 +30,13 @@ public abstract class BaseBoltClass : MonoBehaviour
     private Vector3 _startPos;
     private Quaternion _initRot;
     private PlacementPoint _currentPoint;
-    protected BoltHeadCollision HeadCollision;
 
     protected virtual void Awake()
     {
         isActive = true;
-        HeadCollision = GetComponentInChildren<BoltHeadCollision>();
-        HeadCollision.SetParent(this);
-        HeadCollision.CollidedWithBoltEvent+= OnCollidedWithBolt;
+
+        headCollision.SetParent(this);
+        headCollision.CollidedWithBoltEvent += OnCollidedWithBolt;
     }
 
     protected abstract void OnCollidedWithBolt(BaseBoltClass collidedBolt);

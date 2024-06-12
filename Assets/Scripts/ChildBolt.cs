@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class ChildBolt : BaseBoltClass
 {
@@ -9,8 +7,7 @@ public class ChildBolt : BaseBoltClass
     List<BaseBoltClass> possibleCollidableBoltsWhileParentMoving;
 
     private ParentBolts _parentBolt;
-
-    private bool _isParentPicked;
+    public bool isParentPicked;
     [SerializeField] private bool blockCollision;
 
     protected override void Awake()
@@ -46,12 +43,12 @@ public class ChildBolt : BaseBoltClass
 
     private void OnParentBoltPicked()
     {
-        _isParentPicked = true;
+        isParentPicked = true;
     }
 
     private void OnParentAnyMoveSequenceEnded()
     {
-        _isParentPicked = false;
+        isParentPicked = false;
         blockCollision = false;
     }
 
@@ -111,7 +108,7 @@ public class ChildBolt : BaseBoltClass
 
     protected override bool IsPickable()
     {
-        return !isPicked && !_isParentPicked;
+        return !isPicked && !isParentPicked;
     }
 
     protected override void UnsubscribeFromEvents()
