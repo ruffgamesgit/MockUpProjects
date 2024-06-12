@@ -14,6 +14,7 @@ public class ParentBolts : BaseBoltClass
 
     protected override void OnCollidedWithBolt(BaseBoltClass collidedBolt)
     {
+        sparkParticle?.Play();
         StopFakeMove(collidedBolt, false);
     }
 
@@ -24,7 +25,6 @@ public class ParentBolts : BaseBoltClass
             if (!PerformFakeMove) return;
             if (childrenBolts.Contains(bolt as ChildBolt)) return;
 
-            sparkParticle?.Play();
             OnCollidedWithBolt(bolt);
         }
     }
