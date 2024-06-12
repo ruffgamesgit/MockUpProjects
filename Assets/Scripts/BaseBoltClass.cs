@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public abstract class BaseBoltClass : MonoBehaviour
 {
@@ -16,6 +14,7 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     [Header("Base References")] [SerializeField]
     protected ParticleSystem sparkParticle;
+
     [SerializeField] protected Transform slotObject;
     [SerializeField] protected BoltHeadCollision headCollision;
     [SerializeField] protected List<BaseBoltClass> obstacleBolts;
@@ -23,11 +22,9 @@ public abstract class BaseBoltClass : MonoBehaviour
     [Header("Base Debug")] [SerializeField]
     protected bool isActive;
 
-    protected bool BlockPickingAnotherSequenceIsOn;
-
-
     [SerializeField] public bool isPicked;
     [SerializeField] protected bool shouldRotate;
+    protected bool BlockPickingAnotherSequenceIsOn;
     protected bool PerformFakeMove;
     private const float RotationSpeed = 700f;
     private Tween _fakeMoveTween;
@@ -169,7 +166,18 @@ public abstract class BaseBoltClass : MonoBehaviour
         Vector3 targetPosition = transform.position + movementDirection;
         _startPos = transform.position;
         _initRot = transform.rotation;
-        _fakeMoveTween = transform.DOMove(targetPosition, .5f).SetDelay(0.15f);
+
+        #region Delay for rotation
+
+        float delay = .15f;
+        if (transform.GetComponent<ParentBolts>())
+        {
+            delay = transform.GetComponent<ParentBolts>().GetChildrenBoltCount() > 0 ? .35f : delay;
+        }
+
+        #endregion
+
+        _fakeMoveTween = transform.DOMove(targetPosition, .5f).SetDelay(delay);
         _fakeMoveTween.Play();
     }
 
@@ -179,8 +187,7 @@ public abstract class BaseBoltClass : MonoBehaviour
         shouldRotate = false;
         PerformFakeMove = false;
         _fakeMoveTween.Kill();
-        collidedBolt?.OnCollided();
-
+        collidedBolt?.OnCollidedAndRoleIsPassive();
         transform.DOMove(_startPos, .5f);
 
         DOTween.To(() => 0f, x =>
@@ -192,17 +199,23 @@ public abstract class BaseBoltClass : MonoBehaviour
             {
                 AnyMoveSequenceEndedEvent?.Invoke();
                 Rotater.instance.blockPlatformRotation = false;
+                SetSlotParent(transform);
 
                 isPicked = false;
             });
     }
 
-    private void OnCollided()
+    private void OnCollidedAndRoleIsPassive()
     {
+        // SetSlotParent(Rotater.instance.transform);
         BlockPickingAnotherSequenceIsOn = true;
         transform.DOMove(transform.position + transform.up * 0.125f, .125f)
             .SetLoops(2, LoopType.Yoyo)
-            .OnComplete(() => BlockPickingAnotherSequenceIsOn = false);
+            .OnComplete(() =>
+            {
+                // SetSlotParent(transform);
+                BlockPickingAnotherSequenceIsOn = false;
+            });
     }
 
     protected virtual void Update()
