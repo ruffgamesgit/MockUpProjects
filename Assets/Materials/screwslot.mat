@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Purple
+  m_Name: screwslot
   m_Shader: {fileID: -6465566751694194690, guid: ef3afcf964a41b246becf8464757aab0,
     type: 3}
   m_ValidKeywords:
@@ -122,7 +122,8 @@ Material:
     - _ReceiveShadows: 0
     - _Saturation: 0
     - _ShadingMultiplier: 1
-    - _Smoothness: 0.4
+    - _Shadow_Amount: 1
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -130,15 +131,15 @@ Material:
     - _Threshold: 1
     - _VERTEXCOLOR_SETTINGS: 1
     - _Value: 0
-    - _VertexColorPower: 0
+    - _VertexColorPower: 0.82
     - _White_Balance: 0
     - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _BaseColor: {r: 0.62145996, g: 0.4179868, b: 0.9528302, a: 1}
-    - _Color: {r: 0.5534491, g: 0.27830186, b: 1, a: 1}
+    - _BaseColor: {r: 0.81217515, g: 0.74012107, b: 0.8301887, a: 1}
+    - _Color: {r: 1, g: 0.1835306, b: 0, a: 1}
     - _Color_In: {r: 1, g: 0.003921569, b: 0.003921569, a: 1}
     - _Color_Out: {r: 0.3843137, g: 1, b: 0.2117647, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

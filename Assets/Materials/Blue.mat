@@ -123,7 +123,7 @@ Material:
     - _Saturation: 0
     - _ShadingMultiplier: 1
     - _Shadow_Amount: 1
-    - _Smoothness: 0
+    - _Smoothness: 0.4
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -138,7 +138,7 @@ Material:
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _BaseColor: {r: 0, g: 0.3443246, b: 1, a: 1}
+    - _BaseColor: {r: 0.25, g: 0.5088235, b: 1, a: 1}
     - _Color: {r: 0, g: 0.34432456, b: 1, a: 1}
     - _Color_In: {r: 1, g: 0.003921569, b: 0.003921569, a: 1}
     - _Color_Out: {r: 0.3843137, g: 1, b: 0.2117647, a: 1}
