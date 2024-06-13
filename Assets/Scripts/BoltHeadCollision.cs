@@ -23,14 +23,15 @@ public class BoltHeadCollision : MonoBehaviour
 
             if (headCollision.GetParentBolt() != parentBolt)
             {
-                Debug.LogWarning("Head collision worked: " + headCollision.GetParentBolt().name);
                 CollidedWithBoltEvent?.Invoke(headCollision.GetParentBolt());
             }
         }
     }
 
-    private void OnMouseDown()
+    private void OnMouseUp()
     {
+        if (Rotater.instance.rotaterIsPerfomed) return;
+        
         parentBolt.OnPicked();
     }
 
@@ -39,7 +40,7 @@ public class BoltHeadCollision : MonoBehaviour
         parentBolt = parent;
     }
 
-    public BaseBoltClass GetParentBolt()
+    private BaseBoltClass GetParentBolt()
     {
         return parentBolt;
     }

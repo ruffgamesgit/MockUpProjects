@@ -5,10 +5,16 @@ using UnityEngine;
 
 public abstract class BaseBoltClass : MonoBehaviour
 {
+    #region Events For Sub-Classes
     public event Action RealMoveStartedEvent;
     public event Action AnyMoveSequenceEndedEvent;
-    public event Action ReleasedEvent;
+    public event Action AnyMoveSequenceStartedEvent;
+    public event Action CollidedAndRoleIsPassiveEvent;
     public event Action PickedEvent;
+    public event Action ReleasedEvent;
+
+    #endregion
+
     [Header("Base Config")] public ColourEnum colourEnum;
     [SerializeField] private float frontOffset;
 
@@ -42,18 +48,20 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     protected abstract void OnCollidedWithBolt(BaseBoltClass collidedBolt);
 
-    protected void OnMouseDown()
+    protected void OnMouseUp()
     {
+        if (Rotater.instance.rotaterIsPerfomed) return;
+        Debug.LogWarning("On Picked called");
         OnPicked();
     }
 
     public void OnPicked()
     {
         if (!GameManager.instance.isLevelActive) return;
-        if (Rotater.instance.isRotating) return;
+        // if (Rotater.instance.isRotating) return;
         if (!IsPickable()) return;
 
-        Rotater.instance.blockPlatformRotation = true;
+        // Rotater.instance.blockPlatformRotation = true;
 
         PickedEvent?.Invoke();
         isPicked = true;
@@ -79,12 +87,13 @@ public abstract class BaseBoltClass : MonoBehaviour
             iterator++;
         }
 
+        AnyMoveSequenceStartedEvent?.Invoke();
         RealMoveStartedEvent?.Invoke();
         isActive = false;
         Vector3 movementDirection = transform.up * frontOffset;
-        Vector3 targetPosition = transform.position + movementDirection;
+        Vector3 targetPosition = transform.localPosition + movementDirection;
 
-        transform.DOMove(targetPosition, .5f).SetDelay(0.15f).OnComplete(() =>
+        transform.DOLocalMove(targetPosition, .5f).SetDelay(0.15f).OnComplete(() =>
         {
             shouldRotate = false;
             AnyMoveSequenceEndedEvent?.Invoke();
@@ -161,10 +170,12 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     private void FakeMove()
     {
+        AnyMoveSequenceStartedEvent?.Invoke();
         PerformFakeMove = true;
+        
         Vector3 movementDirection = transform.up * frontOffset;
-        Vector3 targetPosition = transform.position + movementDirection;
-        _startPos = transform.position;
+        Vector3 targetPosition = transform.localPosition + movementDirection;
+        _startPos = transform.localPosition;
         _initRot = transform.rotation;
 
         #region Delay for rotation
@@ -177,18 +188,18 @@ public abstract class BaseBoltClass : MonoBehaviour
 
         #endregion
 
-        _fakeMoveTween = transform.DOMove(targetPosition, .5f).SetDelay(delay);
+        _fakeMoveTween = transform.DOLocalMove(targetPosition, .5f).SetDelay(delay);
         _fakeMoveTween.Play();
     }
 
-    public void StopFakeMove(BaseBoltClass collidedBolt, bool isChildBolt)
+    public void StopFakeMove(BaseBoltClass collidedBolt)
     {
         Taptic.Medium();
         shouldRotate = false;
         PerformFakeMove = false;
         _fakeMoveTween.Kill();
         collidedBolt?.OnCollidedAndRoleIsPassive();
-        transform.DOMove(_startPos, .5f);
+        transform.DOLocalMove(_startPos, .5f);
 
         DOTween.To(() => 0f, x =>
             {
@@ -199,23 +210,17 @@ public abstract class BaseBoltClass : MonoBehaviour
             {
                 AnyMoveSequenceEndedEvent?.Invoke();
                 Rotater.instance.blockPlatformRotation = false;
-                SetSlotParent(transform);
-
                 isPicked = false;
             });
     }
 
     private void OnCollidedAndRoleIsPassive()
     {
-        // SetSlotParent(Rotater.instance.transform);
+        CollidedAndRoleIsPassiveEvent?.Invoke();
         BlockPickingAnotherSequenceIsOn = true;
-        transform.DOMove(transform.position + transform.up * 0.125f, .125f)
+        transform.DOLocalMove(transform.localPosition + transform.up * 0.125f, .125f)
             .SetLoops(2, LoopType.Yoyo)
-            .OnComplete(() =>
-            {
-                // SetSlotParent(transform);
-                BlockPickingAnotherSequenceIsOn = false;
-            });
+            .OnComplete(() => { BlockPickingAnotherSequenceIsOn = false; });
     }
 
     protected virtual void Update()

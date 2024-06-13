@@ -26,10 +26,8 @@ public class ChildBolt : BaseBoltClass
         _parentBolt.ReleasedEvent += OnParentBoltReleasedEvent;
         SetSlotParent(_parentBolt.transform);
     }
-
-
+    
     #region EVENT SUBSCRIBERS
-
     private void OnAnyMoveSequenceEnded()
     {
         _parentBolt.SetPickable(false);
@@ -68,7 +66,7 @@ public class ChildBolt : BaseBoltClass
             {
                 blockCollision = true;
                 sparkParticle?.Play();
-                StopFakeMove(collidedBolt, true);
+                StopFakeMove(collidedBolt);
             }
         }
         else
@@ -77,7 +75,7 @@ public class ChildBolt : BaseBoltClass
             {
                 blockCollision = true;
                 sparkParticle?.Play();
-                _parentBolt.StopFakeMove(collidedBolt, false);
+                _parentBolt.StopFakeMove(collidedBolt);
             }
         }
     }

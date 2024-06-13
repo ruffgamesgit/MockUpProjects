@@ -39,6 +39,7 @@ public class HoleManager : MonoBehaviour
 
     void MoveHoles()
     {
+        if (!GameManager.instance.isLevelActive) return;
         for (int i = 0; i < coloredHoles.Count; i++)
         {
             Transform box = coloredHoles[i].transform;

@@ -61,9 +61,9 @@ public class NeutralHole : BaseHoleClass
         bool hasMatch = false;
         
         ColoredHole currentHole = HoleManager.instance.GetCurrentHole();
-        currentHole = currentHole.willBeDisappeared
-            ? HoleManager.instance.GetNextCurrentHole()
-            : HoleManager.instance.GetCurrentHole();
+        // currentHole = currentHole.willBeDisappeared
+        //     ? HoleManager.instance.GetNextCurrentHole()
+        //     : HoleManager.instance.GetCurrentHole();
         
         ColourEnum coloredHoleColor = currentHole.GetColorEnum();
         Debug.Log("hole color:: " + coloredHoleColor);

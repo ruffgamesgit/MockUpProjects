@@ -10,15 +10,20 @@ public class ParentBolts : BaseBoltClass
     {
         base.Awake();
         gameObject.name = "Parent_Bolt_" + colourEnum;
+
+        #region Slot Parent Assign
         PickedEvent += () => SetSlotParent(Rotater.instance.transform);
+        AnyMoveSequenceStartedEvent += () => SetSlotParent(Rotater.instance.transform);
+        CollidedAndRoleIsPassiveEvent += () => SetSlotParent(Rotater.instance.transform);
         AnyMoveSequenceEndedEvent += () => SetSlotParent(transform);
-        ReleasedEvent+= () => SetSlotParent(Rotater.instance.transform);
+        ReleasedEvent += () => SetSlotParent(Rotater.instance.transform);
+        #endregion
     }
 
     protected override void OnCollidedWithBolt(BaseBoltClass collidedBolt)
     {
         sparkParticle?.Play();
-        StopFakeMove(collidedBolt, false);
+        StopFakeMove(collidedBolt);
     }
 
     private void OnTriggerEnter(Collider other)
