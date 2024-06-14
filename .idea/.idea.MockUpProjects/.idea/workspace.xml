@@ -8,13 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Designed_Level_02.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Designed_Level_02.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BaseBoltClass.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BaseBoltClass.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/BoltHeadCollision.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BoltHeadCollision.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ChildBolt.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ChildBolt.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/HoleManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/HoleManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NeutralHole.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NeutralHole.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/ParentBolts.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ParentBolts.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rotater.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rotater.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,10 +85,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="15504">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="15504" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -119,7 +114,8 @@
       <workItem from="1718086246274" duration="16086000" />
       <workItem from="1718112040715" duration="3430000" />
       <workItem from="1718170729165" duration="8550000" />
-      <workItem from="1718259828140" duration="12175000" />
+      <workItem from="1718259828140" duration="12886000" />
+      <workItem from="1718345876295" duration="1324000" />
     </task>
     <servers />
   </component>

@@ -12,11 +12,11 @@ public class ParentBolts : BaseBoltClass
         gameObject.name = "Parent_Bolt_" + colourEnum;
 
         #region Slot Parent Assign
-        PickedEvent += () => SetSlotParent(Rotater.instance.transform);
-        AnyMoveSequenceStartedEvent += () => SetSlotParent(Rotater.instance.transform);
-        CollidedAndRoleIsPassiveEvent += () => SetSlotParent(Rotater.instance.transform);
+        PickedEvent += () => SetSlotParent(Rotater.instance.platform);
+        AnyMoveSequenceStartedEvent += () => SetSlotParent(Rotater.instance.platform);
+        CollidedAndRoleIsPassiveEvent += () => SetSlotParent(Rotater.instance.platform);
         AnyMoveSequenceEndedEvent += () => SetSlotParent(transform);
-        ReleasedEvent += () => SetSlotParent(Rotater.instance.transform);
+        ReleasedEvent += () => SetSlotParent(Rotater.instance.platform);
         #endregion
     }
 

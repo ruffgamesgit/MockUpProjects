@@ -4,12 +4,14 @@ using UnityEngine;
 public class Rotater : MonoBehaviour
 {
     public static Rotater instance;
-
-    public float rotationSpeed;
-    private Vector3 _lastMousePosition;
+    [Header("References")] public Transform platform;
+    [Header("Config")]
+    [SerializeField] private float rotationSpeed;
+    [Header("Debug")]
     public bool isRotating = false;
     public bool blockPlatformRotation;
     public bool rotaterIsPerfomed;
+    private Vector3 _lastMousePosition;
 
     private void Awake()
     {

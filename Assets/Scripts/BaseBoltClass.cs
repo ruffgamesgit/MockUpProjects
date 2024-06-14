@@ -91,9 +91,9 @@ public abstract class BaseBoltClass : MonoBehaviour
         RealMoveStartedEvent?.Invoke();
         isActive = false;
         Vector3 movementDirection = transform.up * frontOffset;
-        Vector3 targetPosition = transform.localPosition + movementDirection;
+        Vector3 targetPosition = transform.position + movementDirection;
 
-        transform.DOLocalMove(targetPosition, .5f).SetDelay(0.15f).OnComplete(() =>
+        transform.DOMove(targetPosition, .5f).SetDelay(0.15f).OnComplete(() =>
         {
             shouldRotate = false;
             AnyMoveSequenceEndedEvent?.Invoke();
@@ -151,8 +151,8 @@ public abstract class BaseBoltClass : MonoBehaviour
             targetPoint.transform.position.z);
         Sequence sq = DOTween.Sequence();
         sq.Append(
-            transform.DOMove(virtualPos, .35f).OnComplete(() => { shouldRotate = true; }));
-        sq.Append(transform.DOMove(targetPoint.transform.position
+            transform.DOLocalMove(Vector3.up, .35f).OnComplete(() => { shouldRotate = true; }));
+        sq.Append(transform.DOLocalMove(Vector3.zero
             , .25f).OnStart(() => { shouldRotate = false; }));
         sq.OnComplete(() =>
         {
@@ -174,8 +174,8 @@ public abstract class BaseBoltClass : MonoBehaviour
         PerformFakeMove = true;
         
         Vector3 movementDirection = transform.up * frontOffset;
-        Vector3 targetPosition = transform.localPosition + movementDirection;
-        _startPos = transform.localPosition;
+        Vector3 targetPosition = transform.position + movementDirection;
+        _startPos = transform.position;
         _initRot = transform.rotation;
 
         #region Delay for rotation
@@ -188,7 +188,7 @@ public abstract class BaseBoltClass : MonoBehaviour
 
         #endregion
 
-        _fakeMoveTween = transform.DOLocalMove(targetPosition, .5f).SetDelay(delay);
+        _fakeMoveTween = transform.DOMove(targetPosition, .5f).SetDelay(delay);
         _fakeMoveTween.Play();
     }
 
@@ -199,7 +199,7 @@ public abstract class BaseBoltClass : MonoBehaviour
         PerformFakeMove = false;
         _fakeMoveTween.Kill();
         collidedBolt?.OnCollidedAndRoleIsPassive();
-        transform.DOLocalMove(_startPos, .5f);
+        transform.DOMove(_startPos, .5f);
 
         DOTween.To(() => 0f, x =>
             {
