@@ -47,13 +47,11 @@ public class CanvasManager :  MonoBehaviour
 
     public void OnRestart()
     {
-        Debug.Log("restart");
         GameManager.instance.OnTapRestart();
     }
 
     public void OnNext()
     {
-        Debug.Log("Next");
         GameManager.instance.OnTapNext();
     }
 

@@ -58,10 +58,7 @@ public abstract class BaseBoltClass : MonoBehaviour
     public void OnPicked()
     {
         if (!GameManager.instance.isLevelActive) return;
-        // if (Rotater.instance.isRotating) return;
         if (!IsPickable()) return;
-
-        // Rotater.instance.blockPlatformRotation = true;
 
         PickedEvent?.Invoke();
         isPicked = true;
@@ -80,6 +77,7 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     private void RealMove()
     {
+        transform.SetParent(null);
         int iterator = 0;
         while (iterator < 3)
         {
@@ -97,7 +95,6 @@ public abstract class BaseBoltClass : MonoBehaviour
         {
             shouldRotate = false;
             AnyMoveSequenceEndedEvent?.Invoke();
-            Rotater.instance.blockPlatformRotation = false;
             OnReleased();
         });
     }
@@ -107,7 +104,7 @@ public abstract class BaseBoltClass : MonoBehaviour
         UnsubscribeFromEvents();
         Destroy(transform.GetComponent<Collider>());
         Destroy(transform.GetComponent<Rigidbody>());
-        transform.SetParent(null);
+        
         ReleasedEvent?.Invoke();
         ColoredHole coloredHole = HoleManager.instance.GetCurrentHole();
 
@@ -147,8 +144,6 @@ public abstract class BaseBoltClass : MonoBehaviour
 
         transform.SetParent(targetPoint.transform);
         transform.forward = targetPoint.transform.forward;
-        Vector3 virtualPos = new(targetPoint.transform.position.x, targetPoint.transform.position.y + 1f,
-            targetPoint.transform.position.z);
         Sequence sq = DOTween.Sequence();
         sq.Append(
             transform.DOLocalMove(Vector3.up, .35f).OnComplete(() => { shouldRotate = true; }));
@@ -209,7 +204,6 @@ public abstract class BaseBoltClass : MonoBehaviour
             .OnComplete(() =>
             {
                 AnyMoveSequenceEndedEvent?.Invoke();
-                Rotater.instance.blockPlatformRotation = false;
                 isPicked = false;
             });
     }

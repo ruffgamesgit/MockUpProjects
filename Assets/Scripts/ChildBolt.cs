@@ -54,7 +54,6 @@ public class ChildBolt : BaseBoltClass
     void OnRealMoveStarted()
     {
         _parentBolt.RemoveChildBolt(this);
-        transform.SetParent(null);
     }
 
     #endregion

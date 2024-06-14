@@ -1,10 +1,11 @@
 using DG.Tweening;
-using UnityEngine; 
+using UnityEngine;
 
 public class ColoredHole : BaseHoleClass
 {
     [Header("References")] [SerializeField]
     protected ColourEnum colorEnum;
+
     private bool _isDisappearing;
     public bool willBeDisappeared;
 
@@ -19,12 +20,9 @@ public class ColoredHole : BaseHoleClass
 
         if (GetOccupiedPointCount() == placementPoints.Count)
         {
-            _isDisappearing = true;
-            Debug.LogWarning("Colored hole is full, and disappearing");
+            _isDisappearing = true; 
             HoleManager.instance.RemoveOldBringNew();
-            Sequence sq = DOTween.Sequence();
-            sq.Append(transform.DOMoveX(transform.position.x + 7, .25f));
-            sq.Append(transform.DOScale(Vector3.zero, .25f).OnComplete(() => Destroy(gameObject, .5f)));
+            transform.DOScale(Vector3.zero, .25f).OnComplete(() => Destroy(gameObject));
         }
     }
 

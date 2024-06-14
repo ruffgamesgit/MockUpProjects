@@ -43,16 +43,17 @@ public class HoleManager : MonoBehaviour
         for (int i = 0; i < coloredHoles.Count; i++)
         {
             Transform box = coloredHoles[i].transform;
-            Vector3 pos = new(transform.position.x + (i * -4), transform.position.y, transform.position.z);
+            Vector3 pos = box.localPosition + (Vector3.right * 3);
             int localIndex = i;
-            box.DOMove(pos, .15f).SetEase(Ease.OutQuad).OnComplete(() =>
+            
+            box.DOLocalMove(pos, .15f).SetEase(Ease.OutQuad).OnComplete(() =>
             {
                 if (localIndex == coloredHoles.Count - 1)
                 {
                     NewColoredHoleCameEvent?.Invoke(GetCurrentHole());
                     sequencePerforming = false;
                 }
-            });
+            }).SetDelay(0.2f);
         }
     }
 
