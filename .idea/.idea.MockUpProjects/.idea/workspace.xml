@@ -6,14 +6,39 @@
   <component name="ChangeListManager">
     <list default="true" id="93927f8a-a67a-41d6-ad3e-9b259523e37d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Blue.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Blue.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Blue_slot.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Blue_slot.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Green.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Green.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Purple.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Purple.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Purple_slot.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Purple_slot.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Red.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Red.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Red_slot.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Red_slot.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/White.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/White.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/White_slot.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/White_slot.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Yellow.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Yellow.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Yellow_slot.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Yellow_slot.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/screwslot.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/screwslot.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Models/Head.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Models/Head.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/ChildBolt.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/ChildBolt.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/MANAGERS/CanvasManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/MANAGERS/CanvasManager.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/ParentBolt.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/ParentBolt.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Designed_Level_02.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Designed_Level_02.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BaseBoltClass.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BaseBoltClass.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/BoltHeadCollision.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BoltHeadCollision.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/CanvasManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CanvasManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/ChildBolt.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ChildBolt.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ColoredHole.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ColoredHole.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/HoleManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/HoleManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ParentBolts.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ParentBolts.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rotater.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rotater.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/SampleSceneProfile.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/SampleSceneProfile.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Shader_Full.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Shader_Full.shadergraph" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Shader_Full_Unlit.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Shader_Full_Unlit.shadergraph" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,10 +115,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="9328">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="9328" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -120,7 +145,9 @@
       <workItem from="1718112040715" duration="3430000" />
       <workItem from="1718170729165" duration="8550000" />
       <workItem from="1718259828140" duration="12886000" />
-      <workItem from="1718345876295" duration="9135000" />
+      <workItem from="1718345876295" duration="9389000" />
+      <workItem from="1719208999005" duration="18148000" />
+      <workItem from="1719295429996" duration="4153000" />
     </task>
     <servers />
   </component>
@@ -136,5 +163,24 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/ParentBolts.cs</url>
+          <line>50</line>
+          <properties documentPath="C:\Users\fatih\Desktop\Ruff_Projects\MockUpProjects\Assets\Scripts\ParentBolts.cs" containingFunctionPresentation="Method 'OnTriggerEnter'">
+            <startOffsets>
+              <option value="1488" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1513" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -8,7 +8,7 @@ public class ChildBolt : BaseBoltClass
 
     private ParentBolts _parentBolt;
     public bool isParentPicked;
-    [SerializeField] private bool blockCollision;
+    public bool blockCollision;
 
     protected override void Awake()
     {
@@ -26,8 +26,9 @@ public class ChildBolt : BaseBoltClass
         _parentBolt.ReleasedEvent += OnParentBoltReleasedEvent;
         SetSlotParent(_parentBolt.transform);
     }
-    
+
     #region EVENT SUBSCRIBERS
+
     private void OnAnyMoveSequenceEnded()
     {
         _parentBolt.SetPickable(false);
@@ -57,8 +58,11 @@ public class ChildBolt : BaseBoltClass
     }
 
     #endregion
+
     protected override void OnCollidedWithBolt(BaseBoltClass collidedBolt)
     {
+        if (collidedBolt.PerformFakeMove) return;
+
         if (isPicked)
         {
             if (obstacleBolts.Contains(collidedBolt))
@@ -86,6 +90,7 @@ public class ChildBolt : BaseBoltClass
             if (!isPicked && !_parentBolt.isPicked) return;
             if (bolt == _parentBolt) return;
             if (blockCollision) return;
+            Debug.LogError("Child collided" + bolt.name);
 
             OnCollidedWithBolt(bolt);
         }

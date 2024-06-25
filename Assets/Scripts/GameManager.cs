@@ -11,10 +11,10 @@ public class GameManager : MonoBehaviour
     public event System.Action LevelSucceededEvent;
 
     [Header("Debug")] public bool isLevelActive;
-
-
+    
     private void Awake()
     {
+        Application.targetFrameRate = Screen.currentResolution.refreshRate;
         instance = this;
         isLevelActive = true;
     }

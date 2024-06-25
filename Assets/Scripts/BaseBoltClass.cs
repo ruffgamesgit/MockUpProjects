@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class BaseBoltClass : MonoBehaviour
 {
     #region Events For Sub-Classes
+
     public event Action RealMoveStartedEvent;
     public event Action AnyMoveSequenceEndedEvent;
     public event Action AnyMoveSequenceStartedEvent;
@@ -31,7 +32,7 @@ public abstract class BaseBoltClass : MonoBehaviour
     [SerializeField] public bool isPicked;
     [SerializeField] protected bool shouldRotate;
     protected bool BlockPickingAnotherSequenceIsOn;
-    protected bool PerformFakeMove;
+    public bool PerformFakeMove;
     private const float RotationSpeed = 700f;
     private Tween _fakeMoveTween;
     private Vector3 _startPos;
@@ -104,7 +105,7 @@ public abstract class BaseBoltClass : MonoBehaviour
         UnsubscribeFromEvents();
         Destroy(transform.GetComponent<Collider>());
         Destroy(transform.GetComponent<Rigidbody>());
-        
+
         ReleasedEvent?.Invoke();
         ColoredHole coloredHole = HoleManager.instance.GetCurrentHole();
 
@@ -165,9 +166,10 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     private void FakeMove()
     {
+        Debug.Log("Fake move performed: " + gameObject.name);
         AnyMoveSequenceStartedEvent?.Invoke();
         PerformFakeMove = true;
-        
+
         Vector3 movementDirection = transform.up * frontOffset;
         Vector3 targetPosition = transform.position + movementDirection;
         _startPos = transform.position;
@@ -189,6 +191,8 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     public void StopFakeMove(BaseBoltClass collidedBolt)
     {
+        if (!PerformFakeMove) return;
+
         Taptic.Medium();
         shouldRotate = false;
         PerformFakeMove = false;
@@ -212,9 +216,19 @@ public abstract class BaseBoltClass : MonoBehaviour
     {
         CollidedAndRoleIsPassiveEvent?.Invoke();
         BlockPickingAnotherSequenceIsOn = true;
-        transform.DOLocalMove(transform.localPosition + transform.up * 0.125f, .125f)
-            .SetLoops(2, LoopType.Yoyo)
-            .OnComplete(() => { BlockPickingAnotherSequenceIsOn = false; });
+
+        Sequence sq = DOTween.Sequence();
+        Vector3 startPos = transform.localPosition;
+        sq.Append(transform.DOLocalMove(startPos + transform.up * 0.125f, .125f));
+        sq.Append(transform.DOLocalMove(startPos, .125f));
+        sq.OnComplete((() =>
+            BlockPickingAnotherSequenceIsOn = false));
+
+        Debug.Log("Collided role is passive: " + gameObject.name);
+
+        // transform.DOLocalMove(transform.localPosition + transform.up * 0.125f, .125f)
+        //     .SetLoops(2, LoopType.Yoyo)
+        //     .OnComplete(() => { BlockPickingAnotherSequenceIsOn = false; });
     }
 
     protected virtual void Update()

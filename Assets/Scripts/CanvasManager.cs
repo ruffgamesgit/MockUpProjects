@@ -4,20 +4,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CanvasManager :  MonoBehaviour
+public class CanvasManager : MonoBehaviour
 {
     public static CanvasManager instance;
-    
+
     [Header("References")] [SerializeField]
     CanvasGroup failPanel;
 
     [SerializeField] CanvasGroup defaultPanel;
     [SerializeField] CanvasGroup winPanel;
     public TextMeshProUGUI levelName;
-    
+    [SerializeField] private GameObject tutorialObj;
+
     private void Awake()
     {
         instance = this;
+    }
+
+    private void Update()
+    {
+        if (!tutorialObj.activeInHierarchy) return;
+        if (Input.GetMouseButtonDown(0)) 
+            tutorialObj.SetActive(false);
     }
 
     void Start()

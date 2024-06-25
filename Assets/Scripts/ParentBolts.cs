@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,12 +13,25 @@ public class ParentBolts : BaseBoltClass
         gameObject.name = "Parent_Bolt_" + colourEnum;
 
         #region Slot Parent Assign
+
         PickedEvent += () => SetSlotParent(Rotater.instance.platform);
         AnyMoveSequenceStartedEvent += () => SetSlotParent(Rotater.instance.platform);
         CollidedAndRoleIsPassiveEvent += () => SetSlotParent(Rotater.instance.platform);
         AnyMoveSequenceEndedEvent += () => SetSlotParent(transform);
         ReleasedEvent += () => SetSlotParent(Rotater.instance.platform);
+
         #endregion
+    }
+
+    void LateUpdate()
+    {
+        if (!PerformFakeMove) return;
+        if (!GetLowestObstacleBolt()) return;
+
+        if (GetLowestObstacleBolt().transform.position.y < transform.position.y)
+        {
+            OnCollidedWithBolt(GetLowestObstacleBolt());
+        }
     }
 
     protected override void OnCollidedWithBolt(BaseBoltClass collidedBolt)
@@ -32,6 +46,7 @@ public class ParentBolts : BaseBoltClass
         {
             if (!PerformFakeMove) return;
             if (childrenBolts.Contains(bolt as ChildBolt)) return;
+            Debug.LogError("Sparkle");
 
             OnCollidedWithBolt(bolt);
         }
@@ -81,5 +96,18 @@ public class ParentBolts : BaseBoltClass
     public int GetChildrenBoltCount()
     {
         return childrenBolts.Count;
+    }
+
+    BaseBoltClass GetLowestObstacleBolt()
+    {
+        BaseBoltClass targebolt = null;
+        for (int i = 0; i < obstacleBolts.Count; i++)
+        {
+            if (!obstacleBolts[i].IsBoltActive()) continue;
+            if (targebolt) break;
+            targebolt = obstacleBolts[i];
+        }
+
+        return targebolt;
     }
 }
