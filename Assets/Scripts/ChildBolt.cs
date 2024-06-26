@@ -37,7 +37,7 @@ public class ChildBolt : BaseBoltClass
 
     private void OnParentBoltReleasedEvent()
     {
-        isActive = false;
+        IsActive = false;
         OnReleased();
     }
 
@@ -61,7 +61,7 @@ public class ChildBolt : BaseBoltClass
 
     protected override void OnCollidedWithBolt(BaseBoltClass collidedBolt)
     {
-        if (collidedBolt.PerformFakeMove) return;
+        if (collidedBolt.performFakeMove) return;
 
         if (isPicked)
         {

@@ -548,37 +548,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7800083737228938696}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &592299980
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 592299981}
-  m_Layer: 0
-  m_Name: TutorialArrow
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &592299981
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 592299980}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.7702969, y: 1.3598757, z: 0.82171917}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &602221489 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7124488144979214058, guid: 0b30ad93ba860f845b2c97dd290193d9,
@@ -1990,6 +1959,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5543271816317985673, guid: b09feb95a3bec3240a892af365d671b4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -11.501953
+      objectReference: {fileID: 0}
+    - target: {fileID: 5966472750542474433, guid: b09feb95a3bec3240a892af365d671b4,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -250.69824
       objectReference: {fileID: 0}
     - target: {fileID: 8615383374267990956, guid: b09feb95a3bec3240a892af365d671b4,
         type: 3}

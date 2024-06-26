@@ -6,39 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="93927f8a-a67a-41d6-ad3e-9b259523e37d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Blue.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Blue.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Blue_slot.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Blue_slot.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Green.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Green.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Purple.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Purple.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Purple_slot.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Purple_slot.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Red.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Red.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Red_slot.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Red_slot.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/White.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/White.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/White_slot.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/White_slot.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Yellow.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Yellow.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Yellow_slot.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Yellow_slot.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/screwslot.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/screwslot.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Models/Head.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Models/Head.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/ChildBolt.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/ChildBolt.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/MANAGERS/CanvasManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/MANAGERS/CanvasManager.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/ParentBolt.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/ParentBolt.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Arrow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Arrow.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Game.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Designed_Level_02.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Designed_Level_02.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BaseBoltClass.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BaseBoltClass.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/BoltHeadCollision.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/BoltHeadCollision.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CanvasManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CanvasManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/ChildBolt.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ChildBolt.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/ParentBolts.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/ParentBolts.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Rotater.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Rotater.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/SampleSceneProfile.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/SampleSceneProfile.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Shader_Full.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Shader_Full.shadergraph" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Shaders/Shader_Full_Unlit.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Shaders/Shader_Full_Unlit.shadergraph" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/QualitySettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,29 +40,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Attach to Unity Editor.Attach to Unity Editor.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.6666667&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Bolts__Jam&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Attach to Unity Editor.Attach to Unity Editor.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "XThreadsFramesViewSplitterKey": "0.6666667",
+    "git-widget-placeholder": "Bolts__Jam",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "advanced.settings",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\fatih\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\fatih\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\fatih\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\fatih\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\fatih\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\fatih\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.27f1\Editor\Unity.exe" />
@@ -147,7 +123,8 @@
       <workItem from="1718259828140" duration="12886000" />
       <workItem from="1718345876295" duration="9389000" />
       <workItem from="1719208999005" duration="18148000" />
-      <workItem from="1719295429996" duration="4153000" />
+      <workItem from="1719295429996" duration="5354000" />
+      <workItem from="1719382907004" duration="906000" />
     </task>
     <servers />
   </component>
@@ -182,5 +159,9 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

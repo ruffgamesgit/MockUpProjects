@@ -30,7 +30,7 @@ public class BoltHeadCollision : MonoBehaviour
             if (headCollision.GetParentBolt() != parentBolt)
             {
                 Debug.LogWarning("7");
-                if(headCollision.GetParentBolt().PerformFakeMove) return;
+                if(headCollision.GetParentBolt().performFakeMove) return;
                 Debug.LogWarning("Collided with bolt: " + headCollision.GetParentBolt().gameObject.name);
                 CollidedWithBoltEvent?.Invoke(headCollision.GetParentBolt());
             }

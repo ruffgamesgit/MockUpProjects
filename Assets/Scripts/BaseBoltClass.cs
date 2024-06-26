@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public abstract class BaseBoltClass : MonoBehaviour
 {
-    #region Events For Sub-Classes
+    #region Events For Subclasses
 
     public event Action RealMoveStartedEvent;
     public event Action AnyMoveSequenceEndedEvent;
@@ -16,8 +17,9 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     #endregion
 
-    [Header("Base Config")] public ColourEnum colourEnum;
-    [SerializeField] private float frontOffset;
+    [Header("Base Config")] 
+    public ColourEnum colourEnum;
+    private const float FrontOffset = 1f;
 
     [Header("Base References")] [SerializeField]
     protected ParticleSystem sparkParticle;
@@ -26,13 +28,11 @@ public abstract class BaseBoltClass : MonoBehaviour
     [SerializeField] protected BoltHeadCollision headCollision;
     [SerializeField] protected List<BaseBoltClass> obstacleBolts;
 
-    [Header("Base Debug")] [SerializeField]
-    protected bool isActive;
-
-    [SerializeField] public bool isPicked;
-    [SerializeField] protected bool shouldRotate;
+    [Header("Base Debug")] protected bool IsActive;
+    [HideInInspector] public bool isPicked;
+    [HideInInspector] public bool performFakeMove;
+    private bool _shouldRotate;
     protected bool BlockPickingAnotherSequenceIsOn;
-    public bool PerformFakeMove;
     private const float RotationSpeed = 700f;
     private Tween _fakeMoveTween;
     private Vector3 _startPos;
@@ -41,7 +41,7 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     protected virtual void Awake()
     {
-        isActive = true;
+        IsActive = true;
 
         headCollision.SetParent(this);
         headCollision.CollidedWithBoltEvent += OnCollidedWithBolt;
@@ -63,7 +63,7 @@ public abstract class BaseBoltClass : MonoBehaviour
 
         PickedEvent?.Invoke();
         isPicked = true;
-        shouldRotate = true;
+        _shouldRotate = true;
 
         if (!CanPerformMoving())
         {
@@ -88,13 +88,13 @@ public abstract class BaseBoltClass : MonoBehaviour
 
         AnyMoveSequenceStartedEvent?.Invoke();
         RealMoveStartedEvent?.Invoke();
-        isActive = false;
-        Vector3 movementDirection = transform.up * frontOffset;
+        IsActive = false;
+        Vector3 movementDirection = transform.up * FrontOffset;
         Vector3 targetPosition = transform.position + movementDirection;
 
         transform.DOMove(targetPosition, .5f).SetDelay(0.15f).OnComplete(() =>
         {
-            shouldRotate = false;
+            _shouldRotate = false;
             AnyMoveSequenceEndedEvent?.Invoke();
             OnReleased();
         });
@@ -147,9 +147,9 @@ public abstract class BaseBoltClass : MonoBehaviour
         transform.forward = targetPoint.transform.forward;
         Sequence sq = DOTween.Sequence();
         sq.Append(
-            transform.DOLocalMove(Vector3.up, .35f).OnComplete(() => { shouldRotate = true; }));
+            transform.DOLocalMove(Vector3.up, .35f).OnComplete(() => { _shouldRotate = true; }));
         sq.Append(transform.DOLocalMove(Vector3.zero
-            , .25f).OnStart(() => { shouldRotate = false; }));
+            , .25f).OnStart(() => { _shouldRotate = false; }));
         sq.OnComplete(() =>
         {
             if (newHole == null) return;
@@ -168,9 +168,9 @@ public abstract class BaseBoltClass : MonoBehaviour
     {
         Debug.Log("Fake move performed: " + gameObject.name);
         AnyMoveSequenceStartedEvent?.Invoke();
-        PerformFakeMove = true;
+        performFakeMove = true;
 
-        Vector3 movementDirection = transform.up * frontOffset;
+        Vector3 movementDirection = transform.up * FrontOffset;
         Vector3 targetPosition = transform.position + movementDirection;
         _startPos = transform.position;
         _initRot = transform.rotation;
@@ -191,11 +191,11 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     public void StopFakeMove(BaseBoltClass collidedBolt)
     {
-        if (!PerformFakeMove) return;
+        if (!performFakeMove) return;
 
         Taptic.Medium();
-        shouldRotate = false;
-        PerformFakeMove = false;
+        _shouldRotate = false;
+        performFakeMove = false;
         _fakeMoveTween.Kill();
         collidedBolt?.OnCollidedAndRoleIsPassive();
         transform.DOMove(_startPos, .5f);
@@ -233,7 +233,7 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (shouldRotate)
+        if (_shouldRotate)
         {
             transform.Rotate(Vector3.up, 1 * RotationSpeed * Time.deltaTime);
         }
@@ -244,7 +244,7 @@ public abstract class BaseBoltClass : MonoBehaviour
 
     public bool IsBoltActive()
     {
-        return isActive;
+        return IsActive;
     }
 
     public ColourEnum GetColor()

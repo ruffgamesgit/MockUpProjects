@@ -25,7 +25,7 @@ public class ParentBolts : BaseBoltClass
 
     void LateUpdate()
     {
-        if (!PerformFakeMove) return;
+        if (!performFakeMove) return;
         if (!GetLowestObstacleBolt()) return;
 
         if (GetLowestObstacleBolt().transform.position.y < transform.position.y)
@@ -44,7 +44,7 @@ public class ParentBolts : BaseBoltClass
     {
         if (other.TryGetComponent(out BaseBoltClass bolt))
         {
-            if (!PerformFakeMove) return;
+            if (!performFakeMove) return;
             if (childrenBolts.Contains(bolt as ChildBolt)) return;
             Debug.LogError("Sparkle");
 
