@@ -11,6 +11,7 @@ public class NumberObject : MonoBehaviour
     [Header("Debug")] [SerializeField] private GridCell occupiedCell;
     [SerializeField] private PlacementPoint currentPoint;
     private GameObject _currentModel;
+    public bool isMovingToPoint;
 
     private void Awake()
     {
@@ -20,7 +21,7 @@ public class NumberObject : MonoBehaviour
         SetMesh();
     }
 
-    public void SetMesh()
+    private void SetMesh()
     {
         if (_currentModel) Destroy(_currentModel);
 
@@ -42,6 +43,7 @@ public class NumberObject : MonoBehaviour
 
     private void MoveToPoint(PlacementPoint targetPoint, bool informCell = false)
     {
+        isMovingToPoint = true;
         if (informCell)
         {
             occupiedCell.OnNumberObjectLeft();
@@ -52,7 +54,22 @@ public class NumberObject : MonoBehaviour
         currentPoint = targetPoint;
         currentPoint.SetOccupied(this);
 
-        transform.DOMove(targetPoint.transform.position, 0.5f).OnComplete(PointManager.instance.OnNewNumberArrived);
+        transform.DOMove(targetPoint.transform.position, 0.5f).OnComplete(() =>
+        {
+            isMovingToPoint = false;
+            PointManager.instance.OnNewNumberArrived();
+            transform.SetParent(currentPoint.transform);
+        });
+    }
+
+    public void InnerSortMovement(PlacementPoint targetPoint)
+    {
+        currentPoint = targetPoint;
+        currentPoint.SetOccupied(this);
+        transform.DOMove(targetPoint.transform.position, 0.5f).OnComplete(() =>
+        {
+            transform.SetParent(currentPoint.transform);
+        });
     }
 
     public void Merge(Vector3 targetPos)
@@ -68,80 +85,3 @@ public class NumberObject : MonoBehaviour
         PointManager.instance.OnNewNumberArrived();
     }
 }
-
-/*
- public void CheckForPossibleMatches()
-    {
-        List<PizzaController> pizzas = GetAllPizzasOnLots();
-        if (pizzas.Count < minMatchCount) return;
-        Dictionary<PizzaType, List<PizzaController>> separatedPizzas = SeparatePizzaControllersByType(pizzas);
-        List<PizzaController> matchablePizzas = new();
-        foreach (var kvp in separatedPizzas)
-        {
-            if (kvp.Value.Count >= minMatchCount)
-            {
-                matchablePizzas = kvp.Value;
-                break;
-            }
-        }
-
-        int iterate = minMatchCount;
-
-        if (matchablePizzas.Count != 0)
-        {
-            for (int i = 0; i < matchablePizzas.Count; i++)
-            {
-                if (iterate == 0) break;
-
-                matchablePizzas[i].DisapearFromLot();
-                pizzas.Remove(matchablePizzas[i]);
-                iterate--;
-            }
-        }
-        else
-        {
-            if (pizzas.Count == Lots.Count)
-            {
-                GameManager.instance.EndGame(false);
-                Debug.LogError("No more available lot, LOT is FULL");
-            }
-        }
-    }
-
-    List<PizzaController> GetAllPizzasOnLots()
-    {
-        List<PizzaController> pizzas = new();
-
-        for (int i = 0; i < Lots.Count; i++)
-        {
-            if (Lots[i].GetPizza())
-                pizzas.Add(Lots[i].GetPizza());
-        }
-
-        return pizzas;
-    }
-
-    Dictionary<PizzaType, List<PizzaController>> SeparatePizzaControllersByType(List<PizzaController> controllers)
-    {
-        Dictionary<PizzaType, List<PizzaController>> separatedControllers =
-            new Dictionary<PizzaType, List<PizzaController>>();
-
-        // Initialize the dictionary with empty lists for each PizzaType
-        foreach (PizzaType type in System.Enum.GetValues(typeof(PizzaType)))
-        {
-            separatedControllers[type] = new List<PizzaController>();
-        }
-
-        // Populate the dictionary
-        foreach (PizzaController controller in controllers)
-        {
-            if (separatedControllers.ContainsKey(controller.GetPizzaData().pizzaType))
-            {
-                separatedControllers[controller.GetPizzaData().pizzaType].Add(controller);
-            }
-        }
-
-        return separatedControllers;
-    }
-
-    */

@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using System.Linq;
 
 public class PointManager : MonoSingleton<PointManager>
 {
     [SerializeField] private List<PlacementPoint> placementPoints = new();
-    private int minMatchCount = 3;
+    private const int MinMatchCount = 3;
 
     public PlacementPoint GetAvailablePoint()
     {
@@ -37,22 +37,22 @@ public class PointManager : MonoSingleton<PointManager>
 
     void CheckForPossibleMatches()
     {
-        List<NumberObject> numberObjects = GetAllNumberObjects();
-        if (numberObjects.Count < minMatchCount) return;
+        List<NumberObject> numberObjects = GetAllNumberObjects(excludeMovingObjects: true);
+        if (numberObjects.Count < MinMatchCount) return;
 
         Dictionary<int, List<NumberObject>> numObjectsDict = SeparateObjectsByLevelValue(numberObjects);
         List<NumberObject> matchableNumberObjects = new();
 
         foreach (var kvp in numObjectsDict)
         {
-            if (kvp.Value.Count >= minMatchCount)
+            if (kvp.Value.Count >= MinMatchCount)
             {
                 matchableNumberObjects = kvp.Value;
                 break;
             }
         }
 
-        int iterate = minMatchCount;
+        int iterate = MinMatchCount;
 
         if (matchableNumberObjects.Count != 0)
         {
@@ -67,17 +67,31 @@ public class PointManager : MonoSingleton<PointManager>
                     numObj.Merge(matchableNumberObjects[0].transform.position);
                 }
 
-                // pizzas.Remove(matchablePizzas[i]);
+                PerformInnerSort();
                 iterate--;
             }
         }
         else
         {
-            // if (pizzas.Count == Lots.Count)
-            // {
-            //     GameManager.instance.EndGame(false);
-            //     Debug.LogError("No more available lot, LOT is FULL");
-            // }
+            PerformInnerSort();
+        }
+    }
+
+    private void PerformInnerSort()
+    {
+        List<NumberObject> numberObjects = new(GetAllNumberObjects());
+
+        numberObjects = numberObjects.OrderByDescending(n => n.levelValue).ToList();
+
+        foreach (PlacementPoint point in placementPoints)
+        {
+            point.SetFree();
+        }
+
+        for (int i = 0; i < numberObjects.Count; i++)
+        {
+            NumberObject obj = numberObjects[i];
+            obj.InnerSortMovement(placementPoints[i]);
         }
     }
 
@@ -85,13 +99,11 @@ public class PointManager : MonoSingleton<PointManager>
     {
         Dictionary<int, List<NumberObject>> separatedControllers = new();
 
-        // Initialize the dictionary with empty lists for each PizzaType
         for (int i = 1; i < 10; i++)
         {
             separatedControllers[i] = new List<NumberObject>();
         }
 
-        // Populate the dictionary
         foreach (NumberObject numObjects in allNumberObjects)
         {
             if (separatedControllers.ContainsKey(numObjects.levelValue))
@@ -103,21 +115,23 @@ public class PointManager : MonoSingleton<PointManager>
         return separatedControllers;
     }
 
-    List<NumberObject> GetAllNumberObjects()
+    List<NumberObject> GetAllNumberObjects(bool excludeMovingObjects = false)
     {
         List<NumberObject> numberObjects = new();
 
         for (int i = 0; i < placementPoints.Count; i++)
         {
-            if (placementPoints[i].GetNumberObject())
+            if (!placementPoints[i].GetNumberObject()) continue;
+
+            if (excludeMovingObjects)
+            {
+                if (!placementPoints[i].GetNumberObject().isMovingToPoint)
+                    numberObjects.Add(placementPoints[i].GetNumberObject());
+            }
+            else
                 numberObjects.Add(placementPoints[i].GetNumberObject());
         }
 
         return numberObjects;
-    }
-
-    public int GetPointCount()
-    {
-        return placementPoints.Count;
     }
 }
