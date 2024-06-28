@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grid_Cell
+  m_Name: Grid_Cell2
   m_Shader: {fileID: -6465566751694194690, guid: ef3afcf964a41b246becf8464757aab0,
     type: 3}
   m_ValidKeywords:
