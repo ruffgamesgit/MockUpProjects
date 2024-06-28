@@ -1,9 +1,14 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class NumberObject : MonoBehaviour
 {
     [Header("Config")] public int levelValue;
+    [SerializeField] private Color nonPickableColor;
+    private Color _defaultColor;
 
     [Header("References")] [SerializeField]
     private NumberObjectMeshSO meshDataSo;
@@ -12,6 +17,10 @@ public class NumberObject : MonoBehaviour
     [SerializeField] private PlacementPoint currentPoint;
     private GameObject _currentModel;
     public bool isMovingToPoint;
+    private const int MaxLevelValue = 9;
+
+    [FormerlySerializedAs("_numberTxt")] [SerializeField]
+    private TextMeshProUGUI[] numberTexts;
 
     private void Awake()
     {
@@ -21,13 +30,17 @@ public class NumberObject : MonoBehaviour
         SetMesh();
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void SetMesh()
     {
+        if (levelValue > MaxLevelValue) return;
         if (_currentModel) Destroy(_currentModel);
 
         _currentModel = Instantiate(meshDataSo.meshes[levelValue - 1], transform.position + (Vector3.up / 4),
             Quaternion.identity,
             transform);
+
+        numberTexts = GetComponentsInChildren<TextMeshProUGUI>(true);
     }
 
     public void OnCellPicked()
@@ -38,6 +51,7 @@ public class NumberObject : MonoBehaviour
             return;
         }
 
+        CanvasManager.instance.SetScoreText();
         MoveToPoint(PointManager.instance.GetAvailablePoint(), true);
     }
 
@@ -48,6 +62,7 @@ public class NumberObject : MonoBehaviour
         {
             occupiedCell.OnNumberObjectLeft();
             occupiedCell.SetNumberObject(null);
+            occupiedCell = null;
         }
 
         currentPoint?.SetFree();
@@ -75,13 +90,25 @@ public class NumberObject : MonoBehaviour
     public void Merge(Vector3 targetPos)
     {
         currentPoint?.SetFree();
-        transform.DOMoveX(targetPos.x, .25f).OnComplete((() => gameObject.SetActive(false)));
+        transform.DOMoveX(targetPos.x, .25f).OnComplete(() =>
+        {
+            transform.DOKill();
+            Destroy(gameObject);
+        }).SetDelay(0.1f);
     }
 
     public void UpgradeSelf()
     {
         levelValue++;
+        if (levelValue > MaxLevelValue) return;
+
         SetMesh();
         PointManager.instance.OnNewNumberArrived();
+    }
+
+    public void SetTextColor(bool isPickable)
+    {
+        numberTexts[0].gameObject.SetActive(isPickable);
+        numberTexts[1].gameObject.SetActive(!isPickable);
     }
 }

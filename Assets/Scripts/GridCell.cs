@@ -1,27 +1,31 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GridCell : MonoBehaviour
 {
     [Header("Config")] [SerializeField] Vector2Int coordinates;
+    [SerializeField] private LayerMask nonPickableLayer;
 
-    [Header("References")] 
-    [SerializeField] private Material pickableMaterial;
+    [Header("References")] [SerializeField]
+    private GameObject mesh;
 
-    [Header("Debug")]
-    public NumberObject numberObject;
+    [Header("Debug")] public NumberObject numberObject;
     public bool isPickable;
     [SerializeField] List<GridCell> neighbours;
+
     private void Start()
     {
         name = coordinates.ToString();
-        if (isPickable) transform.GetChild(0).GetComponent<MeshRenderer>().material = pickableMaterial;
+
         neighbours = GetNeighbors();
+        SetLayers();
     }
 
     private void OnMouseDown()
     {
         if (!isPickable) return;
+        if (!GameManager.instance.isLevelActive) return;
 
         numberObject?.OnCellPicked();
     }
@@ -36,10 +40,16 @@ public class GridCell : MonoBehaviour
         }
     }
 
+    void SetLayers()
+    {
+        mesh.layer = LayerMask.NameToLayer(isPickable ? "Default" : "Non-pickable");
+        numberObject.SetTextColor(isPickable);
+    }
+
     private void SetCellAsPickable()
     {
         isPickable = true;
-        transform.GetChild(0).GetComponent<MeshRenderer>().material = pickableMaterial;
+        SetLayers();
     }
 
     private bool HasNumberObject()
@@ -59,7 +69,7 @@ public class GridCell : MonoBehaviour
         return coordinates;
     }
 
-    public List<GridCell> GetNeighbors()
+    private List<GridCell> GetNeighbors()
     {
         List<GridCell> gridCells = GridManager.instance.gridPlan;
         List<GridCell> neighbors = new();

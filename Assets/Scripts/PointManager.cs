@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -32,14 +33,14 @@ public class PointManager : MonoSingleton<PointManager>
 
     public void OnNewNumberArrived()
     {
-        CheckForPossibleMatches();
+        StartCoroutine(CheckForPossibleMatches());
     }
 
-    void CheckForPossibleMatches()
+    IEnumerator CheckForPossibleMatches()
     {
+        yield return new WaitForSeconds(0.125f);
         List<NumberObject> numberObjects = GetAllNumberObjects(excludeMovingObjects: true);
-        if (numberObjects.Count < MinMatchCount) return;
-
+        if (numberObjects.Count < MinMatchCount)yield break;
         Dictionary<int, List<NumberObject>> numObjectsDict = SeparateObjectsByLevelValue(numberObjects);
         List<NumberObject> matchableNumberObjects = new();
 
@@ -54,7 +55,7 @@ public class PointManager : MonoSingleton<PointManager>
 
         int iterate = MinMatchCount;
 
-        if (matchableNumberObjects.Count != 0)
+        if (matchableNumberObjects.Count >=3)
         {
             for (int i = 0; i < matchableNumberObjects.Count; i++)
             {
@@ -73,9 +74,12 @@ public class PointManager : MonoSingleton<PointManager>
         }
         else
         {
+            if (GetOccupiedPointCount() == placementPoints.Count)
+                GameManager.instance.EndGame(false);
             PerformInnerSort();
         }
     }
+
 
     private void PerformInnerSort()
     {
@@ -91,6 +95,7 @@ public class PointManager : MonoSingleton<PointManager>
         for (int i = 0; i < numberObjects.Count; i++)
         {
             NumberObject obj = numberObjects[i];
+
             obj.InnerSortMovement(placementPoints[i]);
         }
     }

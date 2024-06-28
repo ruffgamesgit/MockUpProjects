@@ -1,13 +1,19 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CanvasManager : MonoSingleton<CanvasManager>
 {
-    [Header("References")] 
-    [SerializeField] CanvasGroup failPanel;
-    [FormerlySerializedAs("winPanel")] [SerializeField] CanvasGroup defaultPanel;
+    [Header("References")] [SerializeField]
+    CanvasGroup failPanel;
+
+    [FormerlySerializedAs("winPanel")] [SerializeField]
+    CanvasGroup defaultPanel;
+
+    [SerializeField] private TextMeshProUGUI scoretxt;
+    private int _currentScore;
 
     void Start()
     {
@@ -24,6 +30,13 @@ public class CanvasManager : MonoSingleton<CanvasManager>
     private void OnLevelFailed()
     {
         failPanel.DOFade(1, .5f);
+        defaultPanel.gameObject.SetActive(false);
+    }
+
+    public void SetScoreText()
+    {
+        _currentScore++;
+        scoretxt.text = "SCORE: " + _currentScore;
     }
 
     #region COMPLETED REGION
