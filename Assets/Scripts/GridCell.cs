@@ -1,39 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GridCell : MonoBehaviour
 {
     [Header("Config")] [SerializeField] Vector2Int coordinates;
-    [SerializeField] private LayerMask nonPickableLayer;
 
     [Header("References")] [SerializeField]
     private GameObject mesh;
 
-    [SerializeField] private NumberObjectMeshSO meshDataSo;
-
-    [Header("Debug")]
-    public bool isPickable;
+    [Header("Debug")] public bool isPickable;
     public NumberObject numberObject;
     [SerializeField] List<GridCell> neighbours;
-    [SerializeField]  private Material meshMat;
-    private static readonly int GColor = Shader.PropertyToID("G_Color");
-    private static readonly int RColor = Shader.PropertyToID("R_Color");
+
 
     private void Start()
     {
-        meshMat = mesh.transform.GetComponent<Renderer>().material;
         name = coordinates.ToString();
 
         neighbours = GetNeighbors();
-        SetLayers();
-        SetShaderColor();
-    }
-
-    private void SetShaderColor()
-    {
-        meshMat.SetColor(RColor, meshDataSo.meshColorData[numberObject.levelValue - 1].color);
-        meshMat.SetColor(GColor, meshDataSo.meshColorData[numberObject.levelValue - 1].color);
     }
 
     private void OnMouseDown()
@@ -54,16 +38,11 @@ public class GridCell : MonoBehaviour
         }
     }
 
-    void SetLayers()
-    {
-        mesh.layer = LayerMask.NameToLayer(isPickable ? "Default" : "Non-pickable");
-        numberObject.SetTextColor(isPickable);
-    }
 
     private void SetCellAsPickable()
     {
         isPickable = true;
-        SetLayers();
+        numberObject.SetLayers();
     }
 
     private bool HasNumberObject()

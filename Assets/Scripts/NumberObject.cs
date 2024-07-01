@@ -1,24 +1,27 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class NumberObject : MonoBehaviour
 {
     [Header("Config")] public int levelValue;
-    [SerializeField] private Color nonPickableColor;
     private Color _defaultColor;
 
     [Header("References")] [SerializeField]
     private NumberObjectMeshSO meshDataSo;
 
+    [SerializeField] private TextMeshProUGUI valueText;
+    [SerializeField] private GameObject mesh;
+
     [Header("Debug")] [SerializeField] private GridCell occupiedCell;
     [SerializeField] private PlacementPoint currentPoint;
-    private GameObject _currentModel;
     public bool isMovingToPoint;
     private const int MaxLevelValue = 9;
     [SerializeField] private TextMeshProUGUI[] numberTexts;
+    private static readonly int GColor = Shader.PropertyToID("G_Color");
+    private static readonly int RColor = Shader.PropertyToID("R_Color");
 
     private void Awake()
     {
@@ -29,24 +32,38 @@ public class NumberObject : MonoBehaviour
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
-    private void SetMesh()
+    private void SetMesh(bool withAnimation = false)
     {
         if (levelValue > MaxLevelValue) return;
-        if (_currentModel) Destroy(_currentModel);
 
-        _currentModel = Instantiate(meshDataSo.meshColorData[levelValue - 1].textMesh,
-            transform.position + (Vector3.up / 4),
-            Quaternion.identity,
-            transform);
-
+        valueText.text = levelValue.ToString();
+        if (withAnimation) transform.DOScale(Vector3.one, .25f).From(Vector3.zero);
         numberTexts = GetComponentsInChildren<TextMeshProUGUI>(true);
+        SetShaderColor();
+        SetLayers();
+    }
+
+    public void SetLayers()
+    {
+        if (occupiedCell)
+            mesh.layer = LayerMask.NameToLayer(occupiedCell.isPickable ? "Default" : "Non-pickable");
+    }
+
+    private void SetShaderColor()
+    {
+        transform.GetChild(0).GetComponent<Renderer>().material
+            .SetColor(RColor, meshDataSo.meshColorData[levelValue - 1].color);
+        transform.GetChild(0).GetComponent<Renderer>().material
+            .SetColor(GColor, meshDataSo.meshColorData[levelValue - 1].color);
     }
 
     public void OnCellPicked()
     {
+        if (!GameManager.instance.isLevelActive) return;
         if (PointManager.instance.GetOccupiedPointCount() == 7)
         {
             Debug.LogError("NO EMPTY POINT LEFT");
+            GameManager.instance.EndGame(false);
             return;
         }
 
@@ -68,7 +85,9 @@ public class NumberObject : MonoBehaviour
         currentPoint = targetPoint;
         currentPoint.SetOccupied(this);
 
-        transform.DOMove(targetPoint.transform.position, 0.5f).OnComplete(() =>
+        // transform.DORotate(new Vector3(-360, 0, 0), 0.25f, RotateMode.FastBeyond360).SetRelative()
+        //     .SetLoops(3, LoopType.Restart);
+        transform.DOJump(targetPoint.transform.position, 5, 1, .75f).OnComplete(() =>
         {
             isMovingToPoint = false;
             PointManager.instance.OnNewNumberArrived();
@@ -89,7 +108,9 @@ public class NumberObject : MonoBehaviour
     public void Merge(Vector3 targetPos)
     {
         currentPoint?.SetFree();
-        transform.DOMoveX(targetPos.x, .25f).OnComplete(() =>
+
+        //transform.DORotate(new Vector3(0, 0, 360), 0.25f, RotateMode.FastBeyond360).SetRelative();
+        transform.DOJump(targetPos, 3, 1, .5f).OnComplete(() =>
         {
             transform.DOKill();
             Destroy(gameObject);
@@ -101,13 +122,7 @@ public class NumberObject : MonoBehaviour
         levelValue++;
         if (levelValue > MaxLevelValue) return;
 
-        SetMesh();
+        SetMesh(true);
         PointManager.instance.OnNewNumberArrived();
-    }
-
-    public void SetTextColor(bool isPickable)
-    {
-        numberTexts[0].gameObject.SetActive(isPickable);
-        numberTexts[1].gameObject.SetActive(!isPickable);
     }
 }

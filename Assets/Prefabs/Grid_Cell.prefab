@@ -48,13 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coordinates: {x: 0, y: 0}
-  nonPickableLayer:
-    serializedVersion: 2
-    m_Bits: 64
   mesh: {fileID: 2845799689916525784}
-  meshDataSo: {fileID: 11400000, guid: a9bbd2e8de2a5114a9ca5a6589d1cfb3, type: 2}
-  numberObject: {fileID: 0}
   isPickable: 0
+  numberObject: {fileID: 0}
   neighbours: []
 --- !u!65 &6275075892005126666
 BoxCollider:
@@ -86,7 +82,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7553719045632997790
 Transform:
   m_ObjectHideFlags: 0
@@ -177,7 +173,7 @@ PrefabInstance:
     - target: {fileID: 6819890724627006513, guid: bf4e620cc844a394f9528834fccd8d4d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.76
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6819890724627006513, guid: bf4e620cc844a394f9528834fccd8d4d,
         type: 3}

@@ -40,7 +40,7 @@ public class PointManager : MonoSingleton<PointManager>
     {
         yield return new WaitForSeconds(0.125f);
         List<NumberObject> numberObjects = GetAllNumberObjects(excludeMovingObjects: true);
-        if (numberObjects.Count < MinMatchCount)yield break;
+        if (numberObjects.Count < MinMatchCount) yield break;
         Dictionary<int, List<NumberObject>> numObjectsDict = SeparateObjectsByLevelValue(numberObjects);
         List<NumberObject> matchableNumberObjects = new();
 
@@ -55,7 +55,7 @@ public class PointManager : MonoSingleton<PointManager>
 
         int iterate = MinMatchCount;
 
-        if (matchableNumberObjects.Count >=3)
+        if (matchableNumberObjects.Count >= 3)
         {
             for (int i = 0; i < matchableNumberObjects.Count; i++)
             {
@@ -74,12 +74,18 @@ public class PointManager : MonoSingleton<PointManager>
         }
         else
         {
-            if (GetOccupiedPointCount() == placementPoints.Count)
-                GameManager.instance.EndGame(false);
+            StartCoroutine(FailCheck());
             PerformInnerSort();
         }
     }
 
+    IEnumerator FailCheck()
+    {
+        yield return new WaitForSeconds(1.5f);
+        if(!GameManager.instance.isLevelActive) yield break;
+        if (GetOccupiedPointCount() == placementPoints.Count)
+            GameManager.instance.EndGame(false);
+    }
 
     private void PerformInnerSort()
     {
