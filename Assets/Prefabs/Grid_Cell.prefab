@@ -52,6 +52,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   mesh: {fileID: 2845799689916525784}
+  meshDataSo: {fileID: 11400000, guid: a9bbd2e8de2a5114a9ca5a6589d1cfb3, type: 2}
   numberObject: {fileID: 0}
   isPickable: 0
   neighbours: []

@@ -18,9 +18,7 @@ public class NumberObject : MonoBehaviour
     private GameObject _currentModel;
     public bool isMovingToPoint;
     private const int MaxLevelValue = 9;
-
-    [FormerlySerializedAs("_numberTxt")] [SerializeField]
-    private TextMeshProUGUI[] numberTexts;
+    [SerializeField] private TextMeshProUGUI[] numberTexts;
 
     private void Awake()
     {
@@ -36,7 +34,8 @@ public class NumberObject : MonoBehaviour
         if (levelValue > MaxLevelValue) return;
         if (_currentModel) Destroy(_currentModel);
 
-        _currentModel = Instantiate(meshDataSo.meshes[levelValue - 1], transform.position + (Vector3.up / 4),
+        _currentModel = Instantiate(meshDataSo.meshColorData[levelValue - 1].textMesh,
+            transform.position + (Vector3.up / 4),
             Quaternion.identity,
             transform);
 
