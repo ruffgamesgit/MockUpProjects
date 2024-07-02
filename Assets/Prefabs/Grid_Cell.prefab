@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff53b177be59b9f49b0342164370aa8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coordinates: {x: 0, y: 0}
+  coordinates: {x: 0, y: 3}
   mesh: {fileID: 2845799689916525784}
   isPickable: 0
   numberObject: {fileID: 0}
@@ -160,6 +160,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NumberObject
       objectReference: {fileID: 0}
+    - target: {fileID: 3129706671760357293, guid: bf4e620cc844a394f9528834fccd8d4d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.109
+      objectReference: {fileID: 0}
     - target: {fileID: 6819890724627006513, guid: bf4e620cc844a394f9528834fccd8d4d,
         type: 3}
       propertyPath: m_RootOrder
@@ -214,6 +219,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191761224017963176, guid: bf4e620cc844a394f9528834fccd8d4d,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191761224017963176, guid: bf4e620cc844a394f9528834fccd8d4d,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191761224017963176, guid: bf4e620cc844a394f9528834fccd8d4d,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191761224017963176, guid: bf4e620cc844a394f9528834fccd8d4d,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf4e620cc844a394f9528834fccd8d4d, type: 3}
