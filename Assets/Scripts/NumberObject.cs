@@ -6,18 +6,17 @@ using Random = UnityEngine.Random;
 
 public class NumberObject : MonoBehaviour
 {
-    [Header("Config")] 
-    public int levelValue;
+    [Header("Config")] public int levelValue;
     private Color _defaultColor;
 
     [Header("References")] [SerializeField]
     private NumberObjectMeshSO meshDataSo;
+
     [SerializeField] private TextMeshProUGUI valueText;
     [SerializeField] private GameObject mesh;
     [SerializeField] private GameObject thinMesh;
 
-    [Header("Debug")] 
-    [SerializeField] private GridCell occupiedCell;
+    [Header("Debug")] [SerializeField] private GridCell occupiedCell;
     [SerializeField] private PlacementPoint currentPoint;
     [HideInInspector] public bool isMovingToPoint;
     private const int MaxLevelValue = 9;
@@ -33,7 +32,7 @@ public class NumberObject : MonoBehaviour
         _propertyBlock = new MaterialPropertyBlock();
         _meshRenderer = mesh.GetComponent<Renderer>();
         _thinMeshRenderer = thinMesh.GetComponent<Renderer>();
-        
+
         levelValue = Random.Range(1, 7);
         occupiedCell = transform.GetComponentInParent<GridCell>();
         occupiedCell.SetNumberObject(this);
@@ -45,8 +44,8 @@ public class NumberObject : MonoBehaviour
     {
         if (levelValue > MaxLevelValue) return;
         valueText.text = levelValue.ToString();
-        
-        if (withAnimation) transform.DOScale(Vector3.one, .25f).From(Vector3.zero);
+
+        if (withAnimation) transform.DOScale(Vector3.one, .25f).From(Vector3.zero).SetDelay(0.25f);
         SetShaderColor();
         SetPickableStatus();
     }
@@ -64,7 +63,7 @@ public class NumberObject : MonoBehaviour
             _propertyBlock.SetFloat(Value, .5f);
         }
 
-        _meshRenderer.SetPropertyBlock(_propertyBlock); 
+        _meshRenderer.SetPropertyBlock(_propertyBlock);
         _thinMeshRenderer.SetPropertyBlock(_propertyBlock);
     }
 
@@ -96,6 +95,7 @@ public class NumberObject : MonoBehaviour
         mesh.SetActive(false);
         thinMesh.SetActive(true);
         isMovingToPoint = true;
+        
         if (informCell)
         {
             occupiedCell.OnNumberObjectLeft();
@@ -114,7 +114,7 @@ public class NumberObject : MonoBehaviour
             isMovingToPoint = false;
             PointManager.instance.OnNewNumberArrived();
             transform.SetParent(currentPoint.transform);
-            
+
             mesh.SetActive(true);
             thinMesh.SetActive(false);
         });
@@ -132,13 +132,20 @@ public class NumberObject : MonoBehaviour
 
     public void Merge(Vector3 targetPos)
     {
+        Debug.LogWarning("Merging");
+        
+        mesh.SetActive(false);
+        thinMesh.SetActive(true);
         currentPoint?.SetFree();
 
-        //transform.DORotate(new Vector3(0, 0, 360), 0.25f, RotateMode.FastBeyond360).SetRelative();
+        transform.DORotate(new Vector3(0, 0, 360), 0.25f, RotateMode.FastBeyond360).SetRelative();
         transform.DOJump(targetPos, 3, 1, .5f).OnComplete(() =>
         {
             transform.DOKill();
             Destroy(gameObject);
+
+            mesh.SetActive(true);
+            thinMesh.SetActive(false);
         }).SetDelay(0.1f);
     }
 
