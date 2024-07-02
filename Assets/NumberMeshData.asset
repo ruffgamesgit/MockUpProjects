@@ -13,30 +13,21 @@ MonoBehaviour:
   m_Name: NumberMeshData
   m_EditorClassIdentifier: 
   meshColorData:
-  - textMesh: {fileID: 8262385202563471866, guid: 212fb2cb748d30d4981593c9adf28592,
-      type: 3}
-    color: {r: 0.9433962, g: 0.28034887, b: 0.28034887, a: 0}
-  - textMesh: {fileID: 8262385202563471866, guid: f03977eb39a4d91449c6c39dcd52b9f2,
-      type: 3}
-    color: {r: 0.9811321, g: 0.86334515, b: 0.28230685, a: 0}
-  - textMesh: {fileID: 8262385202563471866, guid: 60f65a15ddde8764b8211e269743db91,
-      type: 3}
-    color: {r: 0.46682632, g: 0.8679245, b: 0.16785331, a: 0}
-  - textMesh: {fileID: 8262385202563471866, guid: e0d762c25c739674dba7a75d447225d0,
-      type: 3}
-    color: {r: 0.062745094, g: 0.628503, b: 1, a: 0}
-  - textMesh: {fileID: 8262385202563471866, guid: ee0b0357ad191f3408b3c0bd8491189b,
-      type: 3}
-    color: {r: 0.9811321, g: 0.29156283, b: 0.8513808, a: 0}
-  - textMesh: {fileID: 8262385202563471866, guid: 0ce3b20c450e56c4eadd3f3112e8449b,
-      type: 3}
-    color: {r: 0, g: 1, b: 0.66267204, a: 0}
-  - textMesh: {fileID: 8262385202563471866, guid: ada74b47085d1934db869ce283764a6e,
-      type: 3}
-    color: {r: 0.5566038, g: 0.3964489, b: 0.3964489, a: 0}
-  - textMesh: {fileID: 8262385202563471866, guid: ada74b47085d1934db869ce283764a6e,
-      type: 3}
-    color: {r: 0.62462234, g: 0, b: 1, a: 0}
-  - textMesh: {fileID: 8262385202563471866, guid: 7ce4274514db10b4da5e876d7b6fcdb3,
-      type: 3}
-    color: {r: 0, g: 0, b: 0, a: 0}
+  - R_color: {r: 0.3490566, g: 0.16958883, b: 0.16958883, a: 0}
+    G_color: {r: 0.7830189, g: 0.33610716, b: 0.33610716, a: 0}
+  - R_color: {r: 0.45144615, g: 0.5660378, b: 0.33908868, a: 0}
+    G_color: {r: 0.56873167, g: 0.9245283, b: 0.30962977, a: 0}
+  - R_color: {r: 0.3571111, g: 0.7075472, b: 0.590537, a: 0}
+    G_color: {r: 0, g: 1, b: 0.7287984, a: 0}
+  - R_color: {r: 0.7005994, g: 0.7264151, b: 0.4488697, a: 0}
+    G_color: {r: 1, g: 0.9696857, b: 0, a: 0}
+  - R_color: {r: 0.4523407, g: 0.6558267, b: 0.8962264, a: 0}
+    G_color: {r: 0, g: 0.50425243, b: 1, a: 0}
+  - R_color: {r: 0.6226415, g: 0.45146424, b: 0.2731399, a: 0}
+    G_color: {r: 1, g: 0.5754001, b: 0, a: 0}
+  - R_color: {r: 0.5943396, g: 0.26072443, b: 0.55193585, a: 0}
+    G_color: {r: 1, g: 0.18396229, b: 0.9614268, a: 0}
+  - R_color: {r: 0.6005409, g: 0.47686014, b: 0.7169812, a: 0}
+    G_color: {r: 0.7066022, g: 0.042452812, b: 1, a: 0}
+  - R_color: {r: 0.7830189, g: 0.6832948, b: 0.6832948, a: 0}
+    G_color: {r: 1, g: 0.9481132, b: 0.9481132, a: 0}

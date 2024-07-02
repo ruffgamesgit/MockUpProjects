@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelValue: 1
-  nonPickableColor: {r: 0.5377358, g: 0.33087277, b: 0.03804734, a: 0}
   meshDataSo: {fileID: 11400000, guid: a9bbd2e8de2a5114a9ca5a6589d1cfb3, type: 2}
   valueText: {fileID: 3129706672395169169}
   mesh: {fileID: 6662968786882152451}
@@ -236,7 +235,7 @@ PrefabInstance:
     - target: {fileID: 7792095818694806343, guid: b0497302d9fdbba4499160c23e26d373,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 1.1
+      value: 1.109
       objectReference: {fileID: 0}
     - target: {fileID: 7792095818694806343, guid: b0497302d9fdbba4499160c23e26d373,
         type: 3}

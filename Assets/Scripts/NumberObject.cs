@@ -52,9 +52,9 @@ public class NumberObject : MonoBehaviour
     private void SetShaderColor()
     {
         transform.GetChild(0).GetComponent<Renderer>().material
-            .SetColor(RColor, meshDataSo.meshColorData[levelValue - 1].color);
+            .SetColor(RColor, meshDataSo.meshColorData[levelValue - 1].R_color);
         transform.GetChild(0).GetComponent<Renderer>().material
-            .SetColor(GColor, meshDataSo.meshColorData[levelValue - 1].color);
+            .SetColor(GColor, meshDataSo.meshColorData[levelValue - 1].G_color);
     }
 
     public void OnCellPicked()

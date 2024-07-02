@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Data", menuName = "ScriptableObjects/NumberObjectMeshScriptableObject", order = 1)]
 public class NumberObjectMeshSO : ScriptableObject
@@ -9,6 +10,6 @@ public class NumberObjectMeshSO : ScriptableObject
 [System.Serializable]
 public class ColorData
 {
-    public GameObject textMesh;
-    public Color color;
+   public Color R_color;
+   public Color G_color;
 }
