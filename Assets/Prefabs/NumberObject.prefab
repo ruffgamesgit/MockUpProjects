@@ -48,6 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelValue: 1
+  darkHSVValue: -0.8
+  darkTextAlphaValue: 0.3
   meshDataSo: {fileID: 11400000, guid: a9bbd2e8de2a5114a9ca5a6589d1cfb3, type: 2}
   valueText: {fileID: 3129706672395169169}
   mesh: {fileID: 6662968786882152451}
@@ -232,8 +234,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 1358954495
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0.3137255}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

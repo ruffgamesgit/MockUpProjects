@@ -2,12 +2,14 @@ using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class NumberObject : MonoBehaviour
 {
     [Header("Config")] public int levelValue;
-    private Color _defaultColor;
+    [SerializeField] private float darkHSVValue;
+    [Range(0, 1)] [SerializeField] private float darkTextAlphaValue;
 
     [Header("References")] [SerializeField]
     private NumberObjectMeshSO meshDataSo;
@@ -53,18 +55,22 @@ public class NumberObject : MonoBehaviour
     public void SetPickableStatus()
     {
         if (!occupiedCell) return;
-
+        Color currentColor = valueText.color;
+        float alpha = 1;
         if (!occupiedCell.isPickable)
         {
-            _propertyBlock.SetFloat(Value, -.5f);
+            _propertyBlock.SetFloat(Value, darkHSVValue);
+            alpha = darkTextAlphaValue;
         }
         else
         {
-            _propertyBlock.SetFloat(Value, .5f);
+            _propertyBlock.SetFloat(Value, 0);
         }
 
         _meshRenderer.SetPropertyBlock(_propertyBlock);
         _thinMeshRenderer.SetPropertyBlock(_propertyBlock);
+        currentColor.a = alpha;
+        valueText.color = currentColor;
     }
 
     private void SetShaderColor()
@@ -95,7 +101,7 @@ public class NumberObject : MonoBehaviour
         mesh.SetActive(false);
         thinMesh.SetActive(true);
         isMovingToPoint = true;
-        
+
         if (informCell)
         {
             occupiedCell.OnNumberObjectLeft();
@@ -132,8 +138,6 @@ public class NumberObject : MonoBehaviour
 
     public void Merge(Vector3 targetPos)
     {
-        Debug.LogWarning("Merging");
-        
         mesh.SetActive(false);
         thinMesh.SetActive(true);
         currentPoint?.SetFree();
