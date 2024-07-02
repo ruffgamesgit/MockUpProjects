@@ -24,16 +24,20 @@ Material:
   m_Shader: {fileID: -6465566751694194690, guid: ef3afcf964a41b246becf8464757aab0,
     type: 3}
   m_ValidKeywords:
-  - _BLENDING_TEXTURE_SETTINGS
+  - _RECEIVE_SHADOWS_OFF
+  - _SPECULAR_SETUP
+  - _SURFACE_TYPE_TRANSPARENT
+  - _VERTEXCOLOR_SETTINGS
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap:
-    RenderType: Opaque
+    RenderType: Transparent
   disabledShaderPasses:
   - SHADOWCASTER
+  - DepthOnly
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -100,7 +104,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _BLENDING_TEXTURE_SETTINGS: 1
+    - _BLENDING_TEXTURE_SETTINGS: 0
     - _Blend: 0
     - _BumpScale: 1
     - _CastShadows: 0
@@ -110,7 +114,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EnvironmentReflections: 1
     - _FalloffThreshold: 1
     - _GlossMapScale: 0
@@ -122,29 +126,29 @@ Material:
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ReceiveShadows: 1
+    - _ReceiveShadows: 0
     - _Saturation: 0
-    - _ShadingMultiplier: 1.288
+    - _ShadingMultiplier: 2
     - _Shadow: 1
     - _Shadow_Darkness: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _Surface: 0
+    - _SrcBlend: 5
+    - _Surface: 1
     - _Threshold: 1
-    - _VERTEXCOLOR_SETTINGS: 0
+    - _VERTEXCOLOR_SETTINGS: 1
     - _Value: 0
-    - _VertexColorPower: 0.5
-    - _WorkflowMode: 1
+    - _VertexColorPower: -1
+    - _WorkflowMode: 0
     - _ZTest: 4
-    - _ZWrite: 1
+    - _ZWrite: 0
     - _ZWriteControl: 0
     m_Colors:
     - B_Color: {r: 1, g: 1, b: 1, a: 1}
     - G_Color: {r: 0.54158264, g: 0.7924528, b: 0.3476326, a: 1}
     - R_Color: {r: 0.39626172, g: 0.7264151, b: 0.39404595, a: 1}
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.63879496, g: 0.7766432, b: 0.8207547, a: 0.24705882}
     - _Color: {r: 0, g: 0.9608459, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _ShadowColor: {r: 0.7058823, g: 0.7058823, b: 0.7058823, a: 1}
