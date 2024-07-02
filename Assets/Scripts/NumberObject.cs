@@ -22,9 +22,15 @@ public class NumberObject : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] numberTexts;
     private static readonly int GColor = Shader.PropertyToID("G_Color");
     private static readonly int RColor = Shader.PropertyToID("R_Color");
+    private static readonly int _Value = Shader.PropertyToID("_Value");
+    private MaterialPropertyBlock propertyBlock;
+    private Renderer meshRenderer;
 
     private void Awake()
     {
+        propertyBlock = new MaterialPropertyBlock();
+        meshRenderer = mesh.GetComponent<Renderer>();
+
         levelValue = Random.Range(1, 7);
         occupiedCell = transform.GetComponentInParent<GridCell>();
         occupiedCell.SetNumberObject(this);
@@ -40,21 +46,30 @@ public class NumberObject : MonoBehaviour
         if (withAnimation) transform.DOScale(Vector3.one, .25f).From(Vector3.zero);
         numberTexts = GetComponentsInChildren<TextMeshProUGUI>(true);
         SetShaderColor();
-        SetLayers();
+        SetPickableStatus();
     }
 
-    public void SetLayers()
+    public void SetPickableStatus()
     {
-        if (occupiedCell)
-            mesh.layer = LayerMask.NameToLayer(occupiedCell.isPickable ? "Default" : "Non-pickable");
+        if(!occupiedCell) return;
+        
+        if (!occupiedCell.isPickable)
+        {
+            propertyBlock.SetFloat(_Value, -.5f);
+        }
+        else
+        {
+            propertyBlock.SetFloat(_Value, .5f);
+        }
+        meshRenderer.SetPropertyBlock(propertyBlock);
     }
 
     private void SetShaderColor()
     {
-        transform.GetChild(0).GetComponent<Renderer>().material
-            .SetColor(RColor, meshDataSo.meshColorData[levelValue - 1].R_color);
-        transform.GetChild(0).GetComponent<Renderer>().material
-            .SetColor(GColor, meshDataSo.meshColorData[levelValue - 1].G_color);
+        propertyBlock.SetColor(RColor, meshDataSo.meshColorData[levelValue - 1].R_color);
+        propertyBlock.SetColor(GColor, meshDataSo.meshColorData[levelValue - 1].G_color);
+
+        meshRenderer.SetPropertyBlock(propertyBlock);
     }
 
     public void OnCellPicked()
@@ -85,8 +100,8 @@ public class NumberObject : MonoBehaviour
         currentPoint = targetPoint;
         currentPoint.SetOccupied(this);
 
-        // transform.DORotate(new Vector3(-360, 0, 0), 0.25f, RotateMode.FastBeyond360).SetRelative()
-        //     .SetLoops(3, LoopType.Restart);
+        transform.DORotate(new Vector3(-360, 0, 0), 0.25f, RotateMode.FastBeyond360).SetRelative()
+            .SetLoops(3, LoopType.Restart);
         transform.DOJump(targetPoint.transform.position, 5, 1, .75f).OnComplete(() =>
         {
             isMovingToPoint = false;

@@ -30,9 +30,8 @@ public class GridCell : MonoBehaviour
 
     public void OnNumberObjectLeft()
     {
-        for (int i = 0; i < GetNeighbors().Count; i++)
+        foreach (GridCell neighbor in neighbours)
         {
-            GridCell neighbor = GetNeighbors()[i];
             if (!neighbor.isPickable && neighbor.HasNumberObject())
                 neighbor.SetCellAsPickable();
         }
@@ -42,7 +41,7 @@ public class GridCell : MonoBehaviour
     private void SetCellAsPickable()
     {
         isPickable = true;
-        numberObject.SetLayers();
+        numberObject.SetPickableStatus();
     }
 
     private bool HasNumberObject()
