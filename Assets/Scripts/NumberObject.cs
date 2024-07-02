@@ -9,6 +9,7 @@ public class NumberObject : MonoBehaviour
 {
     [Header("Config")] public int levelValue;
     [SerializeField] private float darkHSVValue;
+    [Range(0, 1)] [SerializeField] private float darkHSVSaturation;
     [Range(0, 1)] [SerializeField] private float darkTextAlphaValue;
 
     [Header("References")] [SerializeField]
@@ -25,6 +26,7 @@ public class NumberObject : MonoBehaviour
     private static readonly int GColor = Shader.PropertyToID("G_Color");
     private static readonly int RColor = Shader.PropertyToID("R_Color");
     private static readonly int Value = Shader.PropertyToID("_Value");
+    private static readonly int Saturation = Shader.PropertyToID("_Saturation");
     private MaterialPropertyBlock _propertyBlock;
     private Renderer _meshRenderer;
     private Renderer _thinMeshRenderer;
@@ -60,11 +62,13 @@ public class NumberObject : MonoBehaviour
         if (!occupiedCell.isPickable)
         {
             _propertyBlock.SetFloat(Value, darkHSVValue);
+            _propertyBlock.SetFloat(Saturation, darkHSVSaturation);
             alpha = darkTextAlphaValue;
         }
         else
         {
             _propertyBlock.SetFloat(Value, 0);
+            _propertyBlock.SetFloat(Saturation, 0);
         }
 
         _meshRenderer.SetPropertyBlock(_propertyBlock);
