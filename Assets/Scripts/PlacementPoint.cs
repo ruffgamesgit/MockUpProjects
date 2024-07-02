@@ -22,4 +22,9 @@ public class PlacementPoint : MonoBehaviour
     {
         return currentNumberObject;
     }
+
+    // public Vector3 GetCenter()
+    // {
+    //     return transform.position + Vector3.up / 2;
+    // }
 }

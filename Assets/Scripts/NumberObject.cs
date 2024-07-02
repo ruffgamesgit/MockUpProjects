@@ -6,31 +6,34 @@ using Random = UnityEngine.Random;
 
 public class NumberObject : MonoBehaviour
 {
-    [Header("Config")] public int levelValue;
+    [Header("Config")] 
+    public int levelValue;
     private Color _defaultColor;
 
     [Header("References")] [SerializeField]
     private NumberObjectMeshSO meshDataSo;
-
     [SerializeField] private TextMeshProUGUI valueText;
     [SerializeField] private GameObject mesh;
+    [SerializeField] private GameObject thinMesh;
 
-    [Header("Debug")] [SerializeField] private GridCell occupiedCell;
+    [Header("Debug")] 
+    [SerializeField] private GridCell occupiedCell;
     [SerializeField] private PlacementPoint currentPoint;
-    public bool isMovingToPoint;
+    [HideInInspector] public bool isMovingToPoint;
     private const int MaxLevelValue = 9;
-    [SerializeField] private TextMeshProUGUI[] numberTexts;
     private static readonly int GColor = Shader.PropertyToID("G_Color");
     private static readonly int RColor = Shader.PropertyToID("R_Color");
-    private static readonly int _Value = Shader.PropertyToID("_Value");
-    private MaterialPropertyBlock propertyBlock;
-    private Renderer meshRenderer;
+    private static readonly int Value = Shader.PropertyToID("_Value");
+    private MaterialPropertyBlock _propertyBlock;
+    private Renderer _meshRenderer;
+    private Renderer _thinMeshRenderer;
 
     private void Awake()
     {
-        propertyBlock = new MaterialPropertyBlock();
-        meshRenderer = mesh.GetComponent<Renderer>();
-
+        _propertyBlock = new MaterialPropertyBlock();
+        _meshRenderer = mesh.GetComponent<Renderer>();
+        _thinMeshRenderer = thinMesh.GetComponent<Renderer>();
+        
         levelValue = Random.Range(1, 7);
         occupiedCell = transform.GetComponentInParent<GridCell>();
         occupiedCell.SetNumberObject(this);
@@ -41,35 +44,37 @@ public class NumberObject : MonoBehaviour
     private void SetMesh(bool withAnimation = false)
     {
         if (levelValue > MaxLevelValue) return;
-
         valueText.text = levelValue.ToString();
+        
         if (withAnimation) transform.DOScale(Vector3.one, .25f).From(Vector3.zero);
-        numberTexts = GetComponentsInChildren<TextMeshProUGUI>(true);
         SetShaderColor();
         SetPickableStatus();
     }
 
     public void SetPickableStatus()
     {
-        if(!occupiedCell) return;
-        
+        if (!occupiedCell) return;
+
         if (!occupiedCell.isPickable)
         {
-            propertyBlock.SetFloat(_Value, -.5f);
+            _propertyBlock.SetFloat(Value, -.5f);
         }
         else
         {
-            propertyBlock.SetFloat(_Value, .5f);
+            _propertyBlock.SetFloat(Value, .5f);
         }
-        meshRenderer.SetPropertyBlock(propertyBlock);
+
+        _meshRenderer.SetPropertyBlock(_propertyBlock); 
+        _thinMeshRenderer.SetPropertyBlock(_propertyBlock);
     }
 
     private void SetShaderColor()
     {
-        propertyBlock.SetColor(RColor, meshDataSo.meshColorData[levelValue - 1].R_color);
-        propertyBlock.SetColor(GColor, meshDataSo.meshColorData[levelValue - 1].G_color);
+        _propertyBlock.SetColor(RColor, meshDataSo.meshColorData[levelValue - 1].R_color);
+        _propertyBlock.SetColor(GColor, meshDataSo.meshColorData[levelValue - 1].G_color);
 
-        meshRenderer.SetPropertyBlock(propertyBlock);
+        _meshRenderer.SetPropertyBlock(_propertyBlock);
+        _thinMeshRenderer.SetPropertyBlock(_propertyBlock);
     }
 
     public void OnCellPicked()
@@ -88,6 +93,8 @@ public class NumberObject : MonoBehaviour
 
     private void MoveToPoint(PlacementPoint targetPoint, bool informCell = false)
     {
+        mesh.SetActive(false);
+        thinMesh.SetActive(true);
         isMovingToPoint = true;
         if (informCell)
         {
@@ -100,13 +107,16 @@ public class NumberObject : MonoBehaviour
         currentPoint = targetPoint;
         currentPoint.SetOccupied(this);
 
-        transform.DORotate(new Vector3(-360, 0, 0), 0.25f, RotateMode.FastBeyond360).SetRelative()
-            .SetLoops(3, LoopType.Restart);
-        transform.DOJump(targetPoint.transform.position, 5, 1, .75f).OnComplete(() =>
+        transform.DORotate(new Vector3(-360, 0, 0), 0.35f, RotateMode.FastBeyond360).SetRelative()
+            .SetLoops(2, LoopType.Restart);
+        transform.DOJump(targetPoint.transform.position, 10, 1, .75f).OnComplete(() =>
         {
             isMovingToPoint = false;
             PointManager.instance.OnNewNumberArrived();
             transform.SetParent(currentPoint.transform);
+            
+            mesh.SetActive(true);
+            thinMesh.SetActive(false);
         });
     }
 
