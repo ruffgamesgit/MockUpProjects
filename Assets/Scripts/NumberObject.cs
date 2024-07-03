@@ -130,6 +130,19 @@ public class NumberObject : MonoBehaviour
 
             mesh.SetActive(true);
             thinMesh.SetActive(false);
+
+            int a = PointManager.instance.GetSpecificNumberObjectCount(this);
+            if (a < 2)
+            {
+                if (targetPoint.GetIndex() == 6)
+                {
+                    Debug.LogWarning("Specific number: " + levelValue + ", Count: " + a);
+                    PointManager.instance.FailCheck();
+                }
+            }
+
+            Debug.LogWarning("p1");
+            // PointManager.instance.PerformInnerSort();
         });
     }
 
@@ -143,7 +156,7 @@ public class NumberObject : MonoBehaviour
         });
     }
 
-    public void Merge(Vector3 targetPos)
+    public void Merge(Vector3 targetPos, bool isLast)
     {
         mesh.SetActive(false);
         thinMesh.SetActive(true);
@@ -157,6 +170,10 @@ public class NumberObject : MonoBehaviour
 
             mesh.SetActive(true);
             thinMesh.SetActive(false);
+            // if (isLast)
+            // {
+            //     PointManager.instance.FailCheck();
+            // }
         }).SetDelay(0.1f);
     }
 

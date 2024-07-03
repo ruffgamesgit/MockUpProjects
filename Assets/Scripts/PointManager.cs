@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 
 public class PointManager : MonoSingleton<PointManager>
 {
-    [SerializeField] private List<PlacementPoint> placementPoints = new();
+    public List<PlacementPoint> placementPoints = new();
     private const int MinMatchCount = 3;
 
     public PlacementPoint GetAvailablePoint()
@@ -67,7 +67,7 @@ public class PointManager : MonoSingleton<PointManager>
                     numObj.UpgradeSelf();
                 else
                 {
-                    numObj.Merge(matchableNumberObjects[0].transform.position);
+                    numObj.Merge(matchableNumberObjects[0].transform.position, i == 2);
                 }
 
                 PerformInnerSort();
@@ -79,7 +79,7 @@ public class PointManager : MonoSingleton<PointManager>
             PerformInnerSort();
         }
     }
-    
+
     // public void FailCheck()
     // {
     //     if (!GameManager.instance.isLevelActive) return;
@@ -110,8 +110,11 @@ public class PointManager : MonoSingleton<PointManager>
     //     GameManager.instance.EndGame(false);
     // }
 
-    private void PerformInnerSort()
+    public async void PerformInnerSort()
     {
+        await UniTask.Delay(250);
+
+        Debug.LogWarning("p2");
         List<NumberObject> numberObjects = new(GetAllNumberObjects());
 
         numberObjects = numberObjects.OrderByDescending(n => n.levelValue).ToList();
@@ -165,4 +168,50 @@ public class PointManager : MonoSingleton<PointManager>
 
         return numberObjects;
     }
+
+
+    #region FAIL REGION
+
+    public void FailCheck()
+    {
+        if (!AreAllPointsOccupied())
+        {
+            Debug.LogError("Occupied point count: " + GetOccupiedPointCount());
+            return;
+        }
+
+        GameManager.instance.EndGame(false);
+    }
+
+    bool AreAllPointsOccupied()
+
+    {
+        bool status = true;
+        for (int i = 0; i < placementPoints.Count; i++)
+        {
+            if (placementPoints[i].GetNumberObject() == null)
+            {
+                status = false;
+                break;
+            }
+        }
+
+        return status;
+    }
+
+    public int GetSpecificNumberObjectCount(NumberObject baseNumObject)
+    {
+        List<NumberObject> numObjectsList = GetAllNumberObjects();
+        int counter = 0;
+        for (int i = 0; i < numObjectsList.Count; i++)
+        {
+            if (baseNumObject == numObjectsList[i]) continue;
+            if (baseNumObject.levelValue == numObjectsList[i].levelValue)
+                counter++;
+        }
+
+        return counter;
+    }
+
+    #endregion
 }

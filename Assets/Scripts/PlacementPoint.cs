@@ -21,4 +21,9 @@ public class PlacementPoint : MonoBehaviour
     {
         return currentNumberObject;
     }
+
+    public int GetIndex()
+    {
+        return PointManager.instance.placementPoints.IndexOf(this);
+    }
 }
