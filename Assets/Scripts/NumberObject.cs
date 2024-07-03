@@ -1,15 +1,15 @@
 using System;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class NumberObject : MonoBehaviour
 {
     [Header("Config")] public int levelValue;
     [SerializeField] private float darkHSVValue;
-    [Range(0, 1)] [SerializeField] private float darkHSVSaturation;
+    [Range(-1, 1)] [SerializeField] private float darkHSVSaturation;
     [Range(0, 1)] [SerializeField] private float darkTextAlphaValue;
 
     [Header("References")] [SerializeField]
@@ -23,13 +23,18 @@ public class NumberObject : MonoBehaviour
     [SerializeField] private PlacementPoint currentPoint;
     [HideInInspector] public bool isMovingToPoint;
     private const int MaxLevelValue = 9;
+    private Renderer _meshRenderer;
+    private Renderer _thinMeshRenderer;
+    private MaterialPropertyBlock _propertyBlock;
+
+    #region Shader Field
+
     private static readonly int GColor = Shader.PropertyToID("G_Color");
     private static readonly int RColor = Shader.PropertyToID("R_Color");
     private static readonly int Value = Shader.PropertyToID("_Value");
     private static readonly int Saturation = Shader.PropertyToID("_Saturation");
-    private MaterialPropertyBlock _propertyBlock;
-    private Renderer _meshRenderer;
-    private Renderer _thinMeshRenderer;
+
+    #endregion
 
     private void Awake()
     {
@@ -50,8 +55,17 @@ public class NumberObject : MonoBehaviour
         valueText.text = levelValue.ToString();
 
         if (withAnimation) transform.DOScale(Vector3.one, .25f).From(Vector3.zero).SetDelay(0.25f);
-        SetShaderColor();
+        ShaderColorSet();
         SetPickableStatus();
+    }
+
+    private void ShaderColorSet()
+    {
+        _propertyBlock.SetColor(RColor, meshDataSo.meshColorData[levelValue - 1].R_color);
+        _propertyBlock.SetColor(GColor, meshDataSo.meshColorData[levelValue - 1].G_color);
+
+        _meshRenderer.SetPropertyBlock(_propertyBlock);
+        _thinMeshRenderer.SetPropertyBlock(_propertyBlock);
     }
 
     public void SetPickableStatus()
@@ -61,14 +75,16 @@ public class NumberObject : MonoBehaviour
         float alpha = 1;
         if (!occupiedCell.isPickable)
         {
+            alpha = darkTextAlphaValue;
             _propertyBlock.SetFloat(Value, darkHSVValue);
             _propertyBlock.SetFloat(Saturation, darkHSVSaturation);
-            alpha = darkTextAlphaValue;
+            _propertyBlock.SetColor(RColor, meshDataSo.meshColorData[levelValue - 1].G_color);
         }
         else
         {
             _propertyBlock.SetFloat(Value, 0);
             _propertyBlock.SetFloat(Saturation, 0);
+            _propertyBlock.SetColor(RColor, meshDataSo.meshColorData[levelValue - 1].R_color);
         }
 
         _meshRenderer.SetPropertyBlock(_propertyBlock);
@@ -77,22 +93,11 @@ public class NumberObject : MonoBehaviour
         valueText.color = currentColor;
     }
 
-    private void SetShaderColor()
-    {
-        _propertyBlock.SetColor(RColor, meshDataSo.meshColorData[levelValue - 1].R_color);
-        _propertyBlock.SetColor(GColor, meshDataSo.meshColorData[levelValue - 1].G_color);
-
-        _meshRenderer.SetPropertyBlock(_propertyBlock);
-        _thinMeshRenderer.SetPropertyBlock(_propertyBlock);
-    }
-
     public void OnCellPicked()
     {
         if (!GameManager.instance.isLevelActive) return;
         if (PointManager.instance.GetOccupiedPointCount() == 7)
         {
-            Debug.LogError("NO EMPTY POINT LEFT");
-            GameManager.instance.EndGame(false);
             return;
         }
 
@@ -117,9 +122,7 @@ public class NumberObject : MonoBehaviour
         currentPoint = targetPoint;
         currentPoint.SetOccupied(this);
 
-        transform.DORotate(new Vector3(-360, 0, 0), 0.35f, RotateMode.FastBeyond360).SetRelative()
-            .SetLoops(2, LoopType.Restart);
-        transform.DOJump(targetPoint.transform.position, 10, 1, .75f).OnComplete(() =>
+        transform.DOJump(targetPoint.transform.position, 7, 1, .5f).OnComplete(() =>
         {
             isMovingToPoint = false;
             PointManager.instance.OnNewNumberArrived();
@@ -161,8 +164,7 @@ public class NumberObject : MonoBehaviour
     {
         levelValue++;
         if (levelValue > MaxLevelValue) return;
-
         SetMesh(true);
-        PointManager.instance.OnNewNumberArrived();
+        PointManager.instance.OnNewNumberArrived(0.65f);
     }
 }

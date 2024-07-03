@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 
 public class PointManager : MonoSingleton<PointManager>
 {
@@ -22,23 +24,24 @@ public class PointManager : MonoSingleton<PointManager>
     public int GetOccupiedPointCount()
     {
         int counter = 0;
-        for (int i = 0; i < placementPoints.Count; i++)
+        foreach (PlacementPoint t in placementPoints)
         {
-            if (placementPoints[i].isOccupied)
+            if (t.isOccupied)
                 counter++;
         }
 
         return counter;
     }
 
-    public void OnNewNumberArrived()
+    public void OnNewNumberArrived(float delay = 0.125f)
     {
-        StartCoroutine(CheckForPossibleMatches());
+        StartCoroutine(CheckForPossibleMatches(delay));
     }
 
-    IEnumerator CheckForPossibleMatches()
+    // ReSharper disable Unity.PerformanceAnalysis
+    IEnumerator CheckForPossibleMatches(float delay = 0.125f)
     {
-        yield return new WaitForSeconds(0.125f);
+        yield return new WaitForSeconds(delay);
         List<NumberObject> numberObjects = GetAllNumberObjects(excludeMovingObjects: true);
         if (numberObjects.Count < MinMatchCount) yield break;
         Dictionary<int, List<NumberObject>> numObjectsDict = SeparateObjectsByLevelValue(numberObjects);
@@ -54,7 +57,6 @@ public class PointManager : MonoSingleton<PointManager>
         }
 
         int iterate = MinMatchCount;
-
         if (matchableNumberObjects.Count >= 3)
         {
             for (int i = 0; i < matchableNumberObjects.Count; i++)
@@ -74,18 +76,39 @@ public class PointManager : MonoSingleton<PointManager>
         }
         else
         {
-            StartCoroutine(FailCheck());
             PerformInnerSort();
         }
     }
-
-    IEnumerator FailCheck()
-    {
-        yield return new WaitForSeconds(1.5f);
-        if(!GameManager.instance.isLevelActive) yield break;
-        if (GetOccupiedPointCount() == placementPoints.Count)
-            GameManager.instance.EndGame(false);
-    }
+    
+    // public void FailCheck()
+    // {
+    //     if (!GameManager.instance.isLevelActive) return;
+    //     Debug.LogWarning(1);
+    //
+    //     int occPoint = GetOccupiedPointCount();
+    //     if (occPoint != placementPoints.Count) return;
+    //
+    //     List<NumberObject> numberObjects = AGetAllNumberObjectss();
+    //     Debug.LogError("Number objects count: " + numberObjects.Count);
+    //
+    //     Dictionary<int, List<NumberObject>> numObjectsDict = SeparateObjectsByLevelValue(numberObjects);
+    //     List<NumberObject> matchableNumberObjects = new();
+    //
+    //     foreach (var kvp in numObjectsDict)
+    //     {
+    //         if (kvp.Value.Count >= MinMatchCount)
+    //         {
+    //             matchableNumberObjects = kvp.Value;
+    //             break;
+    //         }
+    //     }
+    //
+    //     Debug.LogWarning(2);
+    //     if (matchableNumberObjects.Count >= 3) return;
+    //     Debug.LogWarning(3);
+    //
+    //     GameManager.instance.EndGame(false);
+    // }
 
     private void PerformInnerSort()
     {
@@ -101,7 +124,6 @@ public class PointManager : MonoSingleton<PointManager>
         for (int i = 0; i < numberObjects.Count; i++)
         {
             NumberObject obj = numberObjects[i];
-
             obj.InnerSortMovement(placementPoints[i]);
         }
     }
@@ -115,18 +137,16 @@ public class PointManager : MonoSingleton<PointManager>
             separatedControllers[i] = new List<NumberObject>();
         }
 
-        foreach (NumberObject numObjects in allNumberObjects)
+        foreach (NumberObject numObject in allNumberObjects)
         {
-            if (separatedControllers.ContainsKey(numObjects.levelValue))
-            {
-                separatedControllers[numObjects.levelValue].Add(numObjects);
-            }
+            if (!separatedControllers.ContainsKey(numObject.levelValue)) continue;
+            separatedControllers[numObject.levelValue].Add(numObject);
         }
 
         return separatedControllers;
     }
 
-    List<NumberObject> GetAllNumberObjects(bool excludeMovingObjects = false)
+    private List<NumberObject> GetAllNumberObjects(bool excludeMovingObjects = false)
     {
         List<NumberObject> numberObjects = new();
 

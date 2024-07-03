@@ -48,9 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelValue: 1
-  darkHSVValue: -0.8
-  darkHSVSaturation: -0.65
-  darkTextAlphaValue: 0.1
+  darkHSVValue: -0.78
+  darkHSVSaturation: -0.3
+  darkTextAlphaValue: 0.08
   meshDataSo: {fileID: 11400000, guid: a9bbd2e8de2a5114a9ca5a6589d1cfb3, type: 2}
   valueText: {fileID: 3129706672395169169}
   mesh: {fileID: 6662968786882152451}
