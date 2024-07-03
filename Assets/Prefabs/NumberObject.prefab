@@ -47,7 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bd5a12fd73832e4a80e580f1d930671, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelValue: 1
+  isEmpty: 0
+  levelValue: 0
   darkHSVValue: -0.78
   darkHSVSaturation: -0.3
   darkTextAlphaValue: 0.08

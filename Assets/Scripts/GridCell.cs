@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GridCell : MonoBehaviour
 {
     [Header("Config")] [SerializeField] Vector2Int coordinates;
+ 
 
     [Header("References")] [SerializeField]
-    private GameObject mesh;
+    private Transform cellGround;
 
     [Header("Debug")] public bool isPickable;
     public NumberObject numberObject;
@@ -25,6 +27,7 @@ public class GridCell : MonoBehaviour
         if (!isPickable) return;
         if (!GameManager.instance.isLevelActive) return;
 
+        cellGround.SetParent(null);
         numberObject?.OnCellPicked();
     }
 

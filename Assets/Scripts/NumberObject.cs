@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class NumberObject : MonoBehaviour
 {
-    [Header("Config")] [SerializeField] private bool isEmpty;
+    [Header("Config")] 
     public int levelValue;
     [SerializeField] private float darkHSVValue;
     [Range(-1, 1)] [SerializeField] private float darkHSVSaturation;
@@ -43,7 +43,7 @@ public class NumberObject : MonoBehaviour
         _meshRenderer = mesh.GetComponent<Renderer>();
         _thinMeshRenderer = thinMesh.GetComponent<Renderer>();
 
-        levelValue = Random.Range(1, 6);
+
         occupiedCell = transform.GetComponentInParent<GridCell>();
         occupiedCell.SetNumberObject(this);
         SetMesh();
@@ -53,6 +53,9 @@ public class NumberObject : MonoBehaviour
     private void SetMesh(bool withAnimation = false)
     {
         if (levelValue > MaxLevelValue) return;
+        if (levelValue == 0)
+            levelValue = Random.Range(1, 6);
+        
         valueText.text = levelValue.ToString();
 
         if (withAnimation)
@@ -103,6 +106,7 @@ public class NumberObject : MonoBehaviour
         {
             return;
         }
+
         MoveToPoint(PointManager.instance.GetAvailablePoint(), true);
     }
 
