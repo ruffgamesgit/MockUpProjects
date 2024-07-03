@@ -11,8 +11,6 @@ public class CanvasManager : MonoSingleton<CanvasManager>
 
     [FormerlySerializedAs("winPanel")] [SerializeField]
     CanvasGroup defaultPanel;
-
-    [SerializeField] private TextMeshProUGUI scoretxt;
     private int _currentScore;
 
     void Start()
@@ -31,12 +29,6 @@ public class CanvasManager : MonoSingleton<CanvasManager>
     {
         failPanel.DOFade(1, .5f);
         defaultPanel.gameObject.SetActive(false);
-    }
-
-    public void SetScoreText()
-    {
-        _currentScore++;
-        scoretxt.text = "SCORE: " + _currentScore;
     }
 
     #region COMPLETED REGION

@@ -36,7 +36,7 @@ public class GameManager : MonoSingleton<GameManager>
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextScene = currentSceneIndex + 1;
 
-        if (nextScene > SceneManager.sceneCount) nextScene = 0;
+        if (nextScene >= SceneManager.sceneCountInBuildSettings) nextScene = 0;
         SceneManager.LoadScene(nextScene);
 
         #endregion

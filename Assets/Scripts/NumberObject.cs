@@ -7,7 +7,8 @@ using Random = UnityEngine.Random;
 
 public class NumberObject : MonoBehaviour
 {
-    [Header("Config")] public int levelValue;
+    [Header("Config")] [SerializeField] private bool isEmpty;
+    public int levelValue;
     [SerializeField] private float darkHSVValue;
     [Range(-1, 1)] [SerializeField] private float darkHSVSaturation;
     [Range(0, 1)] [SerializeField] private float darkTextAlphaValue;
@@ -42,7 +43,7 @@ public class NumberObject : MonoBehaviour
         _meshRenderer = mesh.GetComponent<Renderer>();
         _thinMeshRenderer = thinMesh.GetComponent<Renderer>();
 
-        levelValue = Random.Range(1, 7);
+        levelValue = Random.Range(1, 6);
         occupiedCell = transform.GetComponentInParent<GridCell>();
         occupiedCell.SetNumberObject(this);
         SetMesh();
@@ -54,7 +55,9 @@ public class NumberObject : MonoBehaviour
         if (levelValue > MaxLevelValue) return;
         valueText.text = levelValue.ToString();
 
-        if (withAnimation) transform.DOScale(Vector3.one, .25f).From(Vector3.zero).SetDelay(0.25f);
+        if (withAnimation)
+            transform.DOScale(Vector3.one, .25f).From(Vector3.zero).SetDelay(0.35f).OnComplete(() =>
+                transform.DOScaleY(transform.lossyScale.y * 1.5f, .1f).SetLoops(2, LoopType.Yoyo));
         ShaderColorSet();
         SetPickableStatus();
     }
@@ -100,8 +103,6 @@ public class NumberObject : MonoBehaviour
         {
             return;
         }
-
-        CanvasManager.instance.SetScoreText();
         MoveToPoint(PointManager.instance.GetAvailablePoint(), true);
     }
 
@@ -122,8 +123,10 @@ public class NumberObject : MonoBehaviour
         currentPoint = targetPoint;
         currentPoint.SetOccupied(this);
 
+        transform.DOScale(Vector3.one * 1.5f, .2f).SetLoops(2, LoopType.Yoyo);
         transform.DOJump(targetPoint.transform.position, 7, 1, .5f).OnComplete(() =>
         {
+            transform.DOScaleY(transform.lossyScale.y * 1.5f, .1f).SetLoops(2, LoopType.Yoyo);
             isMovingToPoint = false;
             PointManager.instance.OnNewNumberArrived();
             transform.SetParent(currentPoint.transform);
@@ -170,11 +173,8 @@ public class NumberObject : MonoBehaviour
 
             mesh.SetActive(true);
             thinMesh.SetActive(false);
-            // if (isLast)
-            // {
-            //     PointManager.instance.FailCheck();
-            // }
         }).SetDelay(0.1f);
+        transform.DOScale(Vector3.zero, .75f).SetDelay(0.25f);
     }
 
     public void UpgradeSelf()
