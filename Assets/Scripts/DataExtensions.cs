@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 public static class DataExtensions
@@ -24,12 +25,17 @@ public static class DataExtensions
         return valuesExcludingNone[randomIndex];
     }
 
-    public static FoodData GetRandomFoodData(int minFoodLevel = 2)
+    public static FoodData GetRandomFoodData(int minFoodLevel = 2, int maxFoodLevel = 3)
     {
         FoodData randomData = new FoodData();
         randomData.foodType = GetRandomFoodType();
-        randomData.level = Random.Range(minFoodLevel, 3);
+        randomData.level = Random.Range(minFoodLevel, maxFoodLevel);
 
         return randomData;
     }
+
+    // public static Sprite GetSprite(FoodType type)
+    // {
+    //     
+    // }
 }

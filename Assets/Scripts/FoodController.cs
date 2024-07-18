@@ -1,6 +1,8 @@
 using System;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public enum FoodType
@@ -15,9 +17,13 @@ public enum FoodType
 
 public class FoodController : MonoBehaviour
 {
-    [SerializeField] private FoodData foodData;
+    [Header("References")] [SerializeField]
+    private FoodDataHolder dataSO;
+
+    [Header("Debug")] [SerializeField] private FoodData foodData;
     [SerializeField] private GridCell currentCell;
     private Vector3 _initPos;
+    private Image _foodImage;
 
     void Start()
     {
@@ -30,20 +36,38 @@ public class FoodController : MonoBehaviour
         foodData.foodType = DataExtensions.GetRandomFoodType();
         foodData.level = GetRandomLevel();
 
-
-        transform.GetComponentInChildren<TextMeshProUGUI>().text = foodData.foodType + " _ " + foodData.level;
+        _foodImage = transform.GetComponentInChildren<Image>();
+        _foodImage.sprite = GetSpriteFromSO(foodData);
+        GridManager.instance.AddFood(this);
     }
 
     public void IncrementSelf()
     {
         foodData.level++;
-        transform.GetComponentInChildren<TextMeshProUGUI>().text = foodData.foodType + " _ " + foodData.level;
+        _foodImage.sprite = GetSpriteFromSO(foodData);
+
+        CustomerManager.instance.CheckIfDataMatches(foodData, this);
     }
 
     public void Disappear()
     {
         currentCell.SetFree();
+        GridManager.instance.RemoveFood(this);
         Destroy(gameObject);
+    }
+
+    public Sprite GetSpriteFromSO(FoodData data)
+    {
+        foreach (var soData in dataSO.generalFoodDatas)
+        {
+            if (data.foodType == soData.foodData.foodType &&
+                data.level == soData.foodData.level)
+            {
+                return soData.sprite;
+            }
+        }
+
+        return null;
     }
 
     public FoodData GetFoodData()
@@ -54,7 +78,7 @@ public class FoodController : MonoBehaviour
 
     private int GetRandomLevel()
     {
-        return !currentCell ? 0 : Random.Range(0, 3);
+        return !currentCell ? 0 : Random.Range(0, 2);
     }
 
     public void GetPicked()

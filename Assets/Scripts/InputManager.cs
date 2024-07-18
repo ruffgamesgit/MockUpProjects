@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] private FoodController pickedObject;
+    private FoodController _pickedObject;
     private Camera _mainCamera;
     private Vector3 _offset;
 
@@ -21,7 +21,7 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log(1); 
+            Debug.Log(1);
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out RaycastHit hit))
@@ -30,23 +30,23 @@ public class InputManager : MonoBehaviour
                 if (hit.transform.TryGetComponent(out FoodController foodController))
                 {
                     Debug.Log(3);
-                    pickedObject = foodController;
-                    pickedObject.GetPicked();
-                    _offset = pickedObject.transform.position - GetMouseWorldPosition();
+                    _pickedObject = foodController;
+                    _pickedObject.GetPicked();
+                    _offset = _pickedObject.transform.position - GetMouseWorldPosition();
                 }
             }
         }
 
-        if (Input.GetMouseButton(0) && pickedObject)
+        if (Input.GetMouseButton(0) && _pickedObject)
         {
             // Mouse button held down, drag the object
-            pickedObject.transform.position = GetMouseWorldPosition() + _offset;
+            _pickedObject.transform.position = GetMouseWorldPosition() + _offset;
         }
 
-        if (Input.GetMouseButtonUp(0) && pickedObject)
+        if (Input.GetMouseButtonUp(0) && _pickedObject)
         {
             // Mouse button released, try to place the object
-            Ray ray = new Ray(pickedObject.transform.position, Vector3.down);
+            Ray ray = new Ray(_pickedObject.transform.position, Vector3.down);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))
@@ -54,18 +54,18 @@ public class InputManager : MonoBehaviour
                 if (hit.transform.TryGetComponent(out GridCell cell))
                 {
                     if (!cell.isOccupied)
-                        pickedObject.GetPlaced(cell);
+                        _pickedObject.GetPlaced(cell);
                     else
-                        pickedObject.GetReleased();
+                        _pickedObject.GetReleased();
                 }
                 else
                 {
-                    pickedObject.GetReleased();
+                    _pickedObject.GetReleased();
                 }
             }
 
 
-            pickedObject = null;
+            _pickedObject = null;
         }
     }
 

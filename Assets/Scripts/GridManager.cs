@@ -4,6 +4,7 @@ using UnityEngine;
 public class GridManager : MonoSingleton<GridManager>
 {
     [Header("Debug")] public List<GridCell> gridPlan;
+    public List<FoodController> foodsOnGrid;
 
     protected override void Awake()
     {
@@ -61,31 +62,44 @@ public class GridManager : MonoSingleton<GridManager>
         return null;
     }
 
-    public void CheckIfFoodMatches(FoodController placedFood)
+    public void CheckIfFoodMatches(FoodController lastPlacedFood)
     {
-        GridCell originCell = placedFood.GetCell();
+        GridCell lastPlacedCell = lastPlacedFood.GetCell();
         GridCell neighborMathcedCell = null;
-        List<GridCell> neighbours = originCell.neighbours;
+        List<GridCell> neighbours = lastPlacedCell.neighbours;
+
         bool hasMatch = false;
         for (int i = 0; i < neighbours.Count; i++)
         {
             if (!neighbours[i].currentFood) continue;
+            if (neighbours[i].currentFood.GetFoodData().level >= 2) continue;
 
             FoodController neighborFood = neighbours[i].currentFood;
-            if (placedFood.GetFoodData().foodType != neighborFood.GetFoodData().foodType) continue;
-            if (placedFood.GetFoodData().level != neighborFood.GetFoodData().level) continue;
+            if (lastPlacedFood.GetFoodData().foodType != neighborFood.GetFoodData().foodType) continue;
+            if (lastPlacedFood.GetFoodData().level != neighborFood.GetFoodData().level) continue;
             neighborMathcedCell = neighbours[i];
             hasMatch = true;
             break;
         }
 
-        if (hasMatch)
-        {
-            neighborMathcedCell?.currentFood.IncrementSelf();
-            placedFood.Disappear();
+        if (!hasMatch) return;
 
-            if (neighborMathcedCell?.currentFood.GetFoodData().level < 2)
-                CheckIfFoodMatches(neighborMathcedCell.currentFood);
-        }
+        neighborMathcedCell?.currentFood.IncrementSelf();
+        lastPlacedFood.Disappear();
+
+        if (neighborMathcedCell?.currentFood?.GetFoodData().level < 2)
+            CheckIfFoodMatches(neighborMathcedCell.currentFood);
+    }
+
+    public void AddFood(FoodController foodController)
+    {
+        if (foodsOnGrid.Contains(foodController)) return;
+        foodsOnGrid.Add(foodController);
+    }
+
+    public void RemoveFood(FoodController foodController)
+    {
+        if (!foodsOnGrid.Contains(foodController)) return;
+        foodsOnGrid.Remove(foodController);
     }
 }
