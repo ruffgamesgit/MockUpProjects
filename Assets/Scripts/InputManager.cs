@@ -21,15 +21,12 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log(1);
             Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                Debug.Log(2);
                 if (hit.transform.TryGetComponent(out FoodController foodController))
                 {
-                    Debug.Log(3);
                     _pickedObject = foodController;
                     _pickedObject.GetPicked();
                     _offset = _pickedObject.transform.position - GetMouseWorldPosition();

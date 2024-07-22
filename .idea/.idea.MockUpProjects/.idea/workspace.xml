@@ -6,6 +6,56 @@
   <component name="ChangeListManager">
     <list default="true" id="fbd0e7ae-9743-4640-b7be-77031ecfa171" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Avatar-RedGirl-Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Avatar-RedGirl-Icon.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Avatar-ShortHairGirl-Icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Avatar-ShortHairGirl-Icon.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Bread_0.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Bread_0.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Bread_1.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Bread_1.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Bread_2.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Bread_2.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Chick_0.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Chick_0.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Chick_1.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Chick_1.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Chick_2.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Chick_2.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Coffee_0.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Coffee_0.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Coffee_1.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Coffee_1.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Coffee_2.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Coffee_2.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Juice_0.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Juice_0.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Juice_1.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Juice_1.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Juice_2.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Juice_2.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Patato_0.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Patato_0.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Patato_1.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Patato_1.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Patato_2.asset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Food_Sprites/Patato_2.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Frame_CardFrame02_Frame.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Frame_CardFrame02_Frame.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Black.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Black.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Conveyor.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Conveyor.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Materials/Grid_Cell.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Grid_Cell.mat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Merge_Food.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Merge_Food.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Demigiant.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Demigiant.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween/Editor.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween/Editor.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTweenPro.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTweenPro.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTweenPro/Editor.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTweenPro/Editor.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DemiLib.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DemiLib.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DemiLib/Core.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DemiLib/Core.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DemiLib/Core/Editor.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DemiLib/Core/Editor.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Customer.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Customer.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Fast_Food.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Fast_Food.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
@@ -15,10 +65,18 @@
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/GridManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GridManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/InputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InputManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/OrderHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/OrderHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-Balanced.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-Balanced.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-HighFidelity.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/URP-Performant.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/URP-Performant.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/frame_box.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/frame_box.webp.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/URPProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/boot.config" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +103,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Attach to Unity Editor.Attach to Unity Editor.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "do_not_show_Android_plugin_suggestion": "true",
     "git-widget-placeholder": "Fast__Food__Merge",
@@ -65,7 +124,7 @@
 }]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.27f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.36f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\fatih\Desktop\Ruff_Projects\MockUpProjects -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\fatih\Desktop\Ruff_Projects\MockUpProjects" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -73,7 +132,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.27f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.36f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\fatih\Desktop\Ruff_Projects\MockUpProjects -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\fatih\Desktop\Ruff_Projects\MockUpProjects" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -90,10 +149,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="4716">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="4716" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -117,6 +176,7 @@
       <workItem from="1721134825465" duration="2643000" />
       <workItem from="1721196884957" duration="8791000" />
       <workItem from="1721285141832" duration="641000" />
+      <workItem from="1721632570928" duration="12800000" />
     </task>
     <servers />
   </component>

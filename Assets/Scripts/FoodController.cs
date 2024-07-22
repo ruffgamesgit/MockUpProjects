@@ -1,7 +1,9 @@
 using System;
+using DG.Tweening;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -18,7 +20,7 @@ public enum FoodType
 public class FoodController : MonoBehaviour
 {
     [Header("References")] [SerializeField]
-    private FoodDataHolder dataSO;
+    private FoodDataHolder dataSo;
 
     [Header("Debug")] [SerializeField] private FoodData foodData;
     [SerializeField] private GridCell currentCell;
@@ -34,31 +36,36 @@ public class FoodController : MonoBehaviour
         }
 
         foodData.foodType = DataExtensions.GetRandomFoodType();
-        foodData.level = GetRandomLevel();
+        foodData.level = 0;
 
         _foodImage = transform.GetComponentInChildren<Image>();
-        _foodImage.sprite = GetSpriteFromSO(foodData);
+        _foodImage.sprite = GetSpriteFromSo(foodData);
         GridManager.instance.AddFood(this);
     }
 
     public void IncrementSelf()
     {
         foodData.level++;
-        _foodImage.sprite = GetSpriteFromSO(foodData);
+        _foodImage.sprite = GetSpriteFromSo(foodData);
 
-        CustomerManager.instance.CheckIfDataMatches(foodData, this);
+        transform.DOScale(Vector3.one * 1.5f, .15f).SetLoops(2, LoopType.Yoyo)
+            .OnComplete(() => CustomerManager.instance.CheckIfDataMatches(foodData, this));
     }
 
-    public void Disappear()
+    public void Disappear(Vector3 pos)
     {
         currentCell.SetFree();
         GridManager.instance.RemoveFood(this);
-        Destroy(gameObject);
+
+        Sequence sq = DOTween.Sequence();
+        sq.Append(transform.DOMove(pos, .2f));
+        sq.Append(transform.DOScale(Vector3.zero, .45f));
+        sq.OnComplete(() => Destroy(gameObject));
     }
 
-    public Sprite GetSpriteFromSO(FoodData data)
+    private Sprite GetSpriteFromSo(FoodData data)
     {
-        foreach (var soData in dataSO.generalFoodDatas)
+        foreach (var soData in dataSo.generalFoodDatas)
         {
             if (data.foodType == soData.foodData.foodType &&
                 data.level == soData.foodData.level)
@@ -96,7 +103,7 @@ public class FoodController : MonoBehaviour
         transform.SetParent(cell.transform);
         transform.position = cell.GetCenter();
 
-        GridManager.instance.CheckIfFoodMatches(this);
+        GridManager.instance.CheckIfFoodMatches(this, true);
     }
 
     public void GetReleased()

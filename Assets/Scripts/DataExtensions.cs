@@ -33,9 +33,4 @@ public static class DataExtensions
 
         return randomData;
     }
-
-    // public static Sprite GetSprite(FoodType type)
-    // {
-    //     
-    // }
 }

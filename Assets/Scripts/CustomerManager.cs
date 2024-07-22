@@ -18,15 +18,16 @@ public class CustomerManager : MonoSingleton<CustomerManager>
                     givenData.level == orderHandlers[i].GetFoodDataFromDict()[j].level)
                 {
                     shouldBreak = true;
-                    orderHandlers[i].RemoveOrder(orderHandlers[i].GetFoodDataFromDict()[j]);
-                    controller.Disappear();
+                    //   orderHandlers[i].RemoveOrder(orderHandlers[i].GetFoodDataFromDict()[j]);
+                    orderHandlers[i].CompleteOrder(givenData);
+                    controller.Disappear(orderHandlers[i].transform.position);
                     break;
                 }
             }
         }
     }
 
-    public void CheckIfDataMatches(FoodData givenData, OrderHandler orderHandler)
+    public void CheckIfDataMatchesForOrders(FoodData givenData, OrderHandler orderHandler)
     {
         List<FoodController> foods = GridManager.instance.foodsOnGrid;
         foreach (FoodController food in foods)
@@ -34,8 +35,8 @@ public class CustomerManager : MonoSingleton<CustomerManager>
             if (givenData.foodType != food.GetFoodData().foodType ||
                 givenData.level != food.GetFoodData().level) continue;
 
-            orderHandler.RemoveOrder(givenData);
-            food.Disappear();
+            // orderHandler.RemoveOrder(givenData);
+            food.Disappear(orderHandler.transform.position);
             break;
         }
     }
