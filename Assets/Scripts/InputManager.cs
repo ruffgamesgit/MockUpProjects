@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class InputManager : MonoBehaviour
 {
+    [Header("Config")] [SerializeField] private Vector3 offset;
     private FoodController _pickedObject;
     private Camera _mainCamera;
-    private Vector3 _offset;
 
     void Start()
     {
@@ -29,7 +30,7 @@ public class InputManager : MonoBehaviour
                 {
                     _pickedObject = foodController;
                     _pickedObject.GetPicked();
-                    _offset = _pickedObject.transform.position - GetMouseWorldPosition();
+                    offset = _pickedObject.transform.position - GetMouseWorldPosition();
                 }
             }
         }
@@ -37,16 +38,15 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButton(0) && _pickedObject)
         {
             // Mouse button held down, drag the object
-            _pickedObject.transform.position = GetMouseWorldPosition() + _offset;
+            _pickedObject.transform.position = GetMouseWorldPosition() + offset;
         }
 
         if (Input.GetMouseButtonUp(0) && _pickedObject)
         {
             // Mouse button released, try to place the object
             Ray ray = new Ray(_pickedObject.transform.position, Vector3.down);
-            RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
                 if (hit.transform.TryGetComponent(out GridCell cell))
                 {
