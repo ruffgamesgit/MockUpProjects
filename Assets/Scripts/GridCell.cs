@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GridCell : MonoBehaviour
 {
@@ -14,7 +12,8 @@ public class GridCell : MonoBehaviour
 
     private void Awake()
     {
-        if (!initiliazeWithFood)
+        int a = Random.Range(0, 2);
+        if (a > 0)
             Destroy(transform.GetComponentInChildren<FoodController>().gameObject);
     }
 
@@ -22,21 +21,29 @@ public class GridCell : MonoBehaviour
     {
         name = coordinates.ToString();
 
-        neighbours = GetNeighbors();
+        //    neighbours = GetNeighbors();
     }
-    
+
+
     #region GETTERS & SETTERS
+
+    public void SetCoordinates(Vector2Int _coordinates)
+    {
+        coordinates = _coordinates;
+    }
 
     public void SetOccupied(FoodController foodController)
     {
         isOccupied = true;
         currentFood = foodController;
     }
+
     public void SetFree()
     {
         isOccupied = false;
         currentFood = null;
     }
+
     public Vector3 GetCenter()
     {
         return transform.position + transform.up / 4;
@@ -45,28 +52,6 @@ public class GridCell : MonoBehaviour
     public Vector2Int GetCoordinates()
     {
         return coordinates;
-    }
-
-    private List<GridCell> GetNeighbors()
-    {
-        List<GridCell> gridCells = GridManager.instance.gridPlan;
-        List<GridCell> neighbors = new();
-
-        int[] dx = { 1, 0, -1, 0 };
-        int[] dz = { 0, 1, 0, -1 };
-
-        for (int i = 0; i < dx.Length; i++)
-        {
-            Vector2Int neighborCoordinates = coordinates + new Vector2Int(dx[i], dz[i]);
-            GridCell neighbor = gridCells.Find(cell => cell.coordinates == neighborCoordinates);
-
-            if (neighbor != null)
-            {
-                neighbors.Add(neighbor);
-            }
-        }
-
-        return neighbors;
     }
 
     #endregion

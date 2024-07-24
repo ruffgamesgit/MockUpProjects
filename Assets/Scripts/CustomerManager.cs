@@ -4,25 +4,28 @@ using UnityEngine;
 public class CustomerManager : MonoSingleton<CustomerManager>
 {
     [Header("References")] [SerializeField]
-    private List<OrderHandler> orderHandlers;
+    private Blocker blocker;
+    [SerializeField] private List<OrderHandler> orderHandlers;
 
     public void CheckIfDataMatches(FoodData givenData, FoodController controller)
     {
         bool shouldBreak = false;
-        for (int i = 0; i < orderHandlers.Count; i++)
+        foreach (OrderHandler oh in orderHandlers)
         {
             if (shouldBreak) break;
-            for (int j = 0; j < orderHandlers[i].GetFoodDataFromDict().Count; j++)
+            Dictionary<OrderImageController, FoodData> dataDict = oh.FoodDataDictionary;
+
+            foreach ((OrderImageController key, FoodData value) in dataDict)
             {
-                if (givenData.foodType == orderHandlers[i].GetFoodDataFromDict()[j].foodType &&
-                    givenData.level == orderHandlers[i].GetFoodDataFromDict()[j].level)
-                {
-                    shouldBreak = true;
-                    //   orderHandlers[i].RemoveOrder(orderHandlers[i].GetFoodDataFromDict()[j]);
-                    orderHandlers[i].CompleteOrder(givenData);
-                    controller.Disappear(orderHandlers[i].transform.position);
-                    break;
-                }
+                if (value.foodType != givenData.foodType ||
+                    value.level != givenData.level) continue;
+                if (key.isCompleted) continue;
+
+                shouldBreak = true;
+                //   orderHandlers[i].RemoveOrder(orderHandlers[i].GetFoodDataFromDict()[j]);
+                oh.CompleteOrder(givenData);
+                controller.Disappear(oh.transform.position);
+                break;
             }
         }
     }
@@ -39,5 +42,11 @@ public class CustomerManager : MonoSingleton<CustomerManager>
             food.Disappear(orderHandler.transform.position);
             break;
         }
+    }
+
+    public void OnMapDisplayed(MergeMapPanel displayedPanel)
+    {
+        blocker.gameObject.SetActive(true);
+        blocker.Activate(displayedPanel);
     }
 }

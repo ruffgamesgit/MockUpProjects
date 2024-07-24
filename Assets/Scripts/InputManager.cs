@@ -3,7 +3,8 @@ using UnityEngine.Serialization;
 
 public class InputManager : MonoBehaviour
 {
-    [Header("Config")] [SerializeField] private Vector3 offset;
+    [Header("Config")] [SerializeField] float zOffset;
+    private Vector3 _offset;
     private FoodController _pickedObject;
     private Camera _mainCamera;
 
@@ -28,9 +29,11 @@ public class InputManager : MonoBehaviour
             {
                 if (hit.transform.TryGetComponent(out FoodController foodController))
                 {
+                    if (foodController.GetCell()) return;
                     _pickedObject = foodController;
                     _pickedObject.GetPicked();
-                    offset = _pickedObject.transform.position - GetMouseWorldPosition();
+
+                    _offset = _pickedObject.transform.position - GetMouseWorldPosition() + new Vector3(0, 0, zOffset);
                 }
             }
         }
@@ -38,7 +41,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButton(0) && _pickedObject)
         {
             // Mouse button held down, drag the object
-            _pickedObject.transform.position = GetMouseWorldPosition() + offset;
+            _pickedObject.transform.position = GetMouseWorldPosition() + _offset;
         }
 
         if (Input.GetMouseButtonUp(0) && _pickedObject)

@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coordinates: {x: 0, y: 0}
-  initiliazeWithFood: 0
+  initiliazeWithFood: 1
   isOccupied: 0
   currentFood: {fileID: 0}
   neighbours: []

@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class OrderHandler : MonoBehaviour
 {
+    [Header("Debug")] [SerializeField] private int completedOrderCount;
+    public Dictionary<OrderImageController, FoodData> FoodDataDictionary;
+
     [Header("References")] [SerializeField]
-    private FoodDataHolder dataSO;
+    private FoodDataHolderSoHolder dataSo;
+    [SerializeField] private List<OrderImageController> imageControllers;
 
-    [SerializeField] private List<Image> images;
-
-    [Header("Debug")] private Dictionary<Image, FoodData> _foodDataDictionary;
-    [SerializeField] private int completedOrderCount;
 
     private void Awake()
     {
@@ -19,21 +20,21 @@ public class OrderHandler : MonoBehaviour
 
     private void AssignFoodData()
     {
-        _foodDataDictionary = new Dictionary<Image, FoodData>();
+        FoodDataDictionary = new Dictionary<OrderImageController, FoodData>();
 
-        foreach (Image image in images)
+        foreach (OrderImageController ic in imageControllers)
         {
             FoodData randomFoodData = DataExtensions.GetRandomFoodData(1);
-            _foodDataDictionary[image] = randomFoodData;
-            image.sprite = GetSpriteFromSO(randomFoodData);
+            FoodDataDictionary[ic] = randomFoodData;
+            ic.SetSprite(GetSpriteFromSo(randomFoodData), randomFoodData);
         }
     }
 
     public void RemoveOrder(FoodData toRemoveData)
     {
-        Image imageToRemove = null;
+        OrderImageController imageToRemove = null;
 
-        foreach (var kvp in _foodDataDictionary)
+        foreach (var kvp in FoodDataDictionary)
         {
             if (kvp.Value.foodType == toRemoveData.foodType)
             {
@@ -44,12 +45,12 @@ public class OrderHandler : MonoBehaviour
 
         if (imageToRemove != null)
         {
-            _foodDataDictionary.Remove(imageToRemove);
-            imageToRemove.sprite = null;
+            FoodDataDictionary.Remove(imageToRemove);
+            imageToRemove.SetSprite(null ,null);
 
             FoodData newRandomFoodData = DataExtensions.GetRandomFoodData(1);
-            _foodDataDictionary[imageToRemove] = newRandomFoodData;
-            imageToRemove.sprite = GetSpriteFromSO(newRandomFoodData);
+            FoodDataDictionary[imageToRemove] = newRandomFoodData;
+            imageToRemove.SetSprite(GetSpriteFromSo(newRandomFoodData), newRandomFoodData);
 
             CustomerManager.instance.CheckIfDataMatchesForOrders(newRandomFoodData, this);
         }
@@ -57,21 +58,19 @@ public class OrderHandler : MonoBehaviour
 
     public void CompleteOrder(FoodData givenData)
     {
-        Image targetImage = null;
+        OrderImageController targetImageController = null;
 
-        foreach (var kvp in _foodDataDictionary)
+        foreach ((OrderImageController key, FoodData value) in FoodDataDictionary)
         {
-            if (kvp.Value.foodType == givenData.foodType)
-            {
-                if (Mathf.Approximately(kvp.Key.color.a, 1f))
-                {
-                    targetImage = kvp.Key;
-                    break;
-                }
-            }
+            if (value.foodType != givenData.foodType ||
+                value.level != givenData.level) continue;
+            if (key.isCompleted) continue;
+            
+            targetImageController = key;
+            break;
         }
 
-        if (targetImage != null)
+        if (targetImageController != null)
         {
             completedOrderCount++;
 
@@ -79,37 +78,29 @@ public class OrderHandler : MonoBehaviour
             {
                 completedOrderCount = 0;
                 AssignFoodData();
-                foreach (Image image in images)
+                foreach (OrderImageController ic in imageControllers)
                 {
-                    Debug.Log(2);
-                    Color color = image.color; // Get the current color
-                    color.a = 1; // Modify the alpha value
-                    image.color = color;
-                    image.transform.GetChild(0).gameObject.SetActive(false);
-
-                    FoodData newData = _foodDataDictionary[image];
+                    ic.ResetImage();
+                    FoodData newData = FoodDataDictionary[ic];
                     CustomerManager.instance.CheckIfDataMatchesForOrders(newData, this);
                 }
             }
             else
             {
-                Debug.Log(1);
-                Color color = targetImage.color; // Get the current color
-                color.a = .5f; // Modify the alpha value
-                targetImage.color = color;
-                targetImage.transform.GetChild(0).gameObject.SetActive(true);
+                targetImageController.SetCompleted();
             }
         }
     }
 
+
     public List<FoodData> GetFoodDataFromDict()
     {
-        return new List<FoodData>(_foodDataDictionary.Values);
+        return new List<FoodData>(FoodDataDictionary.Values);
     }
 
-    public Sprite GetSpriteFromSO(FoodData data)
+    private Sprite GetSpriteFromSo(FoodData data)
     {
-        foreach (var soData in dataSO.generalFoodDatas)
+        foreach (var soData in dataSo.generalFoodDatas)
         {
             if (data.foodType == soData.foodData.foodType &&
                 data.level == soData.foodData.level)
@@ -119,20 +110,5 @@ public class OrderHandler : MonoBehaviour
         }
 
         return null;
-    }
-
-    public List<Image> GetEmptyImages()
-    {
-        List<Image> emptyImages = new List<Image>();
-
-        foreach (var image in images)
-        {
-            if (!_foodDataDictionary.ContainsKey(image))
-            {
-                emptyImages.Add(image);
-            }
-        }
-
-        return emptyImages;
     }
 }

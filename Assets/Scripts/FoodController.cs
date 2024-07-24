@@ -1,9 +1,6 @@
 using System;
 using DG.Tweening;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -20,7 +17,7 @@ public enum FoodType
 public class FoodController : MonoBehaviour
 {
     [Header("References")] [SerializeField]
-    private FoodDataHolder dataSo;
+    private FoodDataHolderSoHolder dataSo;
 
     [Header("Debug")] [SerializeField] private FoodData foodData;
     [SerializeField] private GridCell currentCell;
@@ -40,7 +37,7 @@ public class FoodController : MonoBehaviour
 
         _foodImage = transform.GetComponentInChildren<Image>();
         _foodImage.sprite = GetSpriteFromSo(foodData);
-        GridManager.instance.AddFood(this);
+        HexGridManager.instance?.AddFood(this);
     }
 
     public void IncrementSelf()
@@ -55,7 +52,7 @@ public class FoodController : MonoBehaviour
     public void Disappear(Vector3 pos)
     {
         currentCell.SetFree();
-        GridManager.instance.RemoveFood(this);
+        HexGridManager.instance.RemoveFood(this);
 
         Sequence sq = DOTween.Sequence();
         sq.Append(transform.DOMove(pos, .2f));
@@ -81,8 +78,7 @@ public class FoodController : MonoBehaviour
     {
         return foodData;
     }
-
-
+    
     private int GetRandomLevel()
     {
         return !currentCell ? 0 : Random.Range(0, 2);
@@ -103,7 +99,7 @@ public class FoodController : MonoBehaviour
         transform.SetParent(cell.transform);
         transform.position = cell.GetCenter();
 
-        GridManager.instance.CheckIfFoodMatches(this, true);
+        HexGridManager.instance.CheckIfFoodMatches(this, true);
     }
 
     public void GetReleased()
