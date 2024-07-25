@@ -10,45 +10,46 @@ public class HexGridManager : MonoSingleton<HexGridManager>
     public int gridHeight = 10;
 
     [SerializeField] private float hexWidth;
-    private float _hexHeight;
-    private float _hexVertOffset;
-    private float _hexHorizOffset;
+    [SerializeField] private float hexHeight;
+    [SerializeField] private float hexVertOffset;
+    [SerializeField] private float hexHorizOffset;
     private readonly Dictionary<Vector2Int, GridCell> _hexDict = new Dictionary<Vector2Int, GridCell>();
-    
+
     public List<FoodController> foodsOnGrid;
 
     protected override void Awake()
     {
         base.Awake();
-        hexWidth = 1f; // Adjust based on your hexagon prefab's size
-        _hexHeight = Mathf.Sqrt(3) / 2 * hexWidth;
-        _hexVertOffset = _hexHeight;
-        _hexHorizOffset = 1.5f * hexWidth;
+        //   hexWidth = 1f; // Adjust based on your hexagon prefab's size
+        //   hexHeight = Mathf.Sqrt(3) / 2 * hexWidth;
+        //_hexVertOffset = hexHeight;
+        //  _hexHorizOffset = 1.5f * hexWidth;
 
         GenerateGrid();
         AssignNeighbors();
     }
 
     #region Generation Region
+
     private void GenerateGrid()
     {
         for (int x = 0; x < gridWidth; x++)
         {
             for (int y = 0; y < gridHeight; y++)
             {
-                float xPos = x * _hexHorizOffset;
-                float yPos = y * _hexVertOffset;
+                float xPos = x * hexHorizOffset;
+                float yPos = y * hexVertOffset;
 
                 // Offset every other row
                 if (y % 2 == 1)
                 {
-                    xPos += hexWidth * 0.75f;
+                    xPos += hexWidth;
                 }
 
                 Vector3 hexPosition = new(xPos, 0, yPos);
                 GameObject hex = Instantiate(hexPrefab, hexPosition, Quaternion.identity, transform);
                 hex.name = $"Hex_{x}_{y}";
-                
+
                 Vector2Int hexCoordinates = new(x, y);
                 GridCell hexCell = hex.transform.GetComponent<GridCell>();
                 hexCell.SetCoordinates(hexCoordinates);
@@ -56,6 +57,7 @@ public class HexGridManager : MonoSingleton<HexGridManager>
             }
         }
     }
+
     private void AssignNeighbors()
     {
         foreach (var hexPair in _hexDict)
@@ -74,19 +76,22 @@ public class HexGridManager : MonoSingleton<HexGridManager>
             }
         }
     }
+
     private static readonly Vector2Int[] EvenRowOffsets =
     {
-        new Vector2Int(1, 0), new Vector2Int(0, 1), new Vector2Int(-1, 1),
-        new Vector2Int(-1, 0), new Vector2Int(-1, -1), new Vector2Int(0, -1)
+        new(0, 2), new(0, 1), new(0, -1),
+        new(0, -2), new(-1, -1), new(-1, 1)
     };
+
     private static readonly Vector2Int[] OddRowOffsets =
     {
-        new Vector2Int(1, 0), new Vector2Int(1, 1), new Vector2Int(0, 1),
-        new Vector2Int(-1, 0), new Vector2Int(0, -1), new Vector2Int(1, -1)
+        new(0, 2), new(1, 1), new(1, -1),
+        new(0, -2), new(0, -1), new(0, 1)
     };
+
     #endregion
-    
-      public void CheckIfFoodMatches(FoodController lastPlacedFood, bool tripleMatch = false)
+
+    public void CheckIfFoodMatches(FoodController lastPlacedFood, bool tripleMatch = false)
     {
         GridCell lastPlacedCell = lastPlacedFood.GetCell();
         GridCell neighborMathcedCell = null;

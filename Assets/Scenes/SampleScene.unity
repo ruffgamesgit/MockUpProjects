@@ -177,7 +177,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6.2
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -201,7 +201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 10, z: -1.02}
+  m_LocalPosition: {x: 2.61, y: 10, z: 1.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1056,9 +1056,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hexPrefab: {fileID: 2284080841092886928, guid: cb8b66d3902de9d45a443c0bf62f0e3e,
     type: 3}
-  gridWidth: 6
-  gridHeight: 6
-  hexWidth: 1
+  gridWidth: 4
+  gridHeight: 8
+  hexWidth: 0.75
+  hexHeight: 0.6
+  hexVertOffset: 0.43
+  hexHorizOffset: 1.5
   foodsOnGrid: []
 --- !u!1001 &2913039441871437247
 PrefabInstance:
@@ -1075,7 +1078,7 @@ PrefabInstance:
     - target: {fileID: 1469032597150112760, guid: 36a0c4e24e6e1f5409c409e8bc00d604,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1469032597150112760, guid: 36a0c4e24e6e1f5409c409e8bc00d604,
         type: 3}
@@ -1085,7 +1088,7 @@ PrefabInstance:
     - target: {fileID: 1469032597150112760, guid: 36a0c4e24e6e1f5409c409e8bc00d604,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.84
+      value: -2.3400002
       objectReference: {fileID: 0}
     - target: {fileID: 1469032597150112760, guid: 36a0c4e24e6e1f5409c409e8bc00d604,
         type: 3}
@@ -1235,7 +1238,7 @@ PrefabInstance:
     - target: {fileID: 3186036298735712581, guid: 1f0beb7427fb5814695d9b1b0d9c9879,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5
+      value: 7.75
       objectReference: {fileID: 0}
     - target: {fileID: 3186036298735712581, guid: 1f0beb7427fb5814695d9b1b0d9c9879,
         type: 3}
@@ -1245,7 +1248,7 @@ PrefabInstance:
     - target: {fileID: 3186036298735712581, guid: 1f0beb7427fb5814695d9b1b0d9c9879,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 2.75
       objectReference: {fileID: 0}
     - target: {fileID: 3186036298735712581, guid: 1f0beb7427fb5814695d9b1b0d9c9879,
         type: 3}
