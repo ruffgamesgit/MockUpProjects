@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class OrderHandler : MonoBehaviour
 {
@@ -10,6 +8,7 @@ public class OrderHandler : MonoBehaviour
 
     [Header("References")] [SerializeField]
     private FoodDataHolderSoHolder dataSo;
+
     [SerializeField] private List<OrderImageController> imageControllers;
 
 
@@ -29,33 +28,6 @@ public class OrderHandler : MonoBehaviour
             ic.SetSprite(GetSpriteFromSo(randomFoodData), randomFoodData);
         }
     }
-
-    public void RemoveOrder(FoodData toRemoveData)
-    {
-        OrderImageController imageToRemove = null;
-
-        foreach (var kvp in FoodDataDictionary)
-        {
-            if (kvp.Value.foodType == toRemoveData.foodType)
-            {
-                imageToRemove = kvp.Key;
-                break;
-            }
-        }
-
-        if (imageToRemove != null)
-        {
-            FoodDataDictionary.Remove(imageToRemove);
-            imageToRemove.SetSprite(null ,null);
-
-            FoodData newRandomFoodData = DataExtensions.GetRandomFoodData(1);
-            FoodDataDictionary[imageToRemove] = newRandomFoodData;
-            imageToRemove.SetSprite(GetSpriteFromSo(newRandomFoodData), newRandomFoodData);
-
-            CustomerManager.instance.CheckIfDataMatchesForOrders(newRandomFoodData, this);
-        }
-    }
-
     public void CompleteOrder(FoodData givenData)
     {
         OrderImageController targetImageController = null;
@@ -65,7 +37,7 @@ public class OrderHandler : MonoBehaviour
             if (value.foodType != givenData.foodType ||
                 value.level != givenData.level) continue;
             if (key.isCompleted) continue;
-            
+
             targetImageController = key;
             break;
         }
@@ -91,13 +63,7 @@ public class OrderHandler : MonoBehaviour
             }
         }
     }
-
-
-    public List<FoodData> GetFoodDataFromDict()
-    {
-        return new List<FoodData>(FoodDataDictionary.Values);
-    }
-
+    
     private Sprite GetSpriteFromSo(FoodData data)
     {
         foreach (var soData in dataSo.generalFoodDatas)

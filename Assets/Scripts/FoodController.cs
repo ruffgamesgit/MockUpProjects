@@ -19,10 +19,12 @@ public class FoodController : MonoBehaviour
     [Header("References")] [SerializeField]
     private FoodDataHolderSoHolder dataSo;
 
-    [Header("Debug")] [SerializeField] private FoodData foodData;
-    [SerializeField] private GridCell currentCell;
+    [Header("Debug")] [SerializeField] private GridCell currentCell;
+    [SerializeField] private FoodData foodData;
     private Vector3 _initPos;
     private Image _foodImage;
+    private MeshFilter _foodMeshFilter;
+    [HideInInspector] public bool isDisappearing;
 
     void Start()
     {
@@ -37,6 +39,11 @@ public class FoodController : MonoBehaviour
 
         _foodImage = transform.GetComponentInChildren<Image>();
         _foodImage.sprite = GetSpriteFromSo(foodData);
+        _foodMeshFilter = transform.GetComponentInChildren<MeshFilter>();
+        _foodMeshFilter.mesh = GetSoData(foodData).mesh;
+        if (foodData.foodType == FoodType.Patato)
+            transform.GetComponentInChildren<MeshRenderer>().material = GetSoData(foodData).material;
+        
         HexGridManager.instance?.AddFood(this);
     }
 
@@ -51,6 +58,7 @@ public class FoodController : MonoBehaviour
 
     public void Disappear(Vector3 pos)
     {
+        isDisappearing = true;
         currentCell.SetFree();
         HexGridManager.instance.RemoveFood(this);
 
@@ -74,14 +82,23 @@ public class FoodController : MonoBehaviour
         return null;
     }
 
+    private SoData GetSoData(FoodData data)
+    {
+        foreach (SoData soData in dataSo.generalFoodDatas)
+        {
+            if (data.foodType == soData.foodData.foodType &&
+                data.level == soData.foodData.level)
+            {
+                return soData;
+            }
+        }
+
+        return null;
+    }
+
     public FoodData GetFoodData()
     {
         return foodData;
-    }
-    
-    private int GetRandomLevel()
-    {
-        return !currentCell ? 0 : Random.Range(0, 2);
     }
 
     public void GetPicked()
@@ -99,7 +116,7 @@ public class FoodController : MonoBehaviour
         transform.SetParent(cell.transform);
         transform.position = cell.GetCenter();
 
-        HexGridManager.instance.CheckIfFoodMatches(this, true);
+        HexGridManager.instance.CheckIfFoodMatches(this);
     }
 
     public void GetReleased()

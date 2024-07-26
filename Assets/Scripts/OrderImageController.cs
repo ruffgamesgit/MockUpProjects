@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class OrderImageController : MonoBehaviour
@@ -9,13 +8,11 @@ public class OrderImageController : MonoBehaviour
 
     [Header("References")] [SerializeField]
     private Button button;
-
     [SerializeField] private Image image;
     [SerializeField] private GameObject doneImage;
 
     [Header("Debug")] public bool isCompleted;
     [SerializeField] private FoodData data;
-    private MergeMapPanel _mergeMapPanel;
 
 
     private void Start()
@@ -29,18 +26,12 @@ public class OrderImageController : MonoBehaviour
         DisplayButtonClickedEvent?.Invoke();
     }
 
-    public void SetMapPanel(MergeMapPanel panel)
-    {
-        _mergeMapPanel = panel;
-    }
-
-    
     public void SetSprite(Sprite sprite, FoodData foodData)
     {
         image.sprite = sprite;
         data = foodData;
     }
-
+    
     public FoodData GetFoodData()
     {
         return data;

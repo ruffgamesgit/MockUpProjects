@@ -1,30 +1,26 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class HexGridManager : MonoSingleton<HexGridManager>
 {
-    public GameObject hexPrefab;
-    public int gridWidth = 10;
+    [Header("References")] public GameObject hexPrefab;
+
+    [Header("Config")] public int gridWidth = 10;
     public int gridHeight = 10;
+    [SerializeField] private int desiredInitialFoodCount;
 
-    [SerializeField] private float hexWidth;
-    [SerializeField] private float hexHeight;
-    [SerializeField] private float hexVertOffset;
-    [SerializeField] private float hexHorizOffset;
-    private readonly Dictionary<Vector2Int, GridCell> _hexDict = new Dictionary<Vector2Int, GridCell>();
+    [Header("Debug")] public List<FoodController> foodsOnGrid;
+    [SerializeField] List<GridCell> allCells = new();
+    private const float HexWidth = .75f;
+    private const float HexHeight = .6f;
+    private const float HexVertOffset = .43f;
+    private const float HexHorizOffset = 1.5f;
+    private readonly Dictionary<Vector2Int, GridCell> _hexDict = new();
 
-    public List<FoodController> foodsOnGrid;
 
     protected override void Awake()
     {
         base.Awake();
-        //   hexWidth = 1f; // Adjust based on your hexagon prefab's size
-        //   hexHeight = Mathf.Sqrt(3) / 2 * hexWidth;
-        //_hexVertOffset = hexHeight;
-        //  _hexHorizOffset = 1.5f * hexWidth;
-
         GenerateGrid();
         AssignNeighbors();
     }
@@ -37,13 +33,13 @@ public class HexGridManager : MonoSingleton<HexGridManager>
         {
             for (int y = 0; y < gridHeight; y++)
             {
-                float xPos = x * hexHorizOffset;
-                float yPos = y * hexVertOffset;
+                float xPos = x * HexHorizOffset;
+                float yPos = y * HexVertOffset;
 
                 // Offset every other row
                 if (y % 2 == 1)
                 {
-                    xPos += hexWidth;
+                    xPos += HexWidth;
                 }
 
                 Vector3 hexPosition = new(xPos, 0, yPos);
@@ -54,13 +50,31 @@ public class HexGridManager : MonoSingleton<HexGridManager>
                 GridCell hexCell = hex.transform.GetComponent<GridCell>();
                 hexCell.SetCoordinates(hexCoordinates);
                 _hexDict.Add(hexCoordinates, hexCell);
+                allCells.Add(hexCell);
             }
+        }
+
+        MarkInitialFoodCells();
+    }
+
+    private void MarkInitialFoodCells()
+    {
+        int cellCount = Mathf.Min(desiredInitialFoodCount, allCells.Count);
+        List<GridCell> selectedCells = new();
+
+        while (selectedCells.Count < cellCount)
+        {
+            GridCell randomCell = allCells[Random.Range(0, allCells.Count)];
+            if (selectedCells.Contains(randomCell)) continue;
+
+            randomCell.SpawnFood();
+            selectedCells.Add(randomCell);
         }
     }
 
     private void AssignNeighbors()
     {
-        foreach (var hexPair in _hexDict)
+        foreach (KeyValuePair<Vector2Int, GridCell> hexPair in _hexDict)
         {
             Vector2Int coord = hexPair.Key;
             GridCell hex = hexPair.Value;
@@ -91,90 +105,86 @@ public class HexGridManager : MonoSingleton<HexGridManager>
 
     #endregion
 
-    public void CheckIfFoodMatches(FoodController lastPlacedFood, bool tripleMatch = false)
+    public void CheckIfFoodMatches(FoodController lastPlacedFood)
     {
         GridCell lastPlacedCell = lastPlacedFood.GetCell();
         GridCell neighborMathcedCell = null;
         List<GridCell> neighbours = lastPlacedCell.neighbours;
         bool hasMatch = false;
 
-        if (!tripleMatch)
+
+        List<FoodController> matchedFoods = new();
+
+        foreach (GridCell neighborCell in neighbours)
         {
-            for (int i = 0; i < neighbours.Count; i++)
-            {
-                if (!neighbours[i].currentFood) continue;
-                if (neighbours[i].currentFood.GetFoodData().level >= 2) continue;
+            if (!neighborCell.currentFood) continue;
+            if (neighborCell.currentFood.GetFoodData().level >= 2) continue;
 
-                FoodController neighborFood = neighbours[i].currentFood;
-                if (lastPlacedFood.GetFoodData().foodType != neighborFood.GetFoodData().foodType) continue;
-                if (lastPlacedFood.GetFoodData().level != neighborFood.GetFoodData().level) continue;
-                neighborMathcedCell = neighbours[i];
-                hasMatch = true;
-                break;
-            }
-
-            if (!hasMatch) return;
-
-            neighborMathcedCell?.currentFood.IncrementSelf();
-            lastPlacedFood.Disappear(lastPlacedCell.GetCenter());
-
-            if (neighborMathcedCell?.currentFood?.GetFoodData().level < 2)
-                CheckIfFoodMatches(neighborMathcedCell.currentFood);
+            FoodController neighborFood = neighborCell.currentFood;
+            if (lastPlacedFood.GetFoodData().foodType != neighborFood.GetFoodData().foodType) continue;
+            if (lastPlacedFood.GetFoodData().level != neighborFood.GetFoodData().level) continue;
+            if (!matchedFoods.Contains(neighborFood))
+                matchedFoods.Add(neighborFood);
         }
-        else
-        {
-            List<FoodController> matchedFoods = new List<FoodController>();
 
+        if (matchedFoods.Count >= 1) // one neighbour has same food
+        {
             foreach (GridCell neighborCell in neighbours)
             {
                 if (!neighborCell.currentFood) continue;
                 if (neighborCell.currentFood.GetFoodData().level >= 2) continue;
+                if (lastPlacedFood.GetFoodData().foodType !=
+                    neighborCell.currentFood.GetFoodData().foodType) continue;
+                if (lastPlacedFood.GetFoodData().level != neighborCell.currentFood.GetFoodData().level) continue;
 
-                FoodController neighborFood = neighborCell.currentFood;
-                if (lastPlacedFood.GetFoodData().foodType != neighborFood.GetFoodData().foodType) continue;
-                if (lastPlacedFood.GetFoodData().level != neighborFood.GetFoodData().level) continue;
-                if (!matchedFoods.Contains(neighborFood))
-                    matchedFoods.Add(neighborFood);
-            }
-
-            if (matchedFoods.Count is < 2 and > 0)
-            {
-                foreach (GridCell neighborCell in neighbours)
+                foreach (GridCell cell in neighborCell.neighbours)
                 {
-                    if (!neighborCell.currentFood) continue;
-                    if (neighborCell.currentFood.GetFoodData().level >= 2) continue;
-                    if (lastPlacedFood.GetFoodData().foodType !=
-                        neighborCell.currentFood.GetFoodData().foodType) continue;
-                    if (lastPlacedFood.GetFoodData().level != neighborCell.currentFood.GetFoodData().level) continue;
+                    if (cell == lastPlacedCell) continue;
+                    if (!cell.currentFood) continue;
+                    if (cell.currentFood.GetFoodData().level >= 2) continue;
+                    if (lastPlacedFood.GetFoodData().foodType != cell.currentFood.GetFoodData().foodType) continue;
+                    if (lastPlacedFood.GetFoodData().level != cell.currentFood.GetFoodData().level) continue;
 
-                    foreach (GridCell cell in neighborCell.neighbours)
-                    {
-                        if (matchedFoods.Count >= 2) break;
+                    FoodController food = cell.currentFood;
+                    if (matchedFoods.Contains(food) && food == lastPlacedFood) continue;
 
-                        if (cell == lastPlacedCell) continue;
-                        if (!cell.currentFood) continue;
-                        if (cell.currentFood.GetFoodData().level >= 2) continue;
-                        if (lastPlacedFood.GetFoodData().foodType != cell.currentFood.GetFoodData().foodType) continue;
-                        if (lastPlacedFood.GetFoodData().level != cell.currentFood.GetFoodData().level) continue;
-
-                        FoodController food = cell.currentFood;
-                        if (matchedFoods.Contains(food) && food == lastPlacedFood) continue;
-
-                        matchedFoods.Add(food);
-                    }
+                    matchedFoods.Add(food);
                 }
             }
+        }
 
-            if (matchedFoods.Count < 2) return;
-
-            lastPlacedFood.IncrementSelf();
+        if (matchedFoods.Count < 2) return;
+        List<FoodController> incrementedFoods = new();
+        lastPlacedFood.IncrementSelf();
+        incrementedFoods.Add(lastPlacedFood);
+        if (matchedFoods.Count <= 2)
+        {
             for (int i = 0; i < 2; i++)
             {
                 matchedFoods[i].Disappear(lastPlacedCell.GetCenter());
             }
+        }
+        else
+        {
+            if (matchedFoods.Count <= 5)
+            {
+                for (int i = 0; i < matchedFoods.Count; i++)
+                {
+                    if (i > 0)
+                        matchedFoods[i].Disappear(lastPlacedCell.GetCenter());
+                    else
+                    {
+                        matchedFoods[i].IncrementSelf();
+                        incrementedFoods.Add(matchedFoods[i]);
+                    }
+                }
+            }
+        }
 
-            if (lastPlacedFood?.GetFoodData().level < 2)
-                CheckIfFoodMatches(lastPlacedFood, true);
+        foreach (FoodController food in incrementedFoods)
+        {
+            if (food != null && !food.isDisappearing && food?.GetFoodData().level < 2)
+                CheckIfFoodMatches(food);
         }
     }
 

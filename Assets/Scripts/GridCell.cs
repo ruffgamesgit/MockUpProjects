@@ -3,25 +3,22 @@ using UnityEngine;
 
 public class GridCell : MonoBehaviour
 {
-    [Header("Config")] [SerializeField] Vector2Int coordinates;
-    [SerializeField] private bool initiliazeWithFood;
-
+    [Header("References")] [SerializeField]
+    private FoodController foodPrefab;
+    
     [Header("Debug")] public bool isOccupied;
+    [SerializeField] Vector2Int coordinates;
     public FoodController currentFood;
     public List<GridCell> neighbours;
 
-    private void Awake()
+    public void SpawnFood()
     {
-        int a = Random.Range(0, 2);
-        if (a > 0)
-            Destroy(transform.GetComponentInChildren<FoodController>().gameObject);
+        Instantiate(foodPrefab, GetCenter(), Quaternion.identity, transform);
     }
 
     private void Start()
     {
         name = coordinates.ToString();
-
-        //    neighbours = GetNeighbors();
     }
 
 

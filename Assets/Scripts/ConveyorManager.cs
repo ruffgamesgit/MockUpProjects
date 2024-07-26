@@ -11,7 +11,6 @@ public class ConveyorManager : MonoSingleton<ConveyorManager>
     protected override void Awake()
     {
         base.Awake();
-
         SpawnFood();
     }
 
