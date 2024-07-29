@@ -29,7 +29,7 @@ MonoBehaviour:
       foodType: 1
       level: 2
     sprite: {fileID: 21300000, guid: 8fccfd4d4f3a00041b00fcaa22b59624, type: 2}
-    mesh: {fileID: 0}
+    mesh: {fileID: -3848560628881794338, guid: eabb35feee265754a9df61d8c4a2eafd, type: 3}
     materials: []
   - foodData:
       foodType: 2
