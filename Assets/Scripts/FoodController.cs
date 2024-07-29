@@ -19,11 +19,14 @@ public class FoodController : MonoBehaviour
     [Header("References")] [SerializeField]
     private FoodDataHolderSoHolder dataSo;
 
+    [SerializeField] private Material defaultFoodMaterial;
+
     [Header("Debug")] [SerializeField] private GridCell currentCell;
     [SerializeField] private FoodData foodData;
     private Vector3 _initPos;
     private Image _foodImage;
     private MeshFilter _foodMeshFilter;
+    private MeshRenderer _meshRenderer;
     [HideInInspector] public bool isDisappearing;
 
     void Start()
@@ -40,19 +43,17 @@ public class FoodController : MonoBehaviour
         //_foodImage = transform.GetComponentInChildren<Image>();
         //  _foodImage.sprite = GetSpriteFromSo(foodData);
         _foodMeshFilter = transform.GetComponentInChildren<MeshFilter>();
-        _foodMeshFilter.mesh = GetSoData(foodData).mesh;
-        if (foodData.foodType == FoodType.Patato && foodData.level == 0)
-            transform.GetComponentInChildren<MeshRenderer>().material = GetSoData(foodData).material;
 
+
+        AssignMeshAndMaterial();
         HexGridManager.instance?.AddFood(this);
     }
 
     public void IncrementSelf()
     {
         foodData.level++;
-        //   _foodImage.sprite = GetSpriteFromSo(foodData);
-        _foodMeshFilter.mesh = GetSoData(foodData).mesh;
-        
+        AssignMeshAndMaterial();
+
         transform.DOScale(Vector3.one * 1.5f, .15f).SetLoops(2, LoopType.Yoyo)
             .OnComplete(() => CustomerManager.instance.CheckIfDataMatches(foodData, this));
     }
@@ -67,6 +68,35 @@ public class FoodController : MonoBehaviour
         sq.Append(transform.DOMove(pos, .2f));
         sq.Append(transform.DOScale(Vector3.zero, .45f));
         sq.OnComplete(() => Destroy(gameObject));
+    }
+
+
+    void AssignMeshAndMaterial()
+    {
+        _foodMeshFilter.mesh = GetSoData(foodData).mesh;
+        _meshRenderer = transform.GetComponentInChildren<MeshRenderer>();
+        bool specificMatUsed = false;
+
+        switch (foodData.foodType)
+        {
+            case FoodType.Patato when foodData.level == 0:
+            {
+                _meshRenderer.material = GetSoData(foodData).materials[0];
+                specificMatUsed = true;
+                break;
+            }
+            case FoodType.Juice when foodData.level != 0:
+            {
+                _meshRenderer.materials = GetSoData(foodData).materials;
+
+                specificMatUsed = true;
+                break;
+            }
+        }
+
+
+        if (!specificMatUsed)
+            _meshRenderer.material = defaultFoodMaterial;
     }
 
     // private Sprite GetSpriteFromSo(FoodData data)

@@ -47,7 +47,7 @@ MonoBehaviour:
   hexPrefab: {fileID: 2284080841092886928, guid: cb8b66d3902de9d45a443c0bf62f0e3e,
     type: 3}
   gridWidth: 4
-  gridHeight: 8
+  gridHeight: 11
   desiredInitialFoodCount: 5
   foodsOnGrid: []
   allCells: []

@@ -18,88 +18,93 @@ MonoBehaviour:
       level: 0
     sprite: {fileID: 21300000, guid: d92499a06a167f141b7df0beefaf786e, type: 2}
     mesh: {fileID: -5422591935428785458, guid: c5276c96829515a408b5d2ee7b92e734, type: 3}
-    material: {fileID: 0}
+    materials: []
   - foodData:
       foodType: 1
       level: 1
     sprite: {fileID: 21300000, guid: 42fb526a848eb2c4ab22917624c9c294, type: 2}
     mesh: {fileID: 6301595185608042771, guid: b8a9064cd29e8064a8b3aa2310fdee86, type: 3}
-    material: {fileID: 0}
+    materials: []
   - foodData:
       foodType: 1
       level: 2
     sprite: {fileID: 21300000, guid: 8fccfd4d4f3a00041b00fcaa22b59624, type: 2}
     mesh: {fileID: 0}
-    material: {fileID: 0}
+    materials: []
   - foodData:
       foodType: 2
       level: 0
     sprite: {fileID: 21300000, guid: 68f180e37991d5d4a8fe1234e1ed4c8c, type: 2}
     mesh: {fileID: 4365235181375833991, guid: 3c0b9093aefe1f545ade02df05dff4f1, type: 3}
-    material: {fileID: 2100000, guid: b306b43469deffa458a8dd8666ca2ea5, type: 2}
+    materials:
+    - {fileID: 2100000, guid: b306b43469deffa458a8dd8666ca2ea5, type: 2}
   - foodData:
       foodType: 2
       level: 1
     sprite: {fileID: 21300000, guid: 5a63d0d0df071444283768666b149f38, type: 2}
     mesh: {fileID: 313687997912373942, guid: ad17dea1b798bbf4a9f21807c66284f3, type: 3}
-    material: {fileID: 2100000, guid: b306b43469deffa458a8dd8666ca2ea5, type: 2}
+    materials: []
   - foodData:
       foodType: 2
       level: 2
     sprite: {fileID: 21300000, guid: 8f7818aa01bcbfd4aad7f05632c7dd09, type: 2}
     mesh: {fileID: 4999675957740653115, guid: b76a3045e02eadf4f90473478a8145d6, type: 3}
-    material: {fileID: 2100000, guid: b306b43469deffa458a8dd8666ca2ea5, type: 2}
+    materials: []
   - foodData:
       foodType: 3
       level: 0
     sprite: {fileID: 21300000, guid: 15944d7f1876fe847bb35d6404386e37, type: 2}
     mesh: {fileID: 6510839796755108485, guid: 81a3d6ba7b39f8744862d430e33f4f05, type: 3}
-    material: {fileID: 0}
+    materials: []
   - foodData:
       foodType: 3
       level: 1
     sprite: {fileID: 21300000, guid: 01c4fdd9a7185b34c9610b0d5e47adcb, type: 2}
     mesh: {fileID: -8422418761016120086, guid: 11316fb40dd5fd446a66214b26a8821c, type: 3}
-    material: {fileID: 0}
+    materials: []
   - foodData:
       foodType: 3
       level: 2
     sprite: {fileID: 21300000, guid: 766ab7a6b41437546b79b7683cb952aa, type: 2}
     mesh: {fileID: -4101298594492280764, guid: 84f1d98b2b5e90a4db76966b2348bd53, type: 3}
-    material: {fileID: 0}
+    materials: []
   - foodData:
       foodType: 4
       level: 0
     sprite: {fileID: 21300000, guid: 17338a24c902f874193f3aa56d27a528, type: 2}
     mesh: {fileID: 3393220763967639638, guid: 6eee7a1adde5d0e4ead00c2fdd4c25d0, type: 3}
-    material: {fileID: 0}
+    materials: []
   - foodData:
       foodType: 4
       level: 1
     sprite: {fileID: 21300000, guid: 53ff5b2dd2d3bda4d99afaf43d9055b7, type: 2}
     mesh: {fileID: 6421840794997832871, guid: a1adda11eea0f0946a8c3561b57338e7, type: 3}
-    material: {fileID: 0}
+    materials:
+    - {fileID: 2100000, guid: cf1cc5db5cac6c84b972b1bec724513e, type: 2}
+    - {fileID: 2100000, guid: ed77f9c281e632049962c49805c5bd07, type: 2}
   - foodData:
       foodType: 4
       level: 2
     sprite: {fileID: 21300000, guid: 5a345c61b8723a8409a2423638e6319b, type: 2}
     mesh: {fileID: 8332047269932896450, guid: ff9550cde488bbc498d341a36666a39d, type: 3}
-    material: {fileID: 0}
+    materials:
+    - {fileID: 2100000, guid: f6e70b2517e9a994daf6c71cef851ed2, type: 2}
+    - {fileID: 2100000, guid: 26e6e87fa7d2d284a8e67c9715f0b1de, type: 2}
   - foodData:
       foodType: 5
       level: 0
     sprite: {fileID: 21300000, guid: 6f82b6c93b004774a8ea6276f7aa7b29, type: 2}
     mesh: {fileID: 2733324400681910466, guid: 8e702362c52beeb438b67af04274de4b, type: 3}
-    material: {fileID: 0}
+    materials: []
   - foodData:
       foodType: 5
       level: 1
     sprite: {fileID: 21300000, guid: 614837f574522a247821732233e42930, type: 2}
     mesh: {fileID: 2782670602755616440, guid: 4b323dd18cfa7544b92f5709b41778ac, type: 3}
-    material: {fileID: 0}
+    materials: []
   - foodData:
       foodType: 5
       level: 2
     sprite: {fileID: 21300000, guid: e56f57dfb7a05094495c896eaff3b2b5, type: 2}
     mesh: {fileID: 8849579028689351621, guid: dbaaa56680bb39f49863b9c7bef77ad8, type: 3}
-    material: {fileID: 0}
+    materials: []

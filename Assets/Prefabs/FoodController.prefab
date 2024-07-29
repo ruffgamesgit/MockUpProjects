@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataSo: {fileID: 11400000, guid: e2c33914987334841bcac7c1791275fe, type: 2}
+  defaultFoodMaterial: {fileID: 2100000, guid: f6e70b2517e9a994daf6c71cef851ed2, type: 2}
   currentCell: {fileID: 0}
   foodData:
     foodType: 0

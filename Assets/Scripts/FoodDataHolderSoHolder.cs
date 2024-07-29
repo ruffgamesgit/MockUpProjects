@@ -14,5 +14,5 @@ public class SoData
     public FoodData foodData;
     public Sprite sprite;
     public Mesh mesh;
-    public Material material;
+    public Material[] materials;
 }
