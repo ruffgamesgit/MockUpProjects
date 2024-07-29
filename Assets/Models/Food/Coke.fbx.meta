@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: BottleOutside
+    second: {fileID: 2100000, guid: cf1cc5db5cac6c84b972b1bec724513e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Coke
     second: {fileID: 2100000, guid: ed77f9c281e632049962c49805c5bd07, type: 2}
   materials:

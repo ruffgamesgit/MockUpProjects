@@ -37,21 +37,22 @@ public class FoodController : MonoBehaviour
         foodData.foodType = DataExtensions.GetRandomFoodType();
         foodData.level = 0;
 
-        _foodImage = transform.GetComponentInChildren<Image>();
-        _foodImage.sprite = GetSpriteFromSo(foodData);
+        //_foodImage = transform.GetComponentInChildren<Image>();
+        //  _foodImage.sprite = GetSpriteFromSo(foodData);
         _foodMeshFilter = transform.GetComponentInChildren<MeshFilter>();
         _foodMeshFilter.mesh = GetSoData(foodData).mesh;
-        if (foodData.foodType == FoodType.Patato)
+        if (foodData.foodType == FoodType.Patato && foodData.level == 0)
             transform.GetComponentInChildren<MeshRenderer>().material = GetSoData(foodData).material;
-        
+
         HexGridManager.instance?.AddFood(this);
     }
 
     public void IncrementSelf()
     {
         foodData.level++;
-        _foodImage.sprite = GetSpriteFromSo(foodData);
-
+        //   _foodImage.sprite = GetSpriteFromSo(foodData);
+        _foodMeshFilter.mesh = GetSoData(foodData).mesh;
+        
         transform.DOScale(Vector3.one * 1.5f, .15f).SetLoops(2, LoopType.Yoyo)
             .OnComplete(() => CustomerManager.instance.CheckIfDataMatches(foodData, this));
     }
@@ -68,19 +69,19 @@ public class FoodController : MonoBehaviour
         sq.OnComplete(() => Destroy(gameObject));
     }
 
-    private Sprite GetSpriteFromSo(FoodData data)
-    {
-        foreach (var soData in dataSo.generalFoodDatas)
-        {
-            if (data.foodType == soData.foodData.foodType &&
-                data.level == soData.foodData.level)
-            {
-                return soData.sprite;
-            }
-        }
-
-        return null;
-    }
+    // private Sprite GetSpriteFromSo(FoodData data)
+    // {
+    //     foreach (var soData in dataSo.generalFoodDatas)
+    //     {
+    //         if (data.foodType == soData.foodData.foodType &&
+    //             data.level == soData.foodData.level)
+    //         {
+    //             return soData.sprite;
+    //         }
+    //     }
+    //
+    //     return null;
+    // }
 
     private SoData GetSoData(FoodData data)
     {

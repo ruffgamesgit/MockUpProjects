@@ -48,8 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   foodPrefab: {fileID: 2010438742071341528, guid: 0e577dca8ff218d448ab892a2112cb1e,
     type: 3}
-  coordinates: {x: 0, y: 0}
   isOccupied: 0
+  coordinates: {x: 0, y: 0}
   currentFood: {fileID: 0}
   neighbours: []
 --- !u!65 &6275075892005126666
@@ -108,6 +108,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8318d12fa38e1bc44bc321db31fe09dd,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8318d12fa38e1bc44bc321db31fe09dd,
         type: 3}
