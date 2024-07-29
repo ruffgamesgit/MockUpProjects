@@ -83,7 +83,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Matcap_Texture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 83aa404d4631efd44a53cbc98427bf1c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -144,7 +144,7 @@ Material:
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _FRESNEL_EFFECT_SETTINGS: 0
-    - _FalloffThreshold: 1
+    - _FalloffThreshold: 0.093
     - _Fresnel_Effect_Settings: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -153,8 +153,8 @@ Material:
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _MATCAP_SETTINGS: 0
-    - _Matcap_Settings: 0
-    - _Matcap_Strengh: 0
+    - _Matcap_Settings: 1
+    - _Matcap_Strengh: 1.61
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
@@ -165,13 +165,13 @@ Material:
     - _ReceiveShadows: 1
     - _SHADOWS_SOFT: 0
     - _Saturation: 0
-    - _ShadingMultiplier: 1
+    - _ShadingMultiplier: 0.563
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _Threshold: 1
+    - _Threshold: 0.525
     - _Triplanar_Settings: 0
     - _Triplanar_Tiling: 0
     - _VERTEXCOLOR_SETTINGS: 0
@@ -184,7 +184,7 @@ Material:
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - B_Color: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
+    - B_Color: {r: 0.7015286, g: 0.61960787, b: 1, a: 1}
     - G_Color: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
     - R_Color: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
@@ -192,6 +192,6 @@ Material:
     - _Color_In: {r: 1, g: 0.003921569, b: 0.003921569, a: 1}
     - _Color_Out: {r: 0.2470588, g: 0.40906644, b: 0.8862745, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Matcap_Color: {r: 0.7169812, g: 0.6797793, b: 0.6797793, a: 1}
+    - _Matcap_Color: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

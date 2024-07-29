@@ -8,12 +8,10 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Ground
-  m_Shader: {fileID: -6465566751694194690, guid: ef3afcf964a41b246becf8464757aab0,
+  m_Shader: {fileID: -6465566751694194690, guid: 33477ba8e58a26447875671124f2b606,
     type: 3}
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _MAIN_LIGHT_SHADOWS_CASCADE
-  - _SHADOWS_SOFT
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -145,7 +143,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _Power_In: 1
-    - _Power_Out: 1
+    - _Power_Out: 0.4
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -173,7 +171,7 @@ Material:
     - B_Color: {r: 1, g: 1, b: 1, a: 1}
     - G_Color: {r: 1, g: 1, b: 1, a: 1}
     - R_Color: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColor: {r: 0.9528302, g: 0.9528302, b: 0.9528302, a: 1}
+    - _BaseColor: {r: 0.5461613, g: 0.25, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color_In: {r: 1, g: 0.003921569, b: 0.003921569, a: 1}
     - _Color_Out: {r: 0.3843137, g: 1, b: 0.2117647, a: 1}

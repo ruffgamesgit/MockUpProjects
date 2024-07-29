@@ -8,15 +8,11 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Food
-  m_Shader: {fileID: -6465566751694194690, guid: ef3afcf964a41b246becf8464757aab0,
+  m_Shader: {fileID: -6465566751694194690, guid: 33477ba8e58a26447875671124f2b606,
     type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _MAIN_LIGHT_SHADOWS
-  - _MAIN_LIGHT_SHADOWS_CASCADE
+  m_ValidKeywords:
   - _RECEIVE_SHADOWS_OFF
-  - _SHADOWS_SOFT
-  - _VERTEXCOLOR_SETTINGS
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -72,7 +68,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Matcap_Texture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: c75a1f33f8812c0459616a22892f5c68, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -142,19 +138,19 @@ Material:
     - _MAIN_LIGHT_SHADOWS: 1
     - _MAIN_LIGHT_SHADOWS_CASCADE: 1
     - _MATCAP_SETTINGS: 0
-    - _Matcap_Settings: 0
-    - _Matcap_Strengh: 0
+    - _Matcap_Settings: 1
+    - _Matcap_Strengh: -0.15
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _Power_In: 0.15
-    - _Power_Out: 1
+    - _Power_Out: 3.08
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 0
     - _SHADOWS_SOFT: 1
     - _Saturation: 0.049
-    - _ShadingMultiplier: 0.5
+    - _ShadingMultiplier: 1
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -165,9 +161,9 @@ Material:
     - _Triplanar_Tiling: 0
     - _VERTEXCOLOR_SETTINGS: 1
     - _Value: 0
-    - _VertexColorPower: 0
+    - _VertexColorPower: -0.045
     - _VertexColor_Settings: 1
-    - _White_Balance: 0
+    - _White_Balance: 0.36
     - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 1
@@ -179,9 +175,9 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color_In: {r: 1, g: 0.003921569, b: 0.003921569, a: 1}
-    - _Color_Out: {r: 0.62034744, g: 0.6226415, b: 0.61970454, a: 1}
+    - _Color_Out: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Matcap_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Matcap_Color: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &2716932500054594574
