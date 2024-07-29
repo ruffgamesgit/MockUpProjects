@@ -6,11 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fbd0e7ae-9743-4640-b7be-77031ecfa171" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FoodController.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/FoodController.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene_Hexagon.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene_Hexagon.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObjects/FoodData.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObjects/FoodData.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/FoodController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/FoodController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/FoodDataHolderSoHolder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/FoodDataHolderSoHolder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/HexGridManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/HexGridManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,10 +87,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="5484">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="5484" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -124,7 +120,7 @@
       <workItem from="1721888352924" duration="90000" />
       <workItem from="1721888451314" duration="13179000" />
       <workItem from="1721973472556" duration="1191000" />
-      <workItem from="1722253839407" duration="2266000" />
+      <workItem from="1722253839407" duration="3174000" />
     </task>
     <servers />
   </component>
@@ -151,5 +147,37 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/HexGridManager.cs</url>
+          <line>152</line>
+          <properties documentPath="C:\Users\Bozkurt\Desktop\RUFF_PROJECTS\MockUpProjects\Assets\Scripts\HexGridManager.cs" initialLine="152" containingFunctionPresentation="Method 'CheckIfFoodMatches'">
+            <startOffsets>
+              <option value="5392" />
+            </startOffsets>
+            <endOffsets>
+              <option value="5415" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/HexGridManager.cs</url>
+          <line>128</line>
+          <properties documentPath="C:\Users\Bozkurt\Desktop\RUFF_PROJECTS\MockUpProjects\Assets\Scripts\HexGridManager.cs" initialLine="128" containingFunctionPresentation="Method 'CheckIfFoodMatches'">
+            <startOffsets>
+              <option value="4117" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4167" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
