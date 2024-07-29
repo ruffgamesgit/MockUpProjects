@@ -146,6 +146,7 @@ public class FoodController : MonoBehaviour
         currentCell.SetOccupied(this);
         transform.SetParent(cell.transform);
         transform.position = cell.GetCenter();
+        cell.indicatorController.DisableIndicator();
 
         HexGridManager.instance.CheckIfFoodMatches(this);
     }

@@ -1,11 +1,15 @@
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GridCell : MonoBehaviour
 {
     [Header("References")] [SerializeField]
     private FoodController foodPrefab;
-    
+    public IndicatorController indicatorController;
+
+
     [Header("Debug")] public bool isOccupied;
     [SerializeField] Vector2Int coordinates;
     public FoodController currentFood;

@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="fbd0e7ae-9743-4640-b7be-77031ecfa171" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/HexGridManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/HexGridManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Grid_Cell.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Grid_Cell.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/FoodController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/FoodController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GridCell.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GridCell.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/InputManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/InputManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +22,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/DataExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/FoodController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/IndicatorController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/OrderImageController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../VehicleSortGit/Assets/Scripts/ImageColorModifier.cs" root0="SKIP_HIGHLIGHTING" />
@@ -120,7 +124,7 @@
       <workItem from="1721888352924" duration="90000" />
       <workItem from="1721888451314" duration="13179000" />
       <workItem from="1721973472556" duration="1191000" />
-      <workItem from="1722253839407" duration="3174000" />
+      <workItem from="1722253839407" duration="5544000" />
     </task>
     <servers />
   </component>
@@ -147,37 +151,5 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/HexGridManager.cs</url>
-          <line>152</line>
-          <properties documentPath="C:\Users\Bozkurt\Desktop\RUFF_PROJECTS\MockUpProjects\Assets\Scripts\HexGridManager.cs" initialLine="152" containingFunctionPresentation="Method 'CheckIfFoodMatches'">
-            <startOffsets>
-              <option value="5392" />
-            </startOffsets>
-            <endOffsets>
-              <option value="5415" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/HexGridManager.cs</url>
-          <line>128</line>
-          <properties documentPath="C:\Users\Bozkurt\Desktop\RUFF_PROJECTS\MockUpProjects\Assets\Scripts\HexGridManager.cs" initialLine="128" containingFunctionPresentation="Method 'CheckIfFoodMatches'">
-            <startOffsets>
-              <option value="4117" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4167" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

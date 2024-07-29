@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
     private Vector3 _offset;
     private FoodController _pickedObject;
     private Camera _mainCamera;
+    [SerializeField] private GridCell _cellBelow;
 
     void Start()
     {
@@ -41,7 +42,46 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButton(0) && _pickedObject)
         {
             // Mouse button held down, drag the object
-            _pickedObject.transform.position = GetMouseWorldPosition() + _offset;
+            Transform pickedTr;
+            (pickedTr = _pickedObject.transform).position = GetMouseWorldPosition() + _offset;
+
+            // Mouse button released, try to place the object
+            Ray ray = new Ray(pickedTr.position, Vector3.down);
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if (hit.transform.TryGetComponent(out GridCell cell))
+                {
+                    if (_cellBelow != null)
+                    {
+                        if (!cell.isOccupied)
+                        {
+                            if (_cellBelow != cell)
+                            {
+                                _cellBelow.indicatorController.DisableIndicator();
+                                _cellBelow = cell;
+                                cell.indicatorController.EnableIndicator();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!cell.isOccupied)
+                        {
+                            _cellBelow = cell;
+                            _cellBelow.indicatorController.EnableIndicator();
+                        }
+                    }
+                }
+                else
+                {
+                    if (_cellBelow)
+                    {
+                        _cellBelow.indicatorController.DisableIndicator();
+                        _cellBelow = null;
+                    }
+                }
+            }
         }
 
         if (Input.GetMouseButtonUp(0) && _pickedObject)
@@ -64,6 +104,11 @@ public class InputManager : MonoBehaviour
                 }
             }
 
+            if (_cellBelow != null)
+            {
+                _cellBelow.indicatorController.DisableIndicator();
+                _cellBelow = null;
+            }
 
             _pickedObject = null;
         }
