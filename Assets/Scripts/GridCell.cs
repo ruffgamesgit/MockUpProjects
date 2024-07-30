@@ -26,7 +26,6 @@ public class GridCell : MonoBehaviour
         if (isInvisible)
         {
             Destroy(gameObject);
-            Debug.Log("Destroying: " + name);
         }
     }
 

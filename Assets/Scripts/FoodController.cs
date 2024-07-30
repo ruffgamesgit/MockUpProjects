@@ -40,15 +40,15 @@ public class FoodController : MonoBehaviour
 
         foodData.foodType = DataExtensions.GetRandomFoodType();
         foodData.level = 0;
-        
-        AssignMeshAndMaterial();
+
+        AssignNewModel();
         HexGridManager.instance?.AddFood(this);
     }
 
     public void IncrementSelf()
     {
         foodData.level++;
-        AssignMeshAndMaterial();
+        AssignNewModel();
 
         transform.DOScale(Vector3.one * 1.5f, .15f).SetLoops(2, LoopType.Yoyo)
             .OnComplete(() => CustomerManager.instance.CheckIfDataMatches(foodData, this));
@@ -66,8 +66,21 @@ public class FoodController : MonoBehaviour
         sq.OnComplete(() => Destroy(gameObject));
     }
 
+    public void DisappearForOrders(Vector3 orderFinalPos, Vector3 posBeforeOrder)
+    {
+        isDisappearing = true;
+        currentCell.SetFree();
+        HexGridManager.instance.RemoveFood(this);
 
-    void AssignMeshAndMaterial()
+        Sequence sq = DOTween.Sequence();
+        sq.Append(transform.DOMove(posBeforeOrder, .2f));
+        sq.Append(transform.DOScale(Vector3.one * 2, .15f).SetLoops(2, LoopType.Yoyo));
+        sq.Append(transform.DOMove(orderFinalPos, .2f));
+        sq.Append(transform.DOScale(Vector3.zero, .45f));
+        sq.OnComplete(() => Destroy(gameObject));
+    }
+
+    void AssignNewModel()
     {
         if (_currentModel != null)
         {

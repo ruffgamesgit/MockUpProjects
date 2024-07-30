@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CustomerManager : MonoSingleton<CustomerManager>
 {
     [Header("References")] [SerializeField]
     private Blocker blocker;
+
     [SerializeField] private List<OrderHandler> orderHandlers;
+    [SerializeField] private Transform tr;
 
     public void CheckIfDataMatches(FoodData givenData, FoodController controller)
     {
@@ -23,7 +26,7 @@ public class CustomerManager : MonoSingleton<CustomerManager>
 
                 shouldBreak = true;
                 oh.CompleteOrder(givenData);
-                controller.Disappear(oh.transform.position);
+                controller.DisappearForOrders(oh.transform.position, tr.position);
                 break;
             }
         }
@@ -31,13 +34,13 @@ public class CustomerManager : MonoSingleton<CustomerManager>
 
     public void CheckIfDataMatchesForOrders(FoodData givenData, OrderHandler orderHandler)
     {
-        List<FoodController> foods = HexGridManager .instance.foodsOnGrid;
+        List<FoodController> foods = HexGridManager.instance.foodsOnGrid;
         foreach (FoodController food in foods)
         {
             if (givenData.foodType != food.GetFoodData().foodType ||
                 givenData.level != food.GetFoodData().level) continue;
 
-            food.Disappear(orderHandler.transform.position);
+            food.DisappearForOrders(orderHandler.transform.position, tr.position);
             break;
         }
     }
