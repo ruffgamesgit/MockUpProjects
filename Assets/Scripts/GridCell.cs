@@ -1,16 +1,16 @@
+using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GridCell : MonoBehaviour
 {
     [Header("References")] [SerializeField]
     private FoodController foodPrefab;
+
     public IndicatorController indicatorController;
 
-
     [Header("Debug")] public bool isOccupied;
+    public bool isInvisible;
     [SerializeField] Vector2Int coordinates;
     public FoodController currentFood;
     public List<GridCell> neighbours;
@@ -23,6 +23,11 @@ public class GridCell : MonoBehaviour
     private void Start()
     {
         name = coordinates.ToString();
+        if (isInvisible)
+        {
+            Destroy(gameObject);
+            Debug.Log("Destroying: " + name);
+        }
     }
 
 

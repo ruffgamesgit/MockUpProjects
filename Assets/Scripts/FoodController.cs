@@ -40,12 +40,7 @@ public class FoodController : MonoBehaviour
 
         foodData.foodType = DataExtensions.GetRandomFoodType();
         foodData.level = 0;
-
-        //_foodImage = transform.GetComponentInChildren<Image>();
-        //  _foodImage.sprite = GetSpriteFromSo(foodData);
-        // _foodMeshFilter = transform.GetComponentInChildren<MeshFilter>();
-
-
+        
         AssignMeshAndMaterial();
         HexGridManager.instance?.AddFood(this);
     }
@@ -76,36 +71,10 @@ public class FoodController : MonoBehaviour
     {
         if (_currentModel != null)
         {
-            // disappear current model
             Destroy(_currentModel);
         }
 
         _currentModel = Instantiate(GetSoData(foodData).model, transform.position, Quaternion.identity, transform);
-
-        // _foodMeshFilter.mesh = GetSoData(foodData).mesh;
-        // _meshRenderer = transform.GetComponentInChildren<MeshRenderer>();
-        // bool specificMatUsed = false;
-        //
-        // switch (foodData.foodType)
-        // {
-        //     case FoodType.Patato when foodData.level == 0:
-        //     {
-        //         _meshRenderer.material = GetSoData(foodData).materials[0];
-        //         specificMatUsed = true;
-        //         break;
-        //     }
-        //     case FoodType.Juice when foodData.level != 0:
-        //     {
-        //         _meshRenderer.materials = GetSoData(foodData).materials;
-        //
-        //         specificMatUsed = true;
-        //         break;
-        //     }
-        // }
-        //
-        //
-        // if (!specificMatUsed)
-        //     _meshRenderer.material = defaultFoodMaterial;
     }
 
     private SoData GetSoData(FoodData data)

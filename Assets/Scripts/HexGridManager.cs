@@ -9,6 +9,7 @@ public class HexGridManager : MonoSingleton<HexGridManager>
     [Header("Config")] public int gridWidth = 10;
     public int gridHeight = 10;
     [SerializeField] private int desiredInitialFoodCount;
+    [SerializeField] private float mergeDelay;
 
     [Header("Debug")] public List<FoodController> foodsOnGrid;
     [SerializeField] List<GridCell> allCells = new();
@@ -50,8 +51,16 @@ public class HexGridManager : MonoSingleton<HexGridManager>
                 Vector2Int hexCoordinates = new(x, y);
                 GridCell hexCell = hex.transform.GetComponent<GridCell>();
                 hexCell.SetCoordinates(hexCoordinates);
-                _hexDict.Add(hexCoordinates, hexCell);
-                allCells.Add(hexCell);
+
+                if (x == 0 && y % 2 == 0)
+                {
+                    hexCell.isInvisible = true;
+                }
+                else
+                {
+                    _hexDict.Add(hexCoordinates, hexCell);
+                    allCells.Add(hexCell);
+                }
             }
         }
 
@@ -192,7 +201,7 @@ public class HexGridManager : MonoSingleton<HexGridManager>
             foreach (FoodController food in incrementedFoods)
             {
                 if (food != null && !food.isDisappearing && food?.GetFoodData().level < 2)
-                    CheckIfFoodMatches(food,0.35f);
+                    CheckIfFoodMatches(food, mergeDelay);
             }
         }
     }

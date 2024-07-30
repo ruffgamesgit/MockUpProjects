@@ -49,5 +49,6 @@ MonoBehaviour:
   gridWidth: 4
   gridHeight: 11
   desiredInitialFoodCount: 5
+  mergeDelay: 0.35
   foodsOnGrid: []
   allCells: []
