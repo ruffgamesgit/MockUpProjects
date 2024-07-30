@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="fbd0e7ae-9743-4640-b7be-77031ecfa171" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MockUpProjects/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Customer.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Customer.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/CustomerManager.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/CustomerManager.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/CustomerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/CustomerManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/OrderImage.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/OrderImage.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/FoodController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/FoodController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GridCell.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GridCell.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

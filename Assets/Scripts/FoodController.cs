@@ -73,9 +73,9 @@ public class FoodController : MonoBehaviour
         HexGridManager.instance.RemoveFood(this);
 
         Sequence sq = DOTween.Sequence();
-        sq.Append(transform.DOMove(posBeforeOrder, .2f));
-        sq.Append(transform.DOScale(Vector3.one * 2, .15f).SetLoops(2, LoopType.Yoyo));
-        sq.Append(transform.DOMove(orderFinalPos, .2f));
+        sq.Append(transform.DOMove(posBeforeOrder, .3f));
+        sq.Append(transform.DOScale(Vector3.one * 2, .25f).SetLoops(2, LoopType.Yoyo));
+        sq.Append(transform.DOMove(orderFinalPos, .3f));
         sq.Append(transform.DOScale(Vector3.zero, .45f));
         sq.OnComplete(() => Destroy(gameObject));
     }
