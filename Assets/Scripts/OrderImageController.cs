@@ -12,6 +12,7 @@ public class OrderImageController : MonoBehaviour
     [SerializeField] private GameObject doneImage;
 
     [Header("Debug")] public bool isCompleted;
+    public bool isMarkedToBeCompleted;
     [SerializeField] private FoodData data;
 
 

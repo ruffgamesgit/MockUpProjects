@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class OrderHandler : MonoBehaviour
 {
@@ -28,6 +29,21 @@ public class OrderHandler : MonoBehaviour
             ic.SetSprite(GetSpriteFromSo(randomFoodData), randomFoodData);
         }
     }
+
+    // public void MarkDataToBeCompleted(FoodData givenData)
+    // {
+    //     foreach ((OrderImageController key, FoodData value) in FoodDataDictionary)
+    //     {
+    //         if (value.foodType != givenData.foodType ||
+    //             value.level != givenData.level) continue;
+    //         if (key.isCompleted) continue;
+    //         if (key.isMarkedToBeCompleted) continue;
+    //         Debug.Log("marked: " + givenData.foodType);
+    //         key.isMarkedToBeCompleted = true;
+    //         break;
+    //     }
+    // }
+
     public void CompleteOrder(FoodData givenData)
     {
         OrderImageController targetImageController = null;
@@ -41,6 +57,7 @@ public class OrderHandler : MonoBehaviour
             targetImageController = key;
             break;
         }
+
 
         if (targetImageController != null)
         {
@@ -63,7 +80,7 @@ public class OrderHandler : MonoBehaviour
             }
         }
     }
-    
+
     private Sprite GetSpriteFromSo(FoodData data)
     {
         foreach (var soData in dataSo.generalFoodDatas)

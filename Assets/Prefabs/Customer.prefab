@@ -601,6 +601,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: OrderImage
       objectReference: {fileID: 0}
+    - target: {fileID: 1431000452057784406, guid: 610f5d6d54863504eb93d38c7c3abcdd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1630122568090881162, guid: 610f5d6d54863504eb93d38c7c3abcdd,
         type: 3}
       propertyPath: m_Pivot.x

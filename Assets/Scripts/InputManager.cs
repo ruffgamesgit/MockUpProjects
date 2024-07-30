@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour
     private Vector3 _offset;
     private FoodController _pickedObject;
     private Camera _mainCamera;
-    [SerializeField] private GridCell _cellBelow;
+    private GridCell _cellBelow;
 
     void Start()
     {
@@ -41,9 +41,8 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetMouseButton(0) && _pickedObject)
         {
-            // Mouse button held down, drag the object
-            Transform pickedTr;
-            (pickedTr = _pickedObject.transform).position = GetMouseWorldPosition() + _offset;
+            Transform pickedTr = _pickedObject.transform;
+            pickedTr.position = GetMouseWorldPosition() + _offset;
 
             // Mouse button released, try to place the object
             Ray ray = new Ray(pickedTr.position, Vector3.down);
@@ -87,7 +86,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && _pickedObject)
         {
             // Mouse button released, try to place the object
-            Ray ray = new Ray(_pickedObject.transform.position, Vector3.down);
+            Ray ray = new(_pickedObject.transform.position, Vector3.down);
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
@@ -103,6 +102,9 @@ public class InputManager : MonoBehaviour
                     _pickedObject.GetReleased();
                 }
             }
+            else
+                _pickedObject.GetReleased();
+
 
             if (_cellBelow != null)
             {

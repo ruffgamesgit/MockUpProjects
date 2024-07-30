@@ -10,6 +10,7 @@ public class CustomerManager : MonoSingleton<CustomerManager>
     [SerializeField] private List<OrderHandler> orderHandlers;
     [SerializeField] private Transform tr;
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public void CheckIfDataMatches(FoodData givenData, FoodController controller)
     {
         bool shouldBreak = false;
@@ -26,7 +27,7 @@ public class CustomerManager : MonoSingleton<CustomerManager>
 
                 shouldBreak = true;
                 oh.CompleteOrder(givenData);
-                controller.DisappearForOrders(oh.transform.position, tr.position);
+                controller.DisappearForOrders(oh.transform.position, oh);
                 break;
             }
         }
@@ -40,7 +41,8 @@ public class CustomerManager : MonoSingleton<CustomerManager>
             if (givenData.foodType != food.GetFoodData().foodType ||
                 givenData.level != food.GetFoodData().level) continue;
 
-            food.DisappearForOrders(orderHandler.transform.position, tr.position);
+            orderHandler.CompleteOrder(givenData);
+            food.DisappearForOrders(orderHandler.transform.position, orderHandler);
             break;
         }
     }

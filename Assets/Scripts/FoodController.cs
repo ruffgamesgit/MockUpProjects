@@ -66,18 +66,24 @@ public class FoodController : MonoBehaviour
         sq.OnComplete(() => Destroy(gameObject));
     }
 
-    public void DisappearForOrders(Vector3 orderFinalPos, Vector3 posBeforeOrder)
+    public void DisappearForOrders(Vector3 orderFinalPos, OrderHandler oh)
     {
         isDisappearing = true;
         currentCell.SetFree();
         HexGridManager.instance.RemoveFood(this);
+
+        Vector3 posBeforeOrder = new(transform.position.x, transform.position.y + 5, transform.position.z);
 
         Sequence sq = DOTween.Sequence();
         sq.Append(transform.DOMove(posBeforeOrder, .3f));
         sq.Append(transform.DOScale(Vector3.one * 2, .25f).SetLoops(2, LoopType.Yoyo));
         sq.Append(transform.DOMove(orderFinalPos, .3f));
         sq.Append(transform.DOScale(Vector3.zero, .45f));
-        sq.OnComplete(() => Destroy(gameObject));
+        sq.OnComplete(() =>
+        {
+            // oh.CompleteOrderOnTweenEnded(foodData);
+            Destroy(gameObject);
+        });
     }
 
     void AssignNewModel()

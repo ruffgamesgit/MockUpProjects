@@ -15,26 +15,26 @@ MonoBehaviour:
   mapDatas:
   - foodType: 1
     foodSprites:
-    - {fileID: 21300000, guid: d92499a06a167f141b7df0beefaf786e, type: 2}
-    - {fileID: 21300000, guid: 42fb526a848eb2c4ab22917624c9c294, type: 2}
-    - {fileID: 21300000, guid: 8fccfd4d4f3a00041b00fcaa22b59624, type: 2}
+    - {fileID: 21300000, guid: 884525a330ded7d4ea7aa87376b284f9, type: 3}
+    - {fileID: 21300000, guid: 406e089332e711242a3ec771bb6dbef3, type: 3}
+    - {fileID: 21300000, guid: ffd781b607edf7f40ab9b6d75c479fa5, type: 3}
   - foodType: 2
     foodSprites:
-    - {fileID: 21300000, guid: 68f180e37991d5d4a8fe1234e1ed4c8c, type: 2}
-    - {fileID: 21300000, guid: 5a63d0d0df071444283768666b149f38, type: 2}
-    - {fileID: 21300000, guid: 8f7818aa01bcbfd4aad7f05632c7dd09, type: 2}
+    - {fileID: 21300000, guid: 4b44afa84d72cf540bbcb58703979593, type: 3}
+    - {fileID: 21300000, guid: 9dde901f2c32dc548b18db7494362e45, type: 3}
+    - {fileID: 21300000, guid: 5eba8dda28c0bab44b012134b8136220, type: 3}
   - foodType: 3
     foodSprites:
-    - {fileID: 21300000, guid: 15944d7f1876fe847bb35d6404386e37, type: 2}
-    - {fileID: 21300000, guid: 01c4fdd9a7185b34c9610b0d5e47adcb, type: 2}
-    - {fileID: 21300000, guid: 766ab7a6b41437546b79b7683cb952aa, type: 2}
+    - {fileID: 21300000, guid: a76de7d1626c46343b712d0191ed086c, type: 3}
+    - {fileID: 21300000, guid: f8038a0642b2f664a96e531aa8162ea4, type: 3}
+    - {fileID: 21300000, guid: 2f84f9a6fc4ea0040bb84d9cdb92bd59, type: 3}
   - foodType: 4
     foodSprites:
-    - {fileID: 21300000, guid: 17338a24c902f874193f3aa56d27a528, type: 2}
-    - {fileID: 21300000, guid: 53ff5b2dd2d3bda4d99afaf43d9055b7, type: 2}
-    - {fileID: 21300000, guid: 5a345c61b8723a8409a2423638e6319b, type: 2}
+    - {fileID: 21300000, guid: e74156e136219804b84055dfe16980dc, type: 3}
+    - {fileID: 21300000, guid: b19a30417fcfc934da7839aeb002b721, type: 3}
+    - {fileID: 21300000, guid: 565caafc5e9bb6e45b45b81aa1109661, type: 3}
   - foodType: 5
     foodSprites:
-    - {fileID: 21300000, guid: 6f82b6c93b004774a8ea6276f7aa7b29, type: 2}
-    - {fileID: 21300000, guid: 614837f574522a247821732233e42930, type: 2}
-    - {fileID: 21300000, guid: e56f57dfb7a05094495c896eaff3b2b5, type: 2}
+    - {fileID: 21300000, guid: 5b906f27e336fbf41b92bcb0294ce221, type: 3}
+    - {fileID: 21300000, guid: 3dd8dc2ae9694f94698ffb2ba627138e, type: 3}
+    - {fileID: 21300000, guid: c41a572a9741bc54f973f6c8b2a0ef46, type: 3}
