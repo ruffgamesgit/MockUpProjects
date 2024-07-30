@@ -22,7 +22,6 @@ public class CustomerManager : MonoSingleton<CustomerManager>
                 if (key.isCompleted) continue;
 
                 shouldBreak = true;
-                //   orderHandlers[i].RemoveOrder(orderHandlers[i].GetFoodDataFromDict()[j]);
                 oh.CompleteOrder(givenData);
                 controller.Disappear(oh.transform.position);
                 break;
@@ -32,13 +31,12 @@ public class CustomerManager : MonoSingleton<CustomerManager>
 
     public void CheckIfDataMatchesForOrders(FoodData givenData, OrderHandler orderHandler)
     {
-        List<FoodController> foods = GridManager.instance.foodsOnGrid;
+        List<FoodController> foods = HexGridManager .instance.foodsOnGrid;
         foreach (FoodController food in foods)
         {
             if (givenData.foodType != food.GetFoodData().foodType ||
                 givenData.level != food.GetFoodData().level) continue;
 
-            // orderHandler.RemoveOrder(givenData);
             food.Disappear(orderHandler.transform.position);
             break;
         }

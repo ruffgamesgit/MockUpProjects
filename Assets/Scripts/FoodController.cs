@@ -28,6 +28,7 @@ public class FoodController : MonoBehaviour
     private MeshFilter _foodMeshFilter;
     private MeshRenderer _meshRenderer;
     [HideInInspector] public bool isDisappearing;
+    private GameObject _currentModel;
 
     void Start()
     {
@@ -42,7 +43,7 @@ public class FoodController : MonoBehaviour
 
         //_foodImage = transform.GetComponentInChildren<Image>();
         //  _foodImage.sprite = GetSpriteFromSo(foodData);
-        _foodMeshFilter = transform.GetComponentInChildren<MeshFilter>();
+        // _foodMeshFilter = transform.GetComponentInChildren<MeshFilter>();
 
 
         AssignMeshAndMaterial();
@@ -73,45 +74,39 @@ public class FoodController : MonoBehaviour
 
     void AssignMeshAndMaterial()
     {
-        _foodMeshFilter.mesh = GetSoData(foodData).mesh;
-        _meshRenderer = transform.GetComponentInChildren<MeshRenderer>();
-        bool specificMatUsed = false;
-
-        switch (foodData.foodType)
+        if (_currentModel != null)
         {
-            case FoodType.Patato when foodData.level == 0:
-            {
-                _meshRenderer.material = GetSoData(foodData).materials[0];
-                specificMatUsed = true;
-                break;
-            }
-            case FoodType.Juice when foodData.level != 0:
-            {
-                _meshRenderer.materials = GetSoData(foodData).materials;
-
-                specificMatUsed = true;
-                break;
-            }
+            // disappear current model
+            Destroy(_currentModel);
         }
 
+        _currentModel = Instantiate(GetSoData(foodData).model, transform.position, Quaternion.identity, transform);
 
-        if (!specificMatUsed)
-            _meshRenderer.material = defaultFoodMaterial;
+        // _foodMeshFilter.mesh = GetSoData(foodData).mesh;
+        // _meshRenderer = transform.GetComponentInChildren<MeshRenderer>();
+        // bool specificMatUsed = false;
+        //
+        // switch (foodData.foodType)
+        // {
+        //     case FoodType.Patato when foodData.level == 0:
+        //     {
+        //         _meshRenderer.material = GetSoData(foodData).materials[0];
+        //         specificMatUsed = true;
+        //         break;
+        //     }
+        //     case FoodType.Juice when foodData.level != 0:
+        //     {
+        //         _meshRenderer.materials = GetSoData(foodData).materials;
+        //
+        //         specificMatUsed = true;
+        //         break;
+        //     }
+        // }
+        //
+        //
+        // if (!specificMatUsed)
+        //     _meshRenderer.material = defaultFoodMaterial;
     }
-
-    // private Sprite GetSpriteFromSo(FoodData data)
-    // {
-    //     foreach (var soData in dataSo.generalFoodDatas)
-    //     {
-    //         if (data.foodType == soData.foodData.foodType &&
-    //             data.level == soData.foodData.level)
-    //         {
-    //             return soData.sprite;
-    //         }
-    //     }
-    //
-    //     return null;
-    // }
 
     private SoData GetSoData(FoodData data)
     {

@@ -125,8 +125,6 @@ public class HexGridManager : MonoSingleton<HexGridManager>
             if (lastPlacedFood.GetFoodData().level != neighborFood.GetFoodData().level) continue;
             if (!matchedFoods.Contains(neighborFood))
                 matchedFoods.Add(neighborFood);
-
-            Debug.Log("Matched Count: " + matchedFoods.Count);
         }
 
         if (matchedFoods.Count >= 1) // one neighbour has same food
@@ -148,11 +146,10 @@ public class HexGridManager : MonoSingleton<HexGridManager>
                     if (lastPlacedFood.GetFoodData().level != cell.currentFood.GetFoodData().level) continue;
 
                     FoodController food = cell.currentFood;
-                    if (matchedFoods.Contains(food) ) continue;
-                    if ( food == lastPlacedFood) continue;
+                    if (matchedFoods.Contains(food)) continue;
+                    if (food == lastPlacedFood) continue;
 
                     matchedFoods.Add(food);
-                    Debug.Log("Matched Count: " + matchedFoods.Count);
                 }
             }
         }

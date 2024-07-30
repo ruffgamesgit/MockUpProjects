@@ -13,6 +13,5 @@ public class SoData
 {
     public FoodData foodData;
     public Sprite sprite;
-    public Mesh mesh;
-    public Material[] materials;
+    public GameObject model;
 }
