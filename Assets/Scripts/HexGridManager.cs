@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class HexGridManager : MonoSingleton<HexGridManager>
 {
@@ -105,87 +106,94 @@ public class HexGridManager : MonoSingleton<HexGridManager>
 
     #endregion
 
-    public void CheckIfFoodMatches(FoodController lastPlacedFood)
+    public void CheckIfFoodMatches(FoodController lastPlacedFood, float delay = 0)
     {
-        GridCell lastPlacedCell = lastPlacedFood.GetCell();
-        GridCell neighborMathcedCell = null;
-        List<GridCell> neighbours = lastPlacedCell.neighbours;
-        bool hasMatch = false;
+        StartCoroutine(Routine());
 
-
-        List<FoodController> matchedFoods = new();
-
-        foreach (GridCell neighborCell in neighbours)
+        IEnumerator Routine()
         {
-            if (!neighborCell.currentFood) continue;
-            if (neighborCell.currentFood.GetFoodData().level >= 2) continue;
+            yield return new WaitForSeconds(delay);
 
-            FoodController neighborFood = neighborCell.currentFood;
-            if (lastPlacedFood.GetFoodData().foodType != neighborFood.GetFoodData().foodType) continue;
-            if (lastPlacedFood.GetFoodData().level != neighborFood.GetFoodData().level) continue;
-            if (!matchedFoods.Contains(neighborFood))
-                matchedFoods.Add(neighborFood);
-        }
+            GridCell lastPlacedCell = lastPlacedFood.GetCell();
+            GridCell neighborMathcedCell = null;
+            List<GridCell> neighbours = lastPlacedCell.neighbours;
+            bool hasMatch = false;
 
-        if (matchedFoods.Count >= 1) // one neighbour has same food
-        {
+
+            List<FoodController> matchedFoods = new();
+
             foreach (GridCell neighborCell in neighbours)
             {
                 if (!neighborCell.currentFood) continue;
                 if (neighborCell.currentFood.GetFoodData().level >= 2) continue;
-                if (lastPlacedFood.GetFoodData().foodType !=
-                    neighborCell.currentFood.GetFoodData().foodType) continue;
-                if (lastPlacedFood.GetFoodData().level != neighborCell.currentFood.GetFoodData().level) continue;
 
-                foreach (GridCell cell in neighborCell.neighbours)
-                {
-                    if (cell == lastPlacedCell) continue;
-                    if (!cell.currentFood) continue;
-                    if (cell.currentFood.GetFoodData().level >= 2) continue;
-                    if (lastPlacedFood.GetFoodData().foodType != cell.currentFood.GetFoodData().foodType) continue;
-                    if (lastPlacedFood.GetFoodData().level != cell.currentFood.GetFoodData().level) continue;
-
-                    FoodController food = cell.currentFood;
-                    if (matchedFoods.Contains(food)) continue;
-                    if (food == lastPlacedFood) continue;
-
-                    matchedFoods.Add(food);
-                }
+                FoodController neighborFood = neighborCell.currentFood;
+                if (lastPlacedFood.GetFoodData().foodType != neighborFood.GetFoodData().foodType) continue;
+                if (lastPlacedFood.GetFoodData().level != neighborFood.GetFoodData().level) continue;
+                if (!matchedFoods.Contains(neighborFood))
+                    matchedFoods.Add(neighborFood);
             }
-        }
 
-        if (matchedFoods.Count < 2) return;
-        List<FoodController> incrementedFoods = new();
-        lastPlacedFood.IncrementSelf();
-        incrementedFoods.Add(lastPlacedFood);
-        if (matchedFoods.Count <= 2)
-        {
-            for (int i = 0; i < 2; i++)
+            if (matchedFoods.Count >= 1) // one neighbour has same food
             {
-                matchedFoods[i].Disappear(lastPlacedCell.GetCenter());
-            }
-        }
-        else
-        {
-            if (matchedFoods.Count <= 5)
-            {
-                for (int i = 0; i < matchedFoods.Count; i++)
+                foreach (GridCell neighborCell in neighbours)
                 {
-                    if (i > 0)
-                        matchedFoods[i].Disappear(lastPlacedCell.GetCenter());
-                    else
+                    if (!neighborCell.currentFood) continue;
+                    if (neighborCell.currentFood.GetFoodData().level >= 2) continue;
+                    if (lastPlacedFood.GetFoodData().foodType !=
+                        neighborCell.currentFood.GetFoodData().foodType) continue;
+                    if (lastPlacedFood.GetFoodData().level != neighborCell.currentFood.GetFoodData().level) continue;
+
+                    foreach (GridCell cell in neighborCell.neighbours)
                     {
-                        matchedFoods[i].IncrementSelf();
-                        incrementedFoods.Add(matchedFoods[i]);
+                        if (cell == lastPlacedCell) continue;
+                        if (!cell.currentFood) continue;
+                        if (cell.currentFood.GetFoodData().level >= 2) continue;
+                        if (lastPlacedFood.GetFoodData().foodType != cell.currentFood.GetFoodData().foodType) continue;
+                        if (lastPlacedFood.GetFoodData().level != cell.currentFood.GetFoodData().level) continue;
+
+                        FoodController food = cell.currentFood;
+                        if (matchedFoods.Contains(food)) continue;
+                        if (food == lastPlacedFood) continue;
+
+                        matchedFoods.Add(food);
                     }
                 }
             }
-        }
 
-        foreach (FoodController food in incrementedFoods)
-        {
-            if (food != null && !food.isDisappearing && food?.GetFoodData().level < 2)
-                CheckIfFoodMatches(food);
+            if (matchedFoods.Count < 2) yield break;
+            List<FoodController> incrementedFoods = new();
+            lastPlacedFood.IncrementSelf();
+            incrementedFoods.Add(lastPlacedFood);
+            if (matchedFoods.Count <= 2)
+            {
+                for (int i = 0; i < 2; i++)
+                {
+                    matchedFoods[i].Disappear(lastPlacedCell.GetCenter());
+                }
+            }
+            else
+            {
+                if (matchedFoods.Count <= 5)
+                {
+                    for (int i = 0; i < matchedFoods.Count; i++)
+                    {
+                        if (i > 0)
+                            matchedFoods[i].Disappear(lastPlacedCell.GetCenter());
+                        else
+                        {
+                            matchedFoods[i].IncrementSelf();
+                            incrementedFoods.Add(matchedFoods[i]);
+                        }
+                    }
+                }
+            }
+
+            foreach (FoodController food in incrementedFoods)
+            {
+                if (food != null && !food.isDisappearing && food?.GetFoodData().level < 2)
+                    CheckIfFoodMatches(food,0.35f);
+            }
         }
     }
 
