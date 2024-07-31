@@ -18,7 +18,7 @@ public class HexGridManager : MonoSingleton<HexGridManager>
     private const float HexVertOffset = .43f;
     private const float HexHorizOffset = 1.5f;
     private readonly Dictionary<Vector2Int, GridCell> _hexDict = new();
-
+    private const int MinimumMergeCount = 4;
 
     protected override void Awake()
     {
@@ -166,17 +166,38 @@ public class HexGridManager : MonoSingleton<HexGridManager>
                         if (food == lastPlacedFood) continue;
 
                         matchedFoods.Add(food);
+                        foreach (GridCell farCell in cell.neighbours)
+                        {
+                            if (farCell == lastPlacedCell) continue;
+                            if (!farCell.currentFood) continue;
+                            if (farCell.currentFood.GetFoodData().level >= 2) continue;
+                            if (lastPlacedFood.GetFoodData().foodType != farCell.currentFood.GetFoodData().foodType) continue;
+                            if (lastPlacedFood.GetFoodData().level != farCell.currentFood.GetFoodData().level) continue;
+
+                            FoodController secondFood = farCell.currentFood;
+                            if (matchedFoods.Contains(secondFood)) continue;
+                            if (secondFood == lastPlacedFood) continue;
+
+                            matchedFoods.Add(secondFood);
+                        }
                     }
                 }
             }
 
-            if (matchedFoods.Count < 2) yield break;
+            for (int i = 0; i < matchedFoods.Count; i++)
+            {
+                Debug.Log("Matched foods: " + matchedFoods[i].GetCell());
+            }
+
+            if (matchedFoods.Count < MinimumMergeCount - 1) yield break;
+
+
             List<FoodController> incrementedFoods = new();
             lastPlacedFood.IncrementSelf();
             incrementedFoods.Add(lastPlacedFood);
-            if (matchedFoods.Count <= 2)
+            if (matchedFoods.Count <= MinimumMergeCount - 1)
             {
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < MinimumMergeCount - 1; i++)
                 {
                     matchedFoods[i].Disappear(lastPlacedCell.GetCenter());
                 }
