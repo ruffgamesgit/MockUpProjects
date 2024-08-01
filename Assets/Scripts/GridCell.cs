@@ -51,7 +51,7 @@ public class GridCell : MonoBehaviour
 
     public Vector3 GetCenter()
     {
-        return transform.position + transform.up / 4;
+        return transform.position + transform.up / 2;
     }
 
     public Vector2Int GetCoordinates()

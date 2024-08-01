@@ -18,7 +18,7 @@ public class HexGridManager : MonoSingleton<HexGridManager>
     private const float HexVertOffset = .43f;
     private const float HexHorizOffset = 1.5f;
     private readonly Dictionary<Vector2Int, GridCell> _hexDict = new();
-    private const int MinimumMergeCount = 4;
+    private const int MinimumMergeCount = 3;
 
     protected override void Awake()
     {
@@ -28,6 +28,17 @@ public class HexGridManager : MonoSingleton<HexGridManager>
     }
 
     #region Generation Region
+
+    public GridCell GetCellByCoordinate(Vector2Int targetCoordinate)
+    {
+        foreach (var cell in allCells)
+        {
+            if (cell.GetCoordinates() == targetCoordinate)
+                return cell;
+        }
+
+        return null;
+    }
 
     private void GenerateGrid()
     {
@@ -147,46 +158,34 @@ public class HexGridManager : MonoSingleton<HexGridManager>
             {
                 foreach (GridCell neighborCell in neighbours)
                 {
-                    if (!neighborCell.currentFood) continue;
-                    if (neighborCell.currentFood.GetFoodData().level >= 2) continue;
-                    if (lastPlacedFood.GetFoodData().foodType !=
-                        neighborCell.currentFood.GetFoodData().foodType) continue;
-                    if (lastPlacedFood.GetFoodData().level != neighborCell.currentFood.GetFoodData().level) continue;
+                    if (IsTargetCellValid(lastPlacedFood, neighborCell)) continue;
 
                     foreach (GridCell cell in neighborCell.neighbours)
                     {
-                        if (cell == lastPlacedCell) continue;
-                        if (!cell.currentFood) continue;
-                        if (cell.currentFood.GetFoodData().level >= 2) continue;
-                        if (lastPlacedFood.GetFoodData().foodType != cell.currentFood.GetFoodData().foodType) continue;
-                        if (lastPlacedFood.GetFoodData().level != cell.currentFood.GetFoodData().level) continue;
+                        if (IsTargetCellValid(lastPlacedFood, cell)) continue;
 
                         FoodController food = cell.currentFood;
                         if (matchedFoods.Contains(food)) continue;
                         if (food == lastPlacedFood) continue;
 
                         matchedFoods.Add(food);
-                        foreach (GridCell farCell in cell.neighbours)
-                        {
-                            if (farCell == lastPlacedCell) continue;
-                            if (!farCell.currentFood) continue;
-                            if (farCell.currentFood.GetFoodData().level >= 2) continue;
-                            if (lastPlacedFood.GetFoodData().foodType != farCell.currentFood.GetFoodData().foodType) continue;
-                            if (lastPlacedFood.GetFoodData().level != farCell.currentFood.GetFoodData().level) continue;
 
-                            FoodController secondFood = farCell.currentFood;
-                            if (matchedFoods.Contains(secondFood)) continue;
-                            if (secondFood == lastPlacedFood) continue;
+                        #region 4 MERGE REGION
 
-                            matchedFoods.Add(secondFood);
-                        }
+                        // foreach (GridCell farCell in cell.neighbours)
+                        // {
+                        //     if (IsTargetCellValid(lastPlacedFood, farCell)) continue;
+                        //
+                        //     FoodController secondFood = farCell.currentFood;
+                        //     if (matchedFoods.Contains(secondFood)) continue;
+                        //     if (secondFood == lastPlacedFood) continue;
+                        //
+                        //     matchedFoods.Add(secondFood);
+                        // }
+
+                        #endregion
                     }
                 }
-            }
-
-            for (int i = 0; i < matchedFoods.Count; i++)
-            {
-                Debug.Log("Matched foods: " + matchedFoods[i].GetCell());
             }
 
             if (matchedFoods.Count < MinimumMergeCount - 1) yield break;
@@ -225,6 +224,18 @@ public class HexGridManager : MonoSingleton<HexGridManager>
                     CheckIfFoodMatches(food, mergeDelay);
             }
         }
+    }
+
+    private bool IsTargetCellValid(FoodController lastPlacedFood, GridCell targetCell)
+    {
+        GridCell lastPlacedCell = lastPlacedFood.GetCell();
+
+        if (targetCell == lastPlacedCell) return true;
+        if (!targetCell.currentFood) return true;
+        if (targetCell.currentFood.GetFoodData().level >= 2) return true;
+        if (lastPlacedFood.GetFoodData().foodType != targetCell.currentFood.GetFoodData().foodType) return true;
+        if (lastPlacedFood.GetFoodData().level != targetCell.currentFood.GetFoodData().level) return true;
+        return false;
     }
 
     public void AddFood(FoodController foodController)

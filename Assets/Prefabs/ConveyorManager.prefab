@@ -130,9 +130,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb00d41defffb414cac71bcb38570592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodPrefab: {fileID: 2010438742071341528, guid: 0e577dca8ff218d448ab892a2112cb1e,
-    type: 3}
-  foodControllers: []
+  foodPrefabs:
+  - {fileID: 8273548392731041132, guid: 0e577dca8ff218d448ab892a2112cb1e, type: 3}
+  - {fileID: 2582182805247148437, guid: db47e4f255428e94cbd2affb0d611f97, type: 3}
+  foodsOnConveyor: []
 --- !u!1 &7549384349963166652
 GameObject:
   m_ObjectHideFlags: 0

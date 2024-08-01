@@ -110,6 +110,11 @@ public class FoodController : MonoBehaviour
         return null;
     }
 
+    public void DisableCollider()
+    {
+        transform.GetComponent<Collider>().enabled = false;
+    }
+
     public FoodData GetFoodData()
     {
         return foodData;
@@ -122,8 +127,8 @@ public class FoodController : MonoBehaviour
 
     public void GetPlaced(GridCell cell)
     {
-        ConveyorManager.instance.OnFoodPlaced(this);
-        transform.GetComponent<Collider>().enabled = false;
+        ConveyorManager.instance.OnFoodPlaced(transform);
+        DisableCollider();
 
         currentCell = cell;
         currentCell.SetOccupied(this);

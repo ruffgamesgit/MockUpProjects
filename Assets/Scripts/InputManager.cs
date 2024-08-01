@@ -44,58 +44,41 @@ public class InputManager : MonoBehaviour
             Transform pickedTr = _pickedObject.transform;
             pickedTr.position = GetMouseWorldPosition() + _offset;
 
-            // Mouse button released, try to place the object
             Ray ray = new Ray(pickedTr.position, Vector3.down);
 
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            if (Physics.Raycast(ray, out RaycastHit hit) && hit.transform.TryGetComponent(out GridCell cell))
             {
-                if (hit.transform.TryGetComponent(out GridCell cell))
+                if (!cell.isOccupied)
                 {
-                    if (_cellBelow != null)
+                    if (_cellBelow != cell)
                     {
-                        if (!cell.isOccupied)
-                        {
-                            if (_cellBelow != cell)
-                            {
-                                _cellBelow.indicatorController.DisableIndicator();
-                                _cellBelow = cell;
-                                cell.indicatorController.EnableIndicator();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (!cell.isOccupied)
-                        {
-                            _cellBelow = cell;
-                            _cellBelow.indicatorController.EnableIndicator();
-                        }
+                        _cellBelow?.indicatorController.DisableIndicator();
+                        _cellBelow = cell;
+                        cell.indicatorController.EnableIndicator();
                     }
                 }
                 else
                 {
-                    if (_cellBelow)
-                    {
-                        _cellBelow.indicatorController.DisableIndicator();
-                        _cellBelow = null;
-                    }
+                    _cellBelow?.indicatorController.DisableIndicator();
+                    _cellBelow = null;
                 }
+            }
+            else
+            {
+                _cellBelow?.indicatorController.DisableIndicator();
+                _cellBelow = null;
             }
         }
 
         if (Input.GetMouseButtonUp(0) && _pickedObject)
         {
-            // Mouse button released, try to place the object
-            Ray ray = new(_pickedObject.transform.position, Vector3.down);
+            Ray ray = new Ray(_pickedObject.transform.position, Vector3.down);
 
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            if (Physics.Raycast(ray, out RaycastHit hit) && hit.transform.TryGetComponent(out GridCell cell))
             {
-                if (hit.transform.TryGetComponent(out GridCell cell))
+                if (!cell.isOccupied)
                 {
-                    if (!cell.isOccupied)
-                        _pickedObject.GetPlaced(cell);
-                    else
-                        _pickedObject.GetReleased();
+                    _pickedObject.GetPlaced(cell);
                 }
                 else
                 {
@@ -103,15 +86,12 @@ public class InputManager : MonoBehaviour
                 }
             }
             else
-                _pickedObject.GetReleased();
-
-
-            if (_cellBelow != null)
             {
-                _cellBelow.indicatorController.DisableIndicator();
-                _cellBelow = null;
+                _pickedObject.GetReleased();
             }
 
+            _cellBelow?.indicatorController.DisableIndicator();
+            _cellBelow = null;
             _pickedObject = null;
         }
     }

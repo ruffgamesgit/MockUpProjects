@@ -19,7 +19,6 @@ public class OrderImageController : MonoBehaviour
     private void Start()
     {
         button.onClick.AddListener((OnButtonClicked));
-        button.onClick.AddListener((() => Debug.Log(gameObject.name + ", " + data.foodType)));
     }
 
     private void OnButtonClicked()
